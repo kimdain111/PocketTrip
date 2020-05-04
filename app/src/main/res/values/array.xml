@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nation_array">
+        <item>독일</item>
+        <item>스위스</item>
+        <item>프랑스</item>
+        <item>체코</item>
+        <item>한국</item>
+    </string-array>
+</resources>
