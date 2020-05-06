@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "124444443753",
+    "firebase_url": "https://pockettrip-10818.firebaseio.com",
+    "project_id": "pockettrip-10818",
+    "storage_bucket": "pockettrip-10818.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124444443753:android:c35091c920cefac55acef8",
+        "android_client_info": {
+          "package_name": "com.example.pocketTrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124444443753-h6cga9euemk8q1ld7d9dmkitmcvkpmjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQqt5H011M1fFjgjyw0tQl2HGLEqbt92E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124444443753-h6cga9euemk8q1ld7d9dmkitmcvkpmjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
