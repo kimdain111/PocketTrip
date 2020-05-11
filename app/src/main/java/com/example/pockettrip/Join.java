@@ -43,8 +43,8 @@ public class Join extends Activity {
             public void onClick(View v) {
 
                 myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.child(idText.getText().toString()).exists())
                         {
 
