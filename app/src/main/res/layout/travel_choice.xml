@@ -12,7 +12,6 @@
         android:src="@drawable/mainicon"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,21 +39,48 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="여행날짜"
+            android:text="출발날짜"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:layout_weight="1"
             android:layout_marginRight="20dp"
             android:gravity="center"/>
         <Button
-            android:id="@+id/datechoice"
+            android:id="@+id/firstDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:onClick="OnClickHandler"
             android:hint="날짜를 선택하세요"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도착날짜"
+            android:textSize="20dp"
+            android:fontFamily="@font/fontstyle"
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/lastDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:onClick="OnClickHandler2"
+            android:hint="날짜를 선택하세요"/>
+    </LinearLayout>
+
 </LinearLayout>

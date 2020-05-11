@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".TravelMain"></activity>
         <activity android:name=".Join"></activity>
+        <activity android:name=".TravelChoice"></activity>
     </application>
 
 </manifest>
