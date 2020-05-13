@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -37,30 +38,38 @@ public class Join extends Activity {
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                myRef.addValueEventListener(new ValueEventListener() {
+                if(idText.getText().toString().equals(""))
+                    Toast.makeText(Join.this, "아이디를 입력하세요", Toast.LENGTH_SHORT).show();
+                else if(pwText.getText().toString().equals(""))
+                    Toast.makeText(Join.this, "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                else if(nameText.getText().toString().equals(""))
+                    Toast.makeText(Join.this, "이름을 입력하세요", Toast.LENGTH_SHORT).show();
+                else{
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(idText.getText().toString()).exists())
-                        {
+                            if(dataSnapshot.child(idText.getText().toString()).exists()) //아이디 중복시
+                            {
+                                Toast.makeText(Join.this, "중복된 아이디입니다.", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                UserDTO user = new UserDTO(pwText.getText().toString(), nameText.getText().toString());
+                                myRef.child(idText.getText().toString()).setValue(user);
+                                finish();
+
+                                Intent myintent = new Intent(Join.this,MainActivity.class);
+                                startActivity(myintent);
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                        else
-                        {
-                            UserDTO user = new UserDTO(pwText.getText().toString(), nameText.getText().toString());
-                            myRef.child(idText.getText().toString()).setValue(user);
-                            finish();
-                        }
-
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-                Intent myintent = new Intent(Join.this,MainActivity.class);
-                startActivity(myintent);
-                finish();
+                    });
+                }
             }
         });
 
