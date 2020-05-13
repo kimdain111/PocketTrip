@@ -43,14 +43,14 @@
                 android:layout_width="30dp"
                 android:layout_height="60dp"
                 android:layout_weight="1"
-                android:src="@drawable/default_img"
+                android:src="@drawable/default_gallery"
                 android:background="#FFFFFF"
                 android:layout_margin="1dp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_weight="2"
-                android:text="스위스\nD-30"
+                android:text="한국\n2020.06.01 ~ 2020.06.04"
                 android:gravity="center"
                 android:background="#FFFFFF"
                 android:layout_margin="1dp"/>
