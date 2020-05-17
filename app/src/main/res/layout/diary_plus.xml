@@ -20,138 +20,191 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10pt"
             android:orientation="vertical">
+            <EditText
+                android:id="@+id/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="제목을 입력하세요."/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10pt"
-                android:orientation="horizontal">
-
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
                 <TextView
-                    android:id="@+id/weatherText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10pt"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:text="날씨"
-                    android:textColor="#000000"
-                    android:textSize="20dp"></TextView>
-                <ImageButton
-                    android:id="@+id/weatherBtn1"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/sun"></ImageButton>
-                <ImageButton
-                    android:id="@+id/weatherBtn2"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/rain"></ImageButton>
-                <ImageButton
-                    android:id="@+id/weatherBtn3"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/cloudy"></ImageButton>
-                <ImageButton
-                    android:id="@+id/weatherBtn4"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/lightning"></ImageButton>
+                    android:textSize="20sp"
+                    android:fontFamily="@font/fontstyle"></TextView>
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/weatherGroup"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/weatherBtn1"
+                        android:background="@drawable/radio_button_sunny"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/weatherBtn2"
+                        android:background="@drawable/radio_button_cloudy"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/weatherBtn3"
+                        android:background="@drawable/radio_button_rain"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/weatherBtn4"
+                        android:background="@drawable/radio_button_snow"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/weatherBtn5"
+                        android:background="@drawable/radio_button_lightning"
+                        android:button="@null"></RadioButton>
+                </RadioGroup>
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10pt"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10pt"
-                    android:textSize="20dp"
-                    android:textColor="#000000"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/fontstyle"
                     android:text="감정"
-                    android:id="@+id/emotionText"></TextView>
-                <ImageButton
-                    android:id="@+id/emotionBtn1"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/happy"></ImageButton>
-                <ImageButton
-                    android:id="@+id/emotionBtn2"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/angry"></ImageButton>
-                <ImageButton
-                    android:id="@+id/emotionBtn3"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="10pt"
-                    android:background="#00ff0000"
-                    android:src="@drawable/sad"></ImageButton>
+                    android:textSize="20sp"></TextView>
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/emotionGroup"
+                    android:orientation="horizontal">
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/emotion1"
+                        android:background="@drawable/radio_button_emotion1"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/emotion2"
+                        android:background="@drawable/radio_button_emotion2"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/emotion3"
+                        android:background="@drawable/radio_button_emotion3"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/emotion4"
+                        android:background="@drawable/radio_button_emotion4"
+                        android:button="@null"></RadioButton>
+                    <RadioButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10pt"
+                        android:id="@+id/emotion5"
+                        android:background="@drawable/radio_button_emotion5"
+                        android:button="@null"></RadioButton>
+                </RadioGroup>
+
             </LinearLayout>
-            <HorizontalScrollView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10pt"
-                    android:orientation="horizontal">
-                    <ImageButton
-                        android:id="@+id/imgBtn"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:background="#00ff0000"
-                        android:src="@drawable/camera"></ImageButton>
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="10pt"
-                        android:id="@+id/imgList"
-                        android:src="@drawable/travel">
-                    </ImageView>
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginLeft="10pt"
-                        android:id="@+id/imgList2"
-                        android:src="@drawable/travel">
-                    </ImageView>
-                </LinearLayout>
-            </HorizontalScrollView>
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_marginTop="10pt"
+                android:text="사진은 3개까지 선택 가능합니다."
+                android:fontFamily="@font/fontstyle"></TextView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/galleryBtn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/camera"
+                    android:scaleType="fitXY"></ImageButton>
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/imgList1"
+                    android:scaleType="fitXY"></ImageView>
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/imgList2"
+                    android:scaleType="fitXY"></ImageView>
+                <ImageView
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/imgList3"
+                    android:scaleType="fitXY"></ImageView>
+            </LinearLayout>
+            <EditText
+                android:id="@+id/contentText"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="10pt"
-                android:layout_marginRight="10pt"
-                android:textSize="18dp"
-                android:textColor="#000000"
-                android:text="자장면을 먹었다. 맛있었다. 짬뽕도 먹고 싶었다. 탕수육도 먹고 싶었다."
-                android:id="@+id/diaryText"></TextView>
-
-
-
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10pt"
+                android:hint="내용을 입력하세요."
+                android:background="@null"/>
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:id="@+id/okBtn"
+            android:text="확인"></Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelBtn"
+            android:text="취소"></Button>
+    </LinearLayout>
+
 </LinearLayout>

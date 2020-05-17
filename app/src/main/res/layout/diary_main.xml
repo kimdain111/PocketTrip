@@ -78,8 +78,7 @@
             android:background="#000000"></View>
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:scrollbars="none">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -89,39 +88,40 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="13dp"
-                    android:textColor="#000000"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="15dp"
                     android:text="2020. 05. 03."
-                    android:id="@+id/dateText"></TextView>
+                    android:id="@+id/dateText"
+                    android:fontFamily="@font/fontstyle"></TextView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="20dp"
-                    android:textColor="#000000"
-                    android:text="차이나타운을 갔다."
-                    android:id="@+id/titleText"></TextView>
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/imgList"
-                    android:src="@drawable/travel"></ImageView>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginBottom="10dp"
                     android:textSize="18dp"
-                    android:textColor="#000000"
+                    android:text="차이나타운에 갔다."
+                    android:id="@+id/titleText"
+                    android:fontFamily="@font/fontstyle"></TextView>
+                <ImageView
+                    android:layout_width="300dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="10dp"
+                    android:id="@+id/imgList"
+                    android:src="@drawable/travel"
+                    android:scaleType="fitXY"></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18dp"
                     android:text="자장면을 먹었다. 맛있었다. 짬뽕도 먹고 싶었다. 탕수육도 먹고 싶었다."
-                    android:id="@+id/diaryText"></TextView>
+                    android:id="@+id/contentText"
+                    android:fontFamily="@font/fontstyle"></TextView>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/addCash"
+        android:id="@+id/addDiary"
         android:src="@drawable/plus"
         android:scaleType="fitCenter"
         android:layout_gravity="center"

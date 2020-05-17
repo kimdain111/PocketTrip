@@ -21,6 +21,8 @@
         <activity android:name=".TravelMain"></activity>
         <activity android:name=".Join"></activity>
         <activity android:name=".TravelChoice"></activity>
+        <activity android:name=".DiaryMain"></activity>
+        <activity android:name=".DiaryPlus"></activity>
     </application>
 
 </manifest>
