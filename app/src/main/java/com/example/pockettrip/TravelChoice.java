@@ -33,7 +33,7 @@ public class TravelChoice extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.travel_choice); //activity_main.xml을 화면에 표시하라
+        setContentView(R.layout.travel_choice);
 
         this.InitializeView();
         this.InitializeListener();
