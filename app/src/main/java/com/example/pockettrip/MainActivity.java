@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,69 +14,101 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class MainActivity extends Activity {
+
+    private EditText idText;
+    private EditText pwText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText idText = (EditText)findViewById(R.id.idText);
-        final EditText pwText = (EditText)findViewById(R.id.pwText);
-        Button loginBtn = (Button)findViewById(R.id.loginBtn);
+        idText = (EditText)findViewById(R.id.idText);
+        pwText = (EditText)findViewById(R.id.pwText);
+    }
+    public void join(View view){
+        Intent myintent = new Intent(MainActivity.this,Join.class);
+        startActivity(myintent);
+        finish();
+    }
+    public void login(View view){
+        String id = idText.getText().toString();
+        String pw = pwText.getText().toString();
+        if(id.equals(""))
+            Toast.makeText(MainActivity.this, "아이디를 입력하세요", Toast.LENGTH_SHORT).show();
+        else if(pw.equals(""))
+            Toast.makeText(MainActivity.this, "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+        else{
+            LoginData task = new LoginData();
+            task.execute(id, pw);
+        }
+    }
+    class LoginData extends AsyncTask<String, Void, String> {
+        ProgressDialog loading;
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("user");
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(idText.getText().toString().equals(""))
-                    Toast.makeText(MainActivity.this, "아이디를 입력하세요", Toast.LENGTH_SHORT).show();
-                else if(pwText.getText().toString().equals(""))
-                    Toast.makeText(MainActivity.this, "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
-                else{
-                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.child(idText.getText().toString()).exists()){ //아이디 일치
-                                UserDTO user = dataSnapshot.child(idText.getText().toString()).getValue(UserDTO.class);
-                                if(user.getPw().equals(pwText.getText().toString())){ //비번 확인
-                                     Intent myintent = new Intent(MainActivity.this,TravelMain.class);
-                                     startActivity(myintent);
-                                     finish();
-                                }
-                                else
-                                    Toast.makeText(MainActivity.this, "비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(MainActivity.this, "회원이 아닙니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
-                }
-
-
-            }
-        });
-
-        Button joinBtn = (Button)findViewById(R.id.joinBtn);
-        joinBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myintent = new Intent(MainActivity.this,Join.class);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(MainActivity.this, "Please Wait", null, true, true);
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            loading.dismiss();
+            if(s.equals("ID does not exist"))
+                Toast.makeText(getApplicationContext(),"존재하지 않는 회원입니다.", Toast.LENGTH_SHORT).show();
+            else if(s.equals("PW is wrong"))
+                Toast.makeText(getApplicationContext(),"비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
+            else if(s.equals("login success")){
+                Toast.makeText(getApplicationContext(),"로그인 성공", Toast.LENGTH_SHORT).show();
+                Intent myintent = new Intent(MainActivity.this,TravelMain.class);
                 startActivity(myintent);
                 finish();
             }
-        });
+            else
+                Toast.makeText(getApplicationContext(),s, Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                String id = (String) params[0];
+                String pw = (String) params[1];
+
+                String link = "http://cs2020tv.dongyangmirae.kr/login.php";
+                //전송할 데이터는 "이름=값"형식, 여러개를 보낼떄는 사이에 &추가
+                //여기에 적어준 이름을 나중에 php에서 사용해 값을 얻음
+                String data = "id=" + id + "&pw=" + pw;
+
+                //HttpURLConnection 클래스를 사용하여 POST 방식으로 데이터를 전송
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                //수신되는 데이터 저장
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = reader.readLine())!= null){
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch(Exception e){
+                return new String("Exception:"+e.getMessage());
+            }
+        }
     }
 }
