@@ -37,46 +37,65 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-
-        <TextView
+        <View
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="15dp"
-            android:text="여행지"
-            android:textSize="30sp"
-            android:fontFamily="@font/fontstyle"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="아직 계획 중인 여행이 없어요"
-            android:textSize="20sp"
-            android:fontFamily="@font/fontstyle"
-            />
-
-        <TableLayout
+            android:layout_height="2dp"></View>
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <TableRow>
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/default_gallery"/>
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_weight="2"
-                    android:text="한국\n2020.06.01 ~ 2020.06.04"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:text="여행지"
+                    android:textSize="30sp"
+                    android:fontFamily="@font/fontstyle"/>
+
+                <TextView
+                    android:id="@+id/noTrip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="아직 계획 중인 여행이 없어요"
+                    android:textSize="20sp"
                     android:fontFamily="@font/fontstyle"
-                    android:textSize="20dp"/>
-            </TableRow>
-        </TableLayout>
+                    />
+
+                <TableLayout
+                    android:id="@+id/table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <TableRow>
+
+                        <ImageView
+                            android:id="@+id/travelImg"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/default_gallery"/>
+
+                        <TextView
+                            android:id="@+id/travelText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_weight="2"
+                            android:text="한국\n2020.06.01 ~ 2020.06.04"
+                            android:fontFamily="@font/fontstyle"
+                            android:textSize="20dp"
+                            android:layout_gravity="center"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
     <!--    <LinearLayout-->
     <!--        android:layout_width="match_parent"-->
@@ -90,6 +109,7 @@
         android:src="@drawable/plus"
         android:scaleType="fitCenter"
         android:layout_gravity="center"
-        android:background="#FFFFFF"/>
+        android:background="#FFFFFF"
+        android:onClick="addTravel"/>
     <!--    </LinearLayout>-->
 </LinearLayout>
