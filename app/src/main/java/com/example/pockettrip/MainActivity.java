@@ -68,8 +68,9 @@ public class MainActivity extends Activity {
                 Toast.makeText(getApplicationContext(),"비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
             else if(s.equals("login success")){
                 Toast.makeText(getApplicationContext(),"로그인 성공", Toast.LENGTH_SHORT).show();
-                Intent myintent = new Intent(MainActivity.this,TravelMain.class);
-                startActivity(myintent);
+                Intent intent = new Intent(MainActivity.this,TravelMain.class);
+                intent.putExtra("id", idText.getText().toString()); //id값 넘겨주기
+                startActivity(intent);
                 finish();
             }
             else
