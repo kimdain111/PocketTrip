@@ -39,7 +39,18 @@
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:background="#000000"></View>
-        <HorizontalScrollView
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/date_listview"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:scrollbars="horizontal"/>
+
+        </LinearLayout>
+        <!--<HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none">
@@ -71,7 +82,7 @@
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_margin="10dp"></Button>
             </LinearLayout>
-        </HorizontalScrollView>
+        </HorizontalScrollView>-->
         <View
             android:layout_width="wrap_content"
             android:layout_height="2dp"

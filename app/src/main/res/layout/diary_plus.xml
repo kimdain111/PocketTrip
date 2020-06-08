@@ -27,6 +27,28 @@
                 android:layout_marginLeft="10dp"
                 android:hint="제목을 입력하세요."/>
             <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10pt"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="날짜"
+                android:textSize="20sp"
+                android:fontFamily="@font/fontstyle"/>
+                <Button
+                    android:id="@+id/chDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="OnClickHandler"
+                    android:hint="날짜를 선택하세요"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10pt"
@@ -49,35 +71,36 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10pt"
-                        android:id="@+id/weatherBtn1"
+                        android:id="@+id/weather1"
+                        android:checked="true"
                         android:background="@drawable/radio_button_sunny"
                         android:button="@null"></RadioButton>
                     <RadioButton
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10pt"
-                        android:id="@+id/weatherBtn2"
+                        android:id="@+id/weather2"
                         android:background="@drawable/radio_button_cloudy"
                         android:button="@null"></RadioButton>
                     <RadioButton
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10pt"
-                        android:id="@+id/weatherBtn3"
+                        android:id="@+id/weather3"
                         android:background="@drawable/radio_button_rain"
                         android:button="@null"></RadioButton>
                     <RadioButton
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10pt"
-                        android:id="@+id/weatherBtn4"
+                        android:id="@+id/weather4"
                         android:background="@drawable/radio_button_snow"
                         android:button="@null"></RadioButton>
                     <RadioButton
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10pt"
-                        android:id="@+id/weatherBtn5"
+                        android:id="@+id/weather5"
                         android:background="@drawable/radio_button_lightning"
                         android:button="@null"></RadioButton>
                 </RadioGroup>
@@ -107,6 +130,7 @@
                         android:layout_height="40dp"
                         android:layout_marginLeft="10pt"
                         android:id="@+id/emotion1"
+                        android:checked="true"
                         android:background="@drawable/radio_button_emotion1"
                         android:button="@null"></RadioButton>
                     <RadioButton
@@ -199,12 +223,14 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:id="@+id/okBtn"
-            android:text="확인"></Button>
+            android:text="확인"
+            android:onClick="insert"></Button>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cancelBtn"
-            android:text="취소"></Button>
+            android:text="취소"
+            android:onClick="cancel"></Button>
     </LinearLayout>
 
 </LinearLayout>

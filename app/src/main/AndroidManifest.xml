@@ -14,16 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".TravelMain"></activity>
+        <activity android:name=".Join"></activity>
+        <activity android:name=".TravelChoice"></activity>
+        <activity android:name=".DiaryMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TravelMain"></activity>
-        <activity android:name=".Join"></activity>
-        <activity android:name=".TravelChoice"></activity>
-        <activity android:name=".DiaryMain"></activity>
         <activity android:name=".DiaryPlus"></activity>
+        <activity android:name=".Diary_Adapter"></activity>
+        <activity android:name=".Diary_Date_Decoration"></activity>
     </application>
 
 </manifest>
