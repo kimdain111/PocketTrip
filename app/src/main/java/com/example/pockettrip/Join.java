@@ -36,7 +36,6 @@ public class Join extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.join);
-        //Intent intent = getIntent();
 
         idText = (EditText) findViewById((R.id.idText));
         pwText = (EditText)findViewById((R.id.pwText));
