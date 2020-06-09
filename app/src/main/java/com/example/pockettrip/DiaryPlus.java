@@ -41,12 +41,15 @@ public class DiaryPlus extends Activity {
     ImageView imgList1, imgList2, imgList3;
     private EditText titleText, contentText;
     private RadioGroup weatherGroup, emotionGroup;
-    private String weather="weather1", emotion="emotion1";
+    private String weather="weather1", emotion="emotion1", no;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_plus);
+
+        Intent intent = getIntent();
+        no = intent.getExtras().getString("no");
 
         imgList1 = (ImageView)findViewById(R.id.imgList1);
         imgList2 = (ImageView)findViewById(R.id.imgList2);
@@ -108,7 +111,8 @@ public class DiaryPlus extends Activity {
             }
         });
 
-        ImageButton galleryBtn = (ImageButton)findViewById(R.id.galleryBtn); //사진 버튼
+        //사진 버튼
+        ImageButton galleryBtn = (ImageButton)findViewById(R.id.galleryBtn);
         galleryBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -129,7 +133,7 @@ public class DiaryPlus extends Activity {
         callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int datOfMonth) {
-                chDate.setText(year + "년"+(monthOfYear+1)+"월"+datOfMonth+"일");
+                chDate.setText(year + "-"+(monthOfYear+1)+"-"+datOfMonth);
             }
         };
     }
@@ -144,6 +148,7 @@ public class DiaryPlus extends Activity {
     //날짜버튼 눌렀을 때
     public void OnClickHandler(View view) {
         final Calendar c = Calendar.getInstance();
+
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -158,13 +163,15 @@ public class DiaryPlus extends Activity {
         String content = contentText.getText().toString();
 
         if(title.equals(""))
-            Toast.makeText(DiaryPlus.this, "제목을 입력하세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DiaryPlus.this, "제목을 입력해 주세요", Toast.LENGTH_SHORT).show();
         else if(content.equals(""))
-            Toast.makeText(DiaryPlus.this, "내용을 입력하세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DiaryPlus.this, "내용을 입력해 주세요", Toast.LENGTH_SHORT).show();
+        else if(chDate.getText().toString().equals(""))
+            Toast.makeText(DiaryPlus.this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
         else{
             //1.execute메소드를 통해 AsyncTask실행
             DiaryPlus.InsertData task = new DiaryPlus.InsertData();
-            task.execute(title, content, weather, emotion);
+            task.execute(no, title, content, weather, emotion,chDate.getText().toString());
         }
     }
 
@@ -185,6 +192,7 @@ public class DiaryPlus extends Activity {
             if(s.equals("diary plus success")){
                 Toast.makeText(getApplicationContext(),"다이어리가 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 Intent myintent = new Intent(DiaryPlus.this,DiaryMain.class);
+                myintent.putExtra("no", no);
                 startActivity(myintent);
                 finish();
             }
@@ -195,16 +203,21 @@ public class DiaryPlus extends Activity {
         @Override
         protected String doInBackground(String... params) {
             try{
-                String title = (String) params[0];
-                String content = (String) params[1];
-                String weather = (String) params[2];
-                String emotion = (String) params[3];
+                String no = (String) params[0];
+                String title = (String) params[1];
+                String content = (String) params[2];
+                String weather = (String) params[3];
+                String emotion = (String) params[4];
+                String date = (String) params[5];
 
-                String link = "http://cs2020tv.dongyangmirae.kr/diary_plus.php"; //=(String)params[0];
+                System.out.println("title = " + title);
+                System.out.println("content = " + content);
+
+                String link = "http://cs2020tv.dongyangmirae.kr/diary_plus.php";
                 //전송할 데이터는 "이름=값"형식, 여러개를 보낼시에는 사이에 &추가
                 //여기에 적어준 이름을 나중에 php에서 사용해 값을 얻음
-                String data = "title=" + title + "&content=" + content + "&weather=" + weather + "&emotion=" + emotion;
-
+                String data = "no=" + no + "&title=" + title + "&content=" + content + "&weather=" + weather + "&emotion=" + emotion + "&date=" + date;
+                System.out.println("post 전송");
                 //HttpURLConnection 클래스를 사용하여 POST 방식으로 데이터를 전송
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
