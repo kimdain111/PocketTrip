@@ -23,9 +23,7 @@
         <activity android:name=".Join"></activity>
         <activity android:name=".TravelChoice"></activity>
         <activity android:name=".TravelDetail"></activity>
-        <activity android:name=".DiaryMain">
-
-        </activity>
+        <activity android:name=".DiaryMain"></activity>
         <activity android:name=".DiaryPlus"></activity>
         <activity android:name=".Diary_Adapter"></activity>
         <activity android:name=".Diary_Date_Decoration"></activity>
