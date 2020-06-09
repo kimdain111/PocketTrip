@@ -2,14 +2,21 @@ package com.example.pockettrip;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,16 +27,22 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Calendar;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.content.CursorLoader;
+
+import com.google.android.gms.common.util.IOUtils;
 
 public class TravelChoice extends AppCompatActivity {
 
@@ -41,6 +54,9 @@ public class TravelChoice extends AppCompatActivity {
     String imgUrl;
     String nation;
     Uri photoUri;
+    String imgName;
+    boolean selectFlag = false; //갤러리에서 이미지 선택했는지 안했는지
+
     private DatePickerDialog.OnDateSetListener callbackMethod;
     private DatePickerDialog.OnDateSetListener callbackMethod2;
 
@@ -88,6 +104,7 @@ public class TravelChoice extends AppCompatActivity {
         travelImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectFlag = true;
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -96,55 +113,42 @@ public class TravelChoice extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE)
         {
             if(resultCode == RESULT_OK){
                 photoUri = data.getData();
-
                 try{
                     InputStream in = getContentResolver().openInputStream(photoUri);
-
                     Bitmap img = BitmapFactory.decodeStream(in);
                     in.close();
-
                     travelImg.setImageBitmap(img);
-                    //imgUrl = getRealPathFromURI(photoUri);
+
+                    //imgName = getFileName(photoUri);
+                    //imgUrl = getFilePathFromURI(TravelChoice.this, photoUri);
+                    //Toast.makeText(this, "경로는 : "+imgUrl, Toast.LENGTH_SHORT).show();
                 } catch(Exception e){
                 }
+
             }
             else if(resultCode == RESULT_CANCELED)
             {
+                selectFlag = false;
                 Toast.makeText(this, "사진선택취소", Toast.LENGTH_SHORT).show();
             }
         }
     }
-    /*private String getRealPathFromURI(Uri contentURI) {
-        String thePath = "no-path-found";
-        String[] filePathColumn = {MediaStore.Images.Media.DISPLAY_NAME};
-        Cursor cursor = getContentResolver().query(contentURI, filePathColumn, null, null, null);
-        if(cursor.moveToFirst()){
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            thePath = cursor.getString(columnIndex);
+   /* public static String getFileName(Uri uri) {
+        if (uri == null) return null;
+        String fileName = null;
+        String path = uri.getPath();
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            fileName = path.substring(cut + 1);
         }
-        cursor.close();
-        return  thePath;
-    }*/
-
-    //이미지경로 절대경로를 실제경로로 바꿔주는 함수
-    /*private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath(); }
-        else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
+        return fileName;
     }*/
 
     //날짜 선택
@@ -204,10 +208,11 @@ public class TravelChoice extends AppCompatActivity {
             Toast.makeText(this, "출발날짜를 선택해주세요", Toast.LENGTH_SHORT).show();
         else if(lastDate.getText().toString().equals(""))
             Toast.makeText(this,"도착날짜를 선택해주세요", Toast.LENGTH_SHORT).show();
+        else if(selectFlag == false)
+            Toast.makeText(this,"사진을 선택해주세요", Toast.LENGTH_SHORT).show();
         else{
             TravelData task = new TravelData();
-            //task.execute(id, nation, firstDate.getText().toString(), lastDate.getText().toString(), photoUri.toString());
-            task.execute(id, nation, firstDate.getText().toString(), lastDate.getText().toString(), imgUrl);
+            task.execute(id, nation, firstDate.getText().toString(), lastDate.getText().toString(), photoUri.toString());
         }
     }
     class TravelData extends AsyncTask<String, Void, String> {

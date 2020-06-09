@@ -3,6 +3,7 @@ package com.example.pockettrip;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -17,10 +18,15 @@ public class DiaryMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
 
+    String no;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_main);
+
+        Intent intent = getIntent();
+        no = intent.getExtras().getString("no");
 
         init();
 
