@@ -28,6 +28,9 @@
         <activity android:name=".DiaryPlus"></activity>
         <activity android:name=".Diary_Adapter"></activity>
         <activity android:name=".Diary_Date_Decoration"></activity>
+        <activity android:name=".PublicMoneyMain"></activity>
+        <activity android:name=".PublicMoneyPlus"></activity>
+
     </application>
 
 </manifest>
