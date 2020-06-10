@@ -64,10 +64,10 @@ public class TravelDetail extends Activity {
     }
     public void goMoney(View view)
     {
-        /*Intent myIntent = new Intent(TravelDetail.this, TravelChoice.class);
+        Intent myIntent = new Intent(TravelDetail.this, PublicMoneyMain.class);
         myIntent.putExtra("no", no);
         startActivity(myIntent);
-        finish();*/
+        finish();
     }
     public void goCheckList(View view)
     {

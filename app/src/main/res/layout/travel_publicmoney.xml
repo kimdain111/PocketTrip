@@ -39,90 +39,26 @@
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:background="#000000"></View>
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/date_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <Button
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/allBtn"
-                    android:text="all"
-                    android:background="#00ff0000"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_margin="10dp"></Button>
-                <Button
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/planBtn"
-                    android:text="plan"
-                    android:background="#00ff0000"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_margin="10dp"></Button>
-                <View
-                    android:layout_width="2dp"
-                    android:layout_height="30dp"
-                    android:background="#000000"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"></View>
-                <Button
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/numBtn"
-                    android:text="1"
-                    android:background="#00ff0000"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_margin="10dp"></Button>
-            </LinearLayout>
-        </HorizontalScrollView>
+                android:layout_height="50dp"
+                android:scrollbars="horizontal"/>
         <View
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:background="#000000"></View>
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scrollbars="none">
-            <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:id="@+id/cashIcon"
-                    android:background="@drawable/cash">
-                </ImageView>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="26dp"
-                        android:textColor="#000000"
-                        android:text="10,000원"
-                        android:id="@+id/moneyText"></TextView>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="20dp"
-                        android:text="용돈"
-                        android:id="@+id/memoText"></TextView>
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+                android:layout_weight="1"
+                android:id="@+id/publicListView"/>
+        </LinearLayout>
     </LinearLayout>
     <ImageButton
         android:layout_width="50dp"

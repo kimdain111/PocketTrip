@@ -9,7 +9,6 @@
         android:src="@drawable/mainicon"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,32 +18,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="분류"
+            android:text="날짜"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:layout_marginRight="20dp"
             android:gravity="center"/>
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/fontstyle"
-                android:textSize="20dp"
-                android:text="수입"
-                android:id="@+id/incomeBtn"></RadioButton>
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/fontstyle"
-                android:textSize="20dp"
-                android:text="지출"
-                android:id="@+id/expenseBtn"></RadioButton>
-        </RadioGroup>
+        <Button
+            android:id="@+id/cashDateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="OnClickHandler"
+            android:text="날짜" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -106,7 +91,8 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/payGroup">
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,7 +120,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="금액"
+            android:text="메모"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:layout_marginRight="20dp"
@@ -159,7 +145,8 @@
             android:layout_margin="10dp"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
-            android:text="등록" />
+            android:text="등록"
+            android:onClick="insert"/>
         <Button
             android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
@@ -167,8 +154,7 @@
             android:layout_margin="10dp"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
-            android:text="취소" />
+            android:text="취소"
+            android:onClick="cancel"/>
     </LinearLayout>
-
-
 </LinearLayout>
