@@ -41,6 +41,14 @@ public class Join extends Activity {
         pwText = (EditText)findViewById((R.id.pwText));
         nameText = (EditText)findViewById((R.id.nameText));
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent myintent = new Intent(Join.this,MainActivity.class);
+        startActivity(myintent);
+        finish();
+    }
+
     //취소버튼 눌렀을 때
     public void cancel(View view){
         Intent myintent = new Intent(Join.this,MainActivity.class);

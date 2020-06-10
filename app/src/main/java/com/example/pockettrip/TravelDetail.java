@@ -3,6 +3,8 @@ package com.example.pockettrip;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,14 +19,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class TravelDetail extends Activity {
     String no;
-
+    String id;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +38,19 @@ public class TravelDetail extends Activity {
 
         Intent myIntent = getIntent();
         no = myIntent.getExtras().getString("no");
-
+        id= myIntent.getExtras().getString("id");
         TravelDetailData task = new TravelDetailData();
         task.execute(no);
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent2 = new Intent(TravelDetail.this,TravelMain.class);
+        intent2.putExtra("id", id);
+        startActivity(intent2);
+        finish();
+    }
+
     public void goSchedule(View view)
     {
 
@@ -71,10 +86,36 @@ public class TravelDetail extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             loading.dismiss();
-
+            ImageView tImg = findViewById(R.id.travelimg);
             TextView text = findViewById(R.id.traveltext);
-            final String[] arr = s.split(",");
 
+            final String[] arr = s.split(",");
+            final Bitmap[] bitmap = new Bitmap[1];
+            Thread uThread = new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        URL url = new URL(arr[3]);
+                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+                        InputStream is = conn.getInputStream();
+                        bitmap[0] = BitmapFactory.decodeStream(is);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            uThread.start();
+            try{
+                uThread.join();
+                tImg.setImageBitmap(bitmap[0]);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
             text.setText(arr[0]+"\n"+arr[1]+"~"+arr[2]);
         }
 

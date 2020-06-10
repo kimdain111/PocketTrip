@@ -33,6 +33,12 @@ public class MainActivity extends Activity {
         idText = (EditText)findViewById(R.id.idText);
         pwText = (EditText)findViewById(R.id.pwText);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public void join(View view){
         Intent myintent = new Intent(MainActivity.this,Join.class);
         startActivity(myintent);

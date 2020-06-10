@@ -35,13 +35,14 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="35dp"
+        android:paddingBottom="20dp"
         >
         <TableRow
             android:background="#000000">
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="60dp"
+                android:id="@+id/travelimg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:src="@drawable/default_gallery"
                 android:background="#FFFFFF"
@@ -49,7 +50,7 @@
             <TextView
                 android:id="@+id/traveltext"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="80dp"
                 android:layout_weight="2"
                 android:text="나라\n출발날짜 ~ 도착날짜"
                 android:gravity="center"
