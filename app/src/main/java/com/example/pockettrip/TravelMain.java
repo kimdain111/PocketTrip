@@ -23,15 +23,20 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class TravelMain extends Activity {
     String id;
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,23 @@ public class TravelMain extends Activity {
         TravelMainData task = new TravelMainData();
         task.execute(id);
     }
+
+    @Override
+    public void onBackPressed() {
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
+        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            backPressedTime = tempTime;
+            Toast.makeText(getApplicationContext(), "한번 더 뒤로가기를 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void addTravel(View view)
     {
         Intent myIntent = new Intent(TravelMain.this, TravelChoice.class);
@@ -90,8 +112,38 @@ public class TravelMain extends Activity {
                     tr[cnt].setLayoutParams(lp);
 
                     ImageView tImg = new ImageView(TravelMain.this);
+                    final Bitmap[] bitmap = new Bitmap[1];
+                    final int finalI = i;
+                    Thread uThread = new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                URL url = new URL(arr[finalI +4]);
+                                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                conn.setDoInput(true);
+                                conn.connect();
+                                InputStream is = conn.getInputStream();
+                                bitmap[0] = BitmapFactory.decodeStream(is);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    uThread.start();
+                    try{
+                        uThread.join();
+                        tImg.setImageBitmap(bitmap[0]);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+
                     //Uri uri = Uri.parse(arr[i+4]);
-                    //tImg.setImageURI(uri);
+                    /*Uri uri = Uri.parse("http://cs2020tv.dongyangmirae.kr/img/IMG_20200609_144444.jpg");
+                    Log.d("myTag", String.valueOf(uri));*/
+                    //tImg.setImageURI(url);
                     /*try{
                         InputStream in = getContentResolver().openInputStream(uri);
 
@@ -101,15 +153,15 @@ public class TravelMain extends Activity {
                         tImg.setImageBitmap(img);
                     } catch(Exception e){
                     }*/
-                    tImg.setImageResource(R.drawable.default_gallery);
-                    tImg.setLayoutParams(new LayoutParams(250,250));
+                    //tImg.setImageResource(R.drawable.default_gallery);
+                    tImg.setLayoutParams(new LayoutParams(300,300));
                     tImg.setPadding(0,0,50,0);
 
                     TextView tText = new TextView(TravelMain.this);
                     tText.setText(arr[i+1]+"\n"+arr[i+2]+"~"+arr[i+3]);
                     tText.setTextSize(20);
                     tText.setGravity(Gravity.CENTER);
-                    tText.setPadding(0,40,0,0);
+                    tText.setPadding(0,60,0,0);
 
                     tr[cnt].addView(tImg);
                     tr[cnt].addView(tText);
@@ -128,6 +180,7 @@ public class TravelMain extends Activity {
                         @Override
                         public void onClick(View v) {
                             Intent intent3 = new Intent(TravelMain.this,TravelDetail.class);
+                            intent3.putExtra("id", id);
                             intent3.putExtra("no", no[finalJ]);
                             startActivity(intent3);
                             finish();

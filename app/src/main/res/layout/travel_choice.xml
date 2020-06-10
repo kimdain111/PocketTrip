@@ -100,8 +100,8 @@
             android:gravity="center"/>
         <ImageView
             android:id="@+id/travelImg"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:layout_weight="2"
             android:src="@drawable/default_gallery" />
     </LinearLayout>
