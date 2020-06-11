@@ -61,6 +61,7 @@ public class TravelDetail extends Activity {
     {
         Intent myIntent = new Intent(TravelDetail.this, DiaryMain.class);
         myIntent.putExtra("no", no);
+        myIntent.putExtra("id", id);
         startActivity(myIntent);
         finish();
     }

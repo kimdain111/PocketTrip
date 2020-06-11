@@ -96,7 +96,23 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="10pt"
                 android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/noTrip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="다이어리를 추가해 주세요."
+                    android:textSize="20sp"
+                    android:fontFamily="@font/fontstyle"
+                    />
+
+                <TableLayout
+                    android:id="@+id/table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ></TableLayout>
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -125,7 +141,7 @@
                     android:textSize="18dp"
                     android:text="자장면을 먹었다. 맛있었다. 짬뽕도 먹고 싶었다. 탕수육도 먹고 싶었다."
                     android:id="@+id/contentText"
-                    android:fontFamily="@font/fontstyle"></TextView>
+                    android:fontFamily="@font/fontstyle"></TextView>-->
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
@@ -137,5 +153,6 @@
         android:scaleType="fitCenter"
         android:layout_gravity="center"
         android:background="#00ff0000"
+        android:onClick="diaryPlus"
         style="?android:attr/borderlessButtonStyle"/>
 </LinearLayout>
