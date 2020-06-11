@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class PrivateMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no;
+    private String no, id;
 
      @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class PrivateMoneyMain extends Activity {
 
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
-
+        id= intent.getExtras().getString("id");
         PrivateMoneyMain.selectDate task = new PrivateMoneyMain.selectDate();
         task.execute(no);
 
@@ -43,6 +43,7 @@ public class PrivateMoneyMain extends Activity {
             public void onClick(View view) {
                 Intent myintent = new Intent(PrivateMoneyMain.this, PrivateMoneyPlus.class);
                 myintent.putExtra("no", no);
+                myintent.putExtra("id", id);
                 startActivity(myintent);
                 finish();
             }
@@ -53,6 +54,7 @@ public class PrivateMoneyMain extends Activity {
     public void onBackPressed() {
         Intent intent2 = new Intent(PrivateMoneyMain.this,TravelDetail.class);
         intent2.putExtra("no", no);
+        intent2.putExtra("id", id);
         startActivity(intent2);
         finish();
     }
@@ -87,7 +89,7 @@ public class PrivateMoneyMain extends Activity {
             try{
                 String no = (String) params[0];
 
-                String link = "http://cs2020tv.dongyangmirae.kr/diary_main.php";
+                String link = "http://cs2020tv.dongyangmirae.kr/dateList.php";
                 String data = "no=" + no;
 
                 URL url = new URL(link);

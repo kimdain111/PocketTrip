@@ -84,6 +84,7 @@ public class TravelDetail extends Activity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(TravelDetail.this, PublicMoneyMain.class);
                 myIntent.putExtra("no", no);
+                myIntent.putExtra("id", id);
                 startActivity(myIntent);
                 finish();
             }
@@ -93,6 +94,7 @@ public class TravelDetail extends Activity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(TravelDetail.this, PrivateMoneyMain.class);
                 myIntent.putExtra("no", no);
+                myIntent.putExtra("id", id);
                 startActivity(myIntent);
                 finish();
             }

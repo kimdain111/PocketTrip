@@ -9,6 +9,48 @@
         android:src="@drawable/mainicon"
         android:layout_gravity="center"
         android:layout_marginBottom="30dp"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#000000"></View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_margin="10dp">
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/typeGroup">
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/fontstyle"
+                android:textSize="20dp"
+                android:text="수입"
+                android:id="@+id/importBtn"
+                android:gravity="center"
+                android:textColor="#7D7DDA"></RadioButton>
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/fontstyle"
+                android:textSize="20dp"
+                android:text="지출"
+                android:id="@+id/spendBtn"
+                android:gravity="center"
+                android:textColor="#ED3E3E"
+                ></RadioButton>
+        </RadioGroup>
+    </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="#000000"></View>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="OnClickHandler"
-            android:text="날짜" />
+            android:hint="날짜를 선택하세요" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
