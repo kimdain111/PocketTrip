@@ -26,8 +26,9 @@ import java.util.Calendar;
 public class PrivateMoneyPlus extends Activity {
     EditText etcash, etcategory, etmemo;
     private int mYear, mMonth, mDay;
+    private RadioGroup typeGroup;
     private RadioGroup payGroup;
-    private String payment="cash", no, category="eat";
+    private String payment="cash", no, id, type="import", category="eat";
     private Button chDate;
     private DatePickerDialog.OnDateSetListener callbackMethod;
 
@@ -38,15 +39,30 @@ public class PrivateMoneyPlus extends Activity {
 
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
+        id = intent.getExtras().getString("id");
 
         etcash = (EditText)findViewById(R.id.numInput);
         etmemo = (EditText)findViewById(R.id.memoInput);
 
+        typeGroup = (RadioGroup)findViewById(R.id.typeGroup);
         payGroup = (RadioGroup)findViewById(R.id.payGroup);
 
         this.InitializeView();
         this.InitializeListener();
 
+        typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId){
+                    case R.id.importBtn:
+                        type = "import";
+                        break;
+                    case R.id.spendBtn:
+                        type = "spend";
+                        break;
+                }
+            }
+        });
         payGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -78,12 +94,15 @@ public class PrivateMoneyPlus extends Activity {
     public void onBackPressed() {
         Intent myintent = new Intent(PrivateMoneyPlus.this,PrivateMoneyMain.class);
         myintent.putExtra("no",no);
+        myintent.putExtra("id",id);
         startActivity(myintent);
         finish();
     }
 
     public void cancel(View view){
         Intent myintent = new Intent(PrivateMoneyPlus.this,PrivateMoneyMain.class);
+        myintent.putExtra("no",no);
+        myintent.putExtra("id",id);
         startActivity(myintent);
         finish();
     }
@@ -101,12 +120,13 @@ public class PrivateMoneyPlus extends Activity {
     public void insert(View view){
         String cash = etcash.getText().toString();
         String memo = etmemo.getText().toString();
-
         if(cash.equals(""))
             Toast.makeText(PrivateMoneyPlus.this, "금액을 입력하세요", Toast.LENGTH_SHORT).show();
+        else if(chDate.getText().toString().equals(""))
+            Toast.makeText(PrivateMoneyPlus.this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
         else{
             PrivateMoneyPlus.InsertData task = new PrivateMoneyPlus.InsertData();
-            task.execute(no, cash, category, payment, memo, chDate.getText().toString());
+            task.execute(no, cash, category, payment, memo, chDate.getText().toString(), type);
         }
     }
 
@@ -126,6 +146,7 @@ public class PrivateMoneyPlus extends Activity {
                 Toast.makeText(getApplicationContext(),"금액이 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 Intent myintent = new Intent(PrivateMoneyPlus.this,PublicMoneyMain.class);
                 myintent.putExtra("no",no);
+                myintent.putExtra("id",id);
                 startActivity(myintent);
                 finish();
             }
@@ -142,9 +163,10 @@ public class PrivateMoneyPlus extends Activity {
                 String payment = (String) params[3];
                 String memo = (String) params[4];
                 String date = (String) params[5];
+                String type = (String) params[6];
 
                 String link = "http://cs2020tv.dongyangmirae.kr/pr_Spend.php";
-                String data = "no=" + no + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date;
+                String data = "no=" + no + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date + "&type=" + type;
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();

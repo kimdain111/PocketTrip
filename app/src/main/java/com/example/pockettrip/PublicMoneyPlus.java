@@ -26,8 +26,9 @@ public class PublicMoneyPlus extends Activity {
 
     EditText etcash, etcategory, etmemo;
     private int mYear, mMonth, mDay;
+    private RadioGroup typeGroup;
     private RadioGroup payGroup;
-    private String payment="cash", no, category="eat";
+    private String payment="cash", no, id, category="eat", type="import";
     private Button chDate;
     private DatePickerDialog.OnDateSetListener callbackMethod;
 
@@ -38,15 +39,30 @@ public class PublicMoneyPlus extends Activity {
 
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
+        id = intent.getExtras().getString("id");
 
         etcash = (EditText)findViewById(R.id.numInput);
         etmemo = (EditText)findViewById(R.id.memoInput);
 
+        typeGroup = (RadioGroup)findViewById(R.id.typeGroup);
         payGroup = (RadioGroup)findViewById(R.id.payGroup);
 
         this.InitializeView();
         this.InitializeListener();
 
+        typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId){
+                    case R.id.importBtn:
+                        type = "import";
+                        break;
+                    case R.id.spendBtn:
+                        type = "spend";
+                        break;
+                }
+            }
+        });
         payGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -71,13 +87,24 @@ public class PublicMoneyPlus extends Activity {
         callbackMethod = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int datOfMonth) {
-                chDate.setText(year + "년"+(monthOfYear+1)+"월"+datOfMonth+"일");
+                chDate.setText(year + "-"+(monthOfYear+1)+"-"+datOfMonth);
             }
         };
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent myintent = new Intent(PublicMoneyPlus.this,PublicMoneyMain.class);
+        myintent.putExtra("no",no);
+        myintent.putExtra("id",id);
+        startActivity(myintent);
+        finish();
+    }
+
     public void cancel(View view){
         Intent myintent = new Intent(PublicMoneyPlus.this,PublicMoneyMain.class);
+        myintent.putExtra("no",no);
+        myintent.putExtra("id",id);
         startActivity(myintent);
         finish();
     }
@@ -98,10 +125,12 @@ public class PublicMoneyPlus extends Activity {
 
         if(cash.equals(""))
             Toast.makeText(PublicMoneyPlus.this, "금액을 입력하세요", Toast.LENGTH_SHORT).show();
+        else if(chDate.getText().toString().equals(""))
+            Toast.makeText(PublicMoneyPlus.this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
         else{
             //1.execute메소드를 통해 AsyncTask실행
             PublicMoneyPlus.InsertData task = new PublicMoneyPlus.InsertData();
-            task.execute(no, cash, category, payment, memo, chDate.getText().toString());
+            task.execute(no, cash, category, payment, memo, chDate.getText().toString(), type);
         }
     }
 
@@ -123,6 +152,7 @@ public class PublicMoneyPlus extends Activity {
                 Toast.makeText(getApplicationContext(),"금액이 추가되었습니다.", Toast.LENGTH_SHORT).show();
                 Intent myintent = new Intent(PublicMoneyPlus.this,PublicMoneyMain.class);
                 myintent.putExtra("no",no);
+                myintent.putExtra("id",id);
                 startActivity(myintent);
                 finish();
             }
@@ -139,11 +169,12 @@ public class PublicMoneyPlus extends Activity {
                 String payment = (String) params[3];
                 String memo = (String) params[4];
                 String date = (String) params[5];
+                String type = (String) params[6];
 
                 String link = "http://cs2020tv.dongyangmirae.kr/pu_spend.php"; //=(String)params[0];
                 //전송할 데이터는 "이름=값"형식, 여러개를 보낼시에는 사이에 &추가
                 //여기에 적어준 이름을 나중에 php에서 사용해 값을 얻음
-                String data = "no=" + no + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date;
+                String data = "no=" + no + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date+ "&type=" + type;
 
                 //HttpURLConnection 클래스를 사용하여 POST 방식으로 데이터를 전송
                 URL url = new URL(link);

@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PublicMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no;
+    private String no, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class PublicMoneyMain extends Activity {
 
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
+        id= intent.getExtras().getString("id");
 
         PublicMoneyMain.selectDate task = new PublicMoneyMain.selectDate();
         task.execute(no);
@@ -42,6 +43,7 @@ public class PublicMoneyMain extends Activity {
             public void onClick(View view) {
                 Intent myintent = new Intent(PublicMoneyMain.this, PublicMoneyPlus.class);
                 myintent.putExtra("no", no);
+                myintent.putExtra("id", id);
                 startActivity(myintent);
                 finish();
             }
@@ -52,6 +54,7 @@ public class PublicMoneyMain extends Activity {
     public void onBackPressed() {
         Intent intent2 = new Intent(PublicMoneyMain.this,TravelDetail.class);
         intent2.putExtra("no", no);
+        intent2.putExtra("id", id);
         startActivity(intent2);
         finish();
     }
@@ -88,7 +91,7 @@ public class PublicMoneyMain extends Activity {
             try{
                 String no = (String) params[0];
 
-                String link = "http://cs2020tv.dongyangmirae.kr/diary_main.php";
+                String link = "http://cs2020tv.dongyangmirae.kr/dateList.php";
                 //전송할 데이터는 "이름=값"형식, 여러개를 보낼시에는 사이에 &추가
                 //여기에 적어준 이름을 나중에 php에서 사용해 값을 얻음
                 String data = "no=" + no;
