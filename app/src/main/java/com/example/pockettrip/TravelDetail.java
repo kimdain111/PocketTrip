@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -64,10 +66,47 @@ public class TravelDetail extends Activity {
     }
     public void goMoney(View view)
     {
-        Intent myIntent = new Intent(TravelDetail.this, PublicMoneyMain.class);
-        myIntent.putExtra("no", no);
-        startActivity(myIntent);
-        finish();
+        final LinearLayout layout1 = findViewById(R.id.layout1);
+        final TableLayout layout2 = findViewById(R.id.layout2);
+        final TableLayout layout3 = findViewById(R.id.layout3);
+        final LinearLayout layout4 = findViewById(R.id.layout4);
+        ImageButton publicbtn = findViewById(R.id.publicbtn);
+        ImageButton privatebtn = findViewById(R.id.privatebtn);
+        ImageButton xbtn = findViewById(R.id.xbtn);
+
+        layout1.setVisibility(View.INVISIBLE);
+        layout2.setVisibility(View.INVISIBLE);
+        layout3.setVisibility(View.INVISIBLE);
+        layout4.setVisibility(View.VISIBLE);
+
+        publicbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(TravelDetail.this, PublicMoneyMain.class);
+                myIntent.putExtra("no", no);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+        privatebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(TravelDetail.this, PrivateMoneyMain.class);
+                myIntent.putExtra("no", no);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+        xbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layout1.setVisibility(View.VISIBLE);
+                layout2.setVisibility(View.VISIBLE);
+                layout3.setVisibility(View.VISIBLE);
+                layout4.setVisibility(View.GONE);
+            }
+        });
+
     }
     public void goCheckList(View view)
     {

@@ -30,6 +30,8 @@
         <activity android:name=".Diary_Date_Decoration"></activity>
         <activity android:name=".PublicMoneyMain"></activity>
         <activity android:name=".PublicMoneyPlus"></activity>
+        <activity android:name=".PrivateMoneyMain"></activity>
+        <activity android:name=".PrivateMoneyPlus"></activity>
 
     </application>
 
