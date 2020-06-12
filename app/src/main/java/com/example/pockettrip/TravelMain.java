@@ -75,6 +75,7 @@ public class TravelMain extends Activity {
         startActivity(myIntent);
         finish();
     }
+
     class TravelMainData extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
