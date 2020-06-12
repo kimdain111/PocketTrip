@@ -33,6 +33,9 @@ import java.net.URLConnection;
 public class TravelDetail extends Activity {
     String no;
     String id;
+
+    String first, last;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,8 @@ public class TravelDetail extends Activity {
                 Intent myIntent = new Intent(TravelDetail.this, PublicMoneyMain.class);
                 myIntent.putExtra("no", no);
                 myIntent.putExtra("id", id);
+                myIntent.putExtra("first", first);
+                myIntent.putExtra("last", last);
                 startActivity(myIntent);
                 finish();
             }
@@ -158,6 +163,9 @@ public class TravelDetail extends Activity {
                 e.printStackTrace();
             }
             text.setText(arr[0]+"\n"+arr[1]+"~"+arr[2]);
+
+            first = arr[1];
+            last = arr[2];
         }
 
 

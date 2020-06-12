@@ -6,10 +6,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -25,12 +29,16 @@ import androidx.annotation.Nullable;
 public class PublicMoneyPlus extends Activity {
 
     EditText etcash, etcategory, etmemo;
-    private int mYear, mMonth, mDay;
+    private int mYear, mMonth, mDay , mYear2, mMonth2, mDay2;
     private RadioGroup typeGroup;
     private RadioGroup payGroup;
-    private String payment="cash", no, id, category="eat", type="import";
-    private Button chDate;
+    private String payment="cash", no, id, category="식비", type="import", first, last;
+    private Button chDate, cateBtn;
     private DatePickerDialog.OnDateSetListener callbackMethod;
+    private String[] arr, arr2;
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +48,10 @@ public class PublicMoneyPlus extends Activity {
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
         id = intent.getExtras().getString("id");
+        first = intent.getExtras().getString("first");
+        last = intent.getExtras().getString("last");
+        arr = first.split("-");
+        arr2 = last.split("-");
 
         etcash = (EditText)findViewById(R.id.numInput);
         etmemo = (EditText)findViewById(R.id.memoInput);
@@ -77,10 +89,60 @@ public class PublicMoneyPlus extends Activity {
             }
         });
 
+        cateBtn = (Button) findViewById(R.id.categoryBtn);
+        cateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PublicMoneyPlus.this, SpendCategory.class);
+                intent.putExtra("data", "Spend Category");
+                startActivityForResult(intent, 1);
+            }
+        });
+
+    }
+
+    /*@Override
+    public void onBackPressed() {
+        Intent intent2 = new Intent(PublicMoneyPlus.this, PublicMoneyMain.class);
+        intent2.putExtra("id", id);
+        startActivity(intent2);
+        finish();
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                String result = data.getStringExtra("result");
+                cateBtn.setText(result);
+                category = result;
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inf = getMenuInflater();
+        inf.inflate(R.menu.mymenu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_settings:
+            case R.id.traffic:
+                cateBtn.setText(item.getTitle());
+                return true;
+        }
+        return false;
     }
 
     public void InitializeView(){
         chDate = (Button)findViewById(R.id.cashDateBtn);
+        chDate.setText(arr[0] + "-"+arr[1]+"-"+arr[2]);
     }
 
     public void InitializeListener(){
@@ -110,12 +172,25 @@ public class PublicMoneyPlus extends Activity {
     }
 
     public void OnClickHandler(View view) {
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
+        final Calendar minDate = Calendar.getInstance();
+        final Calendar maxDate = Calendar.getInstance();
 
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth , mDay);
+        mYear = Integer.parseInt(arr[0]);
+        mMonth = Integer.parseInt(arr[1]);
+        mDay = Integer.parseInt(arr[2]);
+
+        mYear2 = Integer.parseInt(arr2[0]);
+        mMonth2 = Integer.parseInt(arr2[1]);
+        mDay2 = Integer.parseInt(arr2[2]);
+
+        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth-1 , mDay);
+
+        minDate.set(mYear, mMonth-1, mDay);
+        dialog.getDatePicker().setMinDate(minDate.getTime().getTime());
+
+        maxDate.set(mYear2, mMonth2-1, mDay2);
+        dialog.getDatePicker().setMaxDate(maxDate.getTime().getTime());
+
         dialog.show();
     }
 
