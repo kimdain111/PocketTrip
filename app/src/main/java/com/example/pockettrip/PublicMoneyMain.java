@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PublicMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no, id;
+    private String no, id, first, last;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,8 @@ public class PublicMoneyMain extends Activity {
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
         id= intent.getExtras().getString("id");
+        first = intent.getExtras().getString("first");
+        last = intent.getExtras().getString("last");
 
         PublicMoneyMain.selectDate task = new PublicMoneyMain.selectDate();
         task.execute(no);
@@ -44,6 +46,8 @@ public class PublicMoneyMain extends Activity {
                 Intent myintent = new Intent(PublicMoneyMain.this, PublicMoneyPlus.class);
                 myintent.putExtra("no", no);
                 myintent.putExtra("id", id);
+                myintent.putExtra("first", first);
+                myintent.putExtra("last", last);
                 startActivity(myintent);
                 finish();
             }
