@@ -13,15 +13,16 @@ import java.util.ArrayList;
 public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder> {
 
     private ArrayList<String> itemList;
+    private ArrayList<String> itemPrintList;
     private Context context;
     private View.OnClickListener onClickItem;
 
-    public Diary_Adapter(Context context, ArrayList<String> itemList, View.OnClickListener onClickItem) {
+    public Diary_Adapter(Context context, ArrayList<String> itemList,ArrayList<String> itemPrintList, View.OnClickListener onClickItem) {
         this.context = context;
         this.itemList = itemList;
+        this.itemPrintList = itemPrintList;
         this.onClickItem = onClickItem;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -36,8 +37,9 @@ public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String item = itemList.get(position);
+        String printItem = itemPrintList.get(position);
 
-        holder.textview.setText(item);
+        holder.textview.setText(printItem);
         holder.textview.setTag(item);
         holder.textview.setOnClickListener(onClickItem);
     }

@@ -41,13 +41,22 @@
                 android:text="날짜"
                 android:textSize="20sp"
                 android:fontFamily="@font/fontstyle"/>
-                <Button
+                <TextView
+                    android:id="@+id/chDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:text="yyyy-mm-dd"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/fontstyle"/>
+                <!--<Button
                     android:id="@+id/chDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="OnClickHandler"
-                    android:hint="날짜를 선택하세요"/>
+                    android:hint="날짜를 선택하세요"/>-->
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -175,21 +184,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-                <ImageButton
+                <!--<ImageButton
                     android:id="@+id/galleryBtn"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginLeft="20dp"
                     android:src="@drawable/camera"
-                    android:scaleType="fitXY"></ImageButton>
+                    android:scaleType="fitXY"></ImageButton>-->
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginLeft="20dp"
                     android:id="@+id/imgList1"
-                    android:scaleType="fitXY"></ImageView>
-                <ImageView
+                    android:scaleType="fitXY"
+                    android:src="@drawable/camera"></ImageView>
+                <!--<ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginLeft="20dp"
@@ -200,7 +210,7 @@
                     android:layout_height="70dp"
                     android:layout_marginLeft="20dp"
                     android:id="@+id/imgList3"
-                    android:scaleType="fitXY"></ImageView>
+                    android:scaleType="fitXY"></ImageView>-->
             </LinearLayout>
             <EditText
                 android:id="@+id/contentText"

@@ -3,11 +3,18 @@ package com.example.pockettrip;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,20 +22,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Calendar;
+import java.sql.Date;
+import java.util.GregorianCalendar;
 
 public class DiaryMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no;
+    private String no, id, selectDate = "A";
+    ImageButton addDiaryBtn;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,31 +52,55 @@ public class DiaryMain extends Activity {
 
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
+        id = intent.getExtras().getString("id");
 
         //1.execute메소드를 통해 AsyncTask실행
-        DiaryMain.selectDate task = new DiaryMain.selectDate();
+        //상단 날짜 리스트뷰 띄우기
+        selectDate task = new selectDate();
         task.execute(no);
 
-        ImageButton addDiaryBtn = (ImageButton)findViewById(R.id.addDiary); //다이어리 추가 버튼
-        addDiaryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myintent = new Intent(DiaryMain.this,DiaryPlus.class);
-                myintent.putExtra("no", no);
-                startActivity(myintent);
-                finish();
-            }
-        });
+        //다이어리 조회
+        DiaryMainData task2 = new DiaryMainData();
+        task2.execute(no, selectDate);
+
+        addDiaryBtn = (ImageButton)findViewById(R.id.addDiary); //다이어리 추가 버튼
+        addDiaryBtn.setVisibility(View.GONE);
+
     }
 
-    private View.OnClickListener onClickItem = new View.OnClickListener() { //날짜 선택
+    @Override
+    public void onBackPressed() { //뒤로가기
+        Intent intent = new Intent(DiaryMain.this,TravelDetail.class);
+        intent.putExtra("id", id);
+        intent.putExtra("no", no);
+        startActivity(intent);
+        finish();
+    }
+
+    public void diaryPlus(View view) //다이어리 추가 버튼
+    {
+        Intent myIntent = new Intent(DiaryMain.this, DiaryPlus.class);
+        myIntent.putExtra("id", id);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("selectDate", selectDate);
+        startActivity(myIntent);
+        finish();
+    }
+
+    //날짜 버튼 클릭
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String str = (String) v.getTag();
-            Toast.makeText(DiaryMain.this, str, Toast.LENGTH_SHORT).show();
+            selectDate = (String) v.getTag();
+            if(selectDate.equals("A")) addDiaryBtn.setVisibility(View.GONE);
+            else addDiaryBtn.setVisibility(View.VISIBLE);
+
+            DiaryMainData task3 = new DiaryMainData();
+            task3.execute(no, selectDate);
         }
     };
 
+    //여행기간 날짜 조회
     class selectDate extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -86,7 +125,7 @@ public class DiaryMain extends Activity {
             try{
                 String no = (String) params[0];
 
-                String link = "http://cs2020tv.dongyangmirae.kr/diary_main.php";
+                String link = "http://cs2020tv.dongyangmirae.kr/dateList.php";
                 //전송할 데이터는 "이름=값"형식, 여러개를 보낼시에는 사이에 &추가
                 //여기에 적어준 이름을 나중에 php에서 사용해 값을 얻음
                 String data = "no=" + no;
@@ -117,27 +156,194 @@ public class DiaryMain extends Activity {
         }
     }
 
-    private void init(String d_date, String a_date) { //상단 리스트뷰에 날짜 보여주기
-        System.out.println("###init들어옴###");
+    //상단 리스트뷰에 날짜 보여주기
+    private void init(String d, String a) {
         listview = findViewById(R.id.date_listview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
-        //마지막 2글자 추출(day, 일)
-        String d_day = d_date.substring(d_date.length()-2, d_date.length());
-        String a_day = a_date.substring(a_date.length()-2, a_date.length());
+
+        //년 추출
+        int d_year = Integer.parseInt(d.substring(0,4));
+        int a_year = Integer.parseInt(a.substring(0,4));
+
+        //월 추출
+        int d_month = Integer.parseInt(d.substring(5,7));
+        int a_month = Integer.parseInt(a.substring(5,7));
+
+        //일 추출
+        int d_day = Integer.parseInt(d.substring(d.length()-2));
+        int a_day = Integer.parseInt(a.substring(a.length()-2));
+
+        Calendar dCal = new GregorianCalendar(d_year, d_month-1, d_day); //출발
+        Calendar aCal = new GregorianCalendar(a_year, a_month-1, a_day); //도착
+        //말일 날짜 구하기
+        int maxDay = dCal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        //두 날짜의 차이 구하기
+        long diffSec = (aCal.getTimeInMillis() - dCal.getTimeInMillis())/1000;
+        long diffDays = diffSec / (24*60*60);
 
         ArrayList<String> itemList = new ArrayList<>();
+        ArrayList<String> itemPrintList = new ArrayList<>();
         itemList.add("A");
-        for(int i=Integer.parseInt(d_day); i<=Integer.parseInt(a_day);i++){
-            String day = String.valueOf(i);
-            itemList.add(day);
+        itemPrintList.add("A");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date;
+
+        while(diffDays >= 0){
+            date = sdf.format(dCal.getTime());
+            String day = date.substring(date.length()-2);
+            if(Integer.parseInt(day) > maxDay){ //말일을 넘어가면
+                dCal.add(Calendar.MONTH, 1); //월+1
+                dCal.set(Calendar.DAY_OF_MONTH, 1); //1일로 설정
+                date = sdf.format(dCal.getTime());
+            }
+
+            itemList.add(date);
+            itemPrintList.add(date.substring(date.length()-2));
+            dCal.add(Calendar.DAY_OF_MONTH, 1);
+            diffDays--;
         }
 
-        adapter = new Diary_Adapter(this, itemList, onClickItem);
+        adapter = new Diary_Adapter(this, itemList,itemPrintList, onClickItem);
         listview.setAdapter(adapter);
 
         Diary_Date_Decoration decoration = new Diary_Date_Decoration();
         listview.addItemDecoration(decoration);
-        System.out.println("###init끝남###");
+    }
+
+    //해당 날짜의 다이어리 조회
+    class DiaryMainData extends AsyncTask<String, Void, String> {
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(DiaryMain.this, "Please Wait", null, true, true);
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            loading.dismiss();
+
+            final String[] arr = s.split(",");
+            final String[] no = new String[arr.length/6]; //6컬럼이 한묶음
+
+            TableLayout table = findViewById(R.id.table); //다이어리 테이블
+            table.removeAllViews();
+            TextView text = findViewById(R.id.noTrip); //다이어리 없음 텍스트
+            final TableRow tr[] = new TableRow[arr.length/6];
+
+            if(s.equals("no data")){
+                text.setVisibility(View.VISIBLE);
+                table.setVisibility(View.GONE);
+            }
+            else{
+                text.setVisibility(View.GONE);
+                table.setVisibility(View.VISIBLE);
+
+                int cnt = 0;
+
+                for(int i=0; i<arr.length; i+=6)
+                {
+                    tr[cnt] = new TableRow(DiaryMain.this);
+                    TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
+                    tr[cnt].setLayoutParams(lp);
+
+                    ImageView tImg = new ImageView(DiaryMain.this);
+                    final Bitmap[] bitmap = new Bitmap[1];
+                    final int finalI = i;
+                    Thread uThread = new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                URL url = new URL(arr[finalI +4]);
+                                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                                conn.setDoInput(true);
+                                conn.connect();
+                                InputStream is = conn.getInputStream();
+                                bitmap[0] = BitmapFactory.decodeStream(is);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    uThread.start();
+                    try{
+                        uThread.join();
+                        tImg.setImageBitmap(bitmap[0]);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
+                    tImg.setLayoutParams(new TableRow.LayoutParams(300,400));
+                    tImg.setPadding(0,0,50,0);
+
+                    TextView tText = new TextView(DiaryMain.this);
+                    tText.setText(arr[i]+"\n"+arr[i+1]+"\n"+arr[i+2]+"\n"+arr[i+3]+"\n"+arr[i+5]);
+                    tText.setTextSize(20);
+                    tText.setGravity(Gravity.CENTER);
+                    tText.setPadding(0,60,0,0);
+
+                    tr[cnt].addView(tImg);
+                    tr[cnt].addView(tText);
+                    tr[cnt].setPadding(0,5,0,20);
+                    tr[cnt].setClickable(true);
+
+                    no[cnt] = arr[i];
+                    table.addView(tr[cnt],lp);
+                    cnt++;
+                }
+
+                //다이어리 클릭했을 때
+                /*for(int j=0; j<tr.length; j++)
+                {
+                    final int finalJ = j;
+                    tr[j].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent3 = new Intent(DiaryMain.this,TravelDetail.class);
+                            //intent3.putExtra("id", id);
+                            intent3.putExtra("no", no[finalJ]);
+                            startActivity(intent3);
+                            finish();
+                        }
+                    });
+                }*/
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                String no = (String) params[0];
+                String date = (String) params[1];
+
+                String link = "http://cs2020tv.dongyangmirae.kr/diary_main.php";
+                String data = "no=" + no + "&date=" + date;
+
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = reader.readLine())!= null){
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch(Exception e){
+                return new String("Exception:"+e.getMessage());
+            }
+        }
     }
 }

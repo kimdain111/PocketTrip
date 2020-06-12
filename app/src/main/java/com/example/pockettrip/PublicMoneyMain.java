@@ -142,7 +142,7 @@ public class PublicMoneyMain extends Activity {
             itemList.add(day);
         }
 
-        adapter = new Diary_Adapter(this, itemList, onClickItem);
+        adapter = new Diary_Adapter(this, itemList,itemList, onClickItem);
         listview.setAdapter(adapter);
 
         Diary_Date_Decoration decoration = new Diary_Date_Decoration();
