@@ -6,11 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,6 +27,10 @@ public class MainActivity extends Activity {
 
     private EditText idText;
     private EditText pwText;
+    CheckBox idCheckbox;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Boolean loginCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,39 @@ public class MainActivity extends Activity {
 
         idText = (EditText)findViewById(R.id.idText);
         pwText = (EditText)findViewById(R.id.pwText);
+        idCheckbox = (CheckBox)findViewById(R.id.idCheckbox);
+
+        pref = getSharedPreferences("autologin", MODE_PRIVATE);
+        editor = pref.edit();
+
+        if(pref.getBoolean("autoLoginOn", false)) //껐다켰도 자동로그인 유지
+        {
+            Intent intent = new Intent(MainActivity.this,TravelMain.class);
+            intent.putExtra("id", pref.getString("id",null));
+            startActivity(intent);
+            finish();
+        }
+        if(idCheckbox.isChecked())
+            loginCheck = true;
+        else{
+            loginCheck = false;
+            editor.clear();
+            editor.commit();
+        }
+        idCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    loginCheck = true;
+                }
+                else{
+                    loginCheck = false;
+                    editor.clear();
+                    editor.commit();
+                }
+            }
+        });
     }
 
     @Override
@@ -56,6 +96,7 @@ public class MainActivity extends Activity {
             task.execute(id, pw);
         }
     }
+
     class LoginData extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -73,6 +114,12 @@ public class MainActivity extends Activity {
             else if(s.equals("PW is wrong"))
                 Toast.makeText(getApplicationContext(),"비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
             else if(s.equals("login success")){
+                if(loginCheck){//자동로그인
+                    editor.putString("id", idText.getText().toString());
+                    editor.putString("pw", pwText.getText().toString());
+                    editor.putBoolean("autoLoginOn", true);
+                    editor.commit();
+                }
                 Toast.makeText(getApplicationContext(),"로그인 성공", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this,TravelMain.class);
                 intent.putExtra("id", idText.getText().toString()); //id값 넘겨주기
