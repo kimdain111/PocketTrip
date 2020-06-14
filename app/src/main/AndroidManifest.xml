@@ -32,7 +32,10 @@
         <activity android:name=".PublicMoneyPlus"></activity>
         <activity android:name=".PrivateMoneyMain"></activity>
         <activity android:name=".PrivateMoneyPlus"></activity>
+        <activity android:name=".Cash_Adapter"></activity>
+        <activity android:name=".Cash_Date_Decoration"></activity>
         <activity android:name=".SpendCategory" android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".PlanSpendCategory" android:theme="@android:style/Theme.Dialog"></activity>
 
     </application>
 

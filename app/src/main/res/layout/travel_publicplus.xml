@@ -64,14 +64,15 @@
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:layout_marginRight="20dp"
+            android:id="@+id/sortText"
             android:gravity="center"/>
-        <Button
-            android:id="@+id/cashDateBtn"
+        <TextView
+            android:id="@+id/chDate2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="OnClickHandler"
-            android:hint="날짜를 선택하세요" />
+            android:text="yyyy-mm-dd"
+            android:textSize="20dp"
+            android:fontFamily="@font/fontstyle"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center|top"
+        android:layout_height="300dp"
+        android:background="@android:color/background_light">
+        <Button
+            android:id="@+id/plan_traffic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/airplane"
+            android:background="@android:color/transparent"
+            android:layout_margin="20dp"
+            android:text="교통"/>
+        <Button
+            android:id="@+id/hotel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/hotel"
+            android:background="@android:color/transparent"
+            android:layout_margin="20dp"
+            android:text="숙소"/>
+        <Button
+            android:id="@+id/tour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/tour"
+            android:background="@android:color/transparent"
+            android:layout_margin="20dp"
+            android:text="투어"/>
+    </LinearLayout>
+</LinearLayout>

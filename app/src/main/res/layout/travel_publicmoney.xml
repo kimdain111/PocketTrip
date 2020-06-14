@@ -40,7 +40,7 @@
             android:layout_height="2dp"
             android:background="#000000"></View>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/date_listview"
+                android:id="@+id/date_listview2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:scrollbars="horizontal"/>
@@ -48,17 +48,33 @@
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:background="#000000"></View>
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-            <ListView
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/publicListView"/>
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10pt"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/noCash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="가계부를 추가해 주세요."
+                    android:textSize="20sp"
+                    android:fontFamily="@font/fontstyle"
+                    />
+
+                <TableLayout
+                    android:id="@+id/cashTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ></TableLayout>
+                </LinearLayout>
+        </ScrollView>
     </LinearLayout>
     <ImageButton
         android:layout_width="50dp"
@@ -68,5 +84,6 @@
         android:scaleType="fitCenter"
         android:layout_gravity="center"
         android:background="#00ff0000"
+        android:onClick="cashPlus"
         style="?android:attr/borderlessButtonStyle"/>
 </LinearLayout>

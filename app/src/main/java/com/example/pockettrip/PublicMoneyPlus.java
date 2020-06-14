@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -32,10 +33,10 @@ public class PublicMoneyPlus extends Activity {
     private int mYear, mMonth, mDay , mYear2, mMonth2, mDay2;
     private RadioGroup typeGroup;
     private RadioGroup payGroup;
-    private String payment="cash", no, id, category="식비", type="import", first, last;
-    private Button chDate, cateBtn;
+    private TextView dateText, sortText;
+    private String payment="cash", no, id, category="식비", type="import", chDate, sort;
+    private Button cateBtn;
     private DatePickerDialog.OnDateSetListener callbackMethod;
-    private String[] arr, arr2;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -48,10 +49,8 @@ public class PublicMoneyPlus extends Activity {
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
         id = intent.getExtras().getString("id");
-        first = intent.getExtras().getString("first");
-        last = intent.getExtras().getString("last");
-        arr = first.split("-");
-        arr2 = last.split("-");
+        chDate = intent.getExtras().getString("selectDate");
+        sort = intent.getExtras().getString("sort");
 
         etcash = (EditText)findViewById(R.id.numInput);
         etmemo = (EditText)findViewById(R.id.memoInput);
@@ -59,8 +58,18 @@ public class PublicMoneyPlus extends Activity {
         typeGroup = (RadioGroup)findViewById(R.id.typeGroup);
         payGroup = (RadioGroup)findViewById(R.id.payGroup);
 
-        this.InitializeView();
-        this.InitializeListener();
+        dateText = (TextView)findViewById(R.id.chDate2);
+        sortText = (TextView)findViewById(R.id.sortText);
+
+        if(sort.equals("plan")){
+            sortText.setVisibility(View.GONE);
+            dateText.setVisibility(View.GONE);
+            chDate="0000-00-00";
+        } else {
+            sortText.setVisibility(View.VISIBLE);
+            dateText.setVisibility(View.VISIBLE);
+            dateText.setText(chDate);
+        }
 
         typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -90,24 +99,28 @@ public class PublicMoneyPlus extends Activity {
         });
 
         cateBtn = (Button) findViewById(R.id.categoryBtn);
-        cateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PublicMoneyPlus.this, SpendCategory.class);
-                intent.putExtra("data", "Spend Category");
-                startActivityForResult(intent, 1);
-            }
-        });
+        if(sort.equals("plan")){
+            cateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Intent intent = new Intent(PublicMoneyPlus.this, PlanSpendCategory.class);
+                        intent.putExtra("data", "Plan Spend Category");
+                        startActivityForResult(intent, 1);
+                }
+            });
+        } else {
+            cateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Intent intent = new Intent(PublicMoneyPlus.this, SpendCategory.class);
+                        intent.putExtra("data", "Spend Category");
+                        startActivityForResult(intent, 1);
+                }
+            });
+        }
+
 
     }
-
-    /*@Override
-    public void onBackPressed() {
-        Intent intent2 = new Intent(PublicMoneyPlus.this, PublicMoneyMain.class);
-        intent2.putExtra("id", id);
-        startActivity(intent2);
-        finish();
-    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -140,20 +153,6 @@ public class PublicMoneyPlus extends Activity {
         return false;
     }
 
-    public void InitializeView(){
-        chDate = (Button)findViewById(R.id.cashDateBtn);
-        chDate.setText(arr[0] + "-"+arr[1]+"-"+arr[2]);
-    }
-
-    public void InitializeListener(){
-        callbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int datOfMonth) {
-                chDate.setText(year + "-"+(monthOfYear+1)+"-"+datOfMonth);
-            }
-        };
-    }
-
     @Override
     public void onBackPressed() {
         Intent myintent = new Intent(PublicMoneyPlus.this,PublicMoneyMain.class);
@@ -171,41 +170,16 @@ public class PublicMoneyPlus extends Activity {
         finish();
     }
 
-    public void OnClickHandler(View view) {
-        final Calendar minDate = Calendar.getInstance();
-        final Calendar maxDate = Calendar.getInstance();
-
-        mYear = Integer.parseInt(arr[0]);
-        mMonth = Integer.parseInt(arr[1]);
-        mDay = Integer.parseInt(arr[2]);
-
-        mYear2 = Integer.parseInt(arr2[0]);
-        mMonth2 = Integer.parseInt(arr2[1]);
-        mDay2 = Integer.parseInt(arr2[2]);
-
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth-1 , mDay);
-
-        minDate.set(mYear, mMonth-1, mDay);
-        dialog.getDatePicker().setMinDate(minDate.getTime().getTime());
-
-        maxDate.set(mYear2, mMonth2-1, mDay2);
-        dialog.getDatePicker().setMaxDate(maxDate.getTime().getTime());
-
-        dialog.show();
-    }
-
     public void insert(View view){
         String cash = etcash.getText().toString();
         String memo = etmemo.getText().toString();
 
         if(cash.equals(""))
             Toast.makeText(PublicMoneyPlus.this, "금액을 입력하세요", Toast.LENGTH_SHORT).show();
-        else if(chDate.getText().toString().equals(""))
-            Toast.makeText(PublicMoneyPlus.this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
         else{
             //1.execute메소드를 통해 AsyncTask실행
             PublicMoneyPlus.InsertData task = new PublicMoneyPlus.InsertData();
-            task.execute(no, cash, category, payment, memo, chDate.getText().toString(), type);
+            task.execute(no, sort, cash, category, payment, memo, chDate, type);
         }
     }
 
@@ -239,17 +213,18 @@ public class PublicMoneyPlus extends Activity {
         protected String doInBackground(String... params) {
             try{
                 String no = (String) params[0];
-                String cash = (String) params[1];
-                String category = (String) params[2];
-                String payment = (String) params[3];
-                String memo = (String) params[4];
-                String date = (String) params[5];
-                String type = (String) params[6];
+                String sort = (String) params[1];
+                String cash = (String) params[2];
+                String category = (String) params[3];
+                String payment = (String) params[4];
+                String memo = (String) params[5];
+                String date = (String) params[6];
+                String type = (String) params[7];
 
                 String link = "http://cs2020tv.dongyangmirae.kr/pu_spend.php"; //=(String)params[0];
                 //전송할 데이터는 "이름=값"형식, 여러개를 보낼시에는 사이에 &추가
                 //여기에 적어준 이름을 나중에 php에서 사용해 값을 얻음
-                String data = "no=" + no + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date+ "&type=" + type;
+                String data = "no=" + no + "&sort=" + sort + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date+ "&type=" + type;
 
                 //HttpURLConnection 클래스를 사용하여 POST 방식으로 데이터를 전송
                 URL url = new URL(link);
