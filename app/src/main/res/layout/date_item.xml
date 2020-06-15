@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/date_item_textView"
-    android:layout_width="50dp"
-    android:layout_height="40dp"
-    android:background="#999999"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
     android:gravity="center"
-    android:textColor="@android:color/black"
-    android:textSize="20sp" />
+    android:background="#fafafa"
+    android:textStyle="bold"
+    android:textSize="20sp"
+    android:fontFamily="@font/fontstyle"/>
