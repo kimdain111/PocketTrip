@@ -51,13 +51,6 @@ public class MainActivity extends Activity {
             startActivity(intent);
             finish();
         }
-        if(idCheckbox.isChecked())
-            loginCheck = true;
-        else{
-            loginCheck = false;
-            editor.clear();
-            editor.commit();
-        }
         idCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="가계부를 추가해 주세요."
+                    android:text="아직 작성된 가계부가 없어요"
                     android:textSize="20sp"
                     android:fontFamily="@font/fontstyle"
                     />

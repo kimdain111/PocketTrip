@@ -41,7 +41,8 @@ import java.util.GregorianCalendar;
 public class DiaryMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no, id, selectDate = "A";
+    private String no, id;
+    public String selectDate = "A";
     ImageButton addDiaryBtn;
 
 
@@ -231,7 +232,7 @@ public class DiaryMain extends Activity {
             TableLayout table = findViewById(R.id.table); //다이어리 테이블
             table.removeAllViews();
             TextView text = findViewById(R.id.noTrip); //다이어리 없음 텍스트
-            final TableRow tr[] = new TableRow[arr.length/6];
+            final TableRow tr[] = new TableRow[(arr.length/6)*3];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -246,8 +247,12 @@ public class DiaryMain extends Activity {
                 for(int i=0; i<arr.length; i+=6)
                 {
                     tr[cnt] = new TableRow(DiaryMain.this);
+                    tr[cnt+1] = new TableRow(DiaryMain.this);
+                    tr[cnt+2] = new TableRow(DiaryMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
+                    tr[cnt+1].setLayoutParams(lp);
+                    tr[cnt+2].setLayoutParams(lp);
 
                     ImageView tImg = new ImageView(DiaryMain.this);
                     final Bitmap[] bitmap = new Bitmap[1];
@@ -278,21 +283,71 @@ public class DiaryMain extends Activity {
                         e.printStackTrace();
                     }
                     tImg.setLayoutParams(new TableRow.LayoutParams(300,400));
-                    tImg.setPadding(0,0,50,0);
 
                     TextView tText = new TextView(DiaryMain.this);
-                    tText.setText(arr[i]+"\n"+arr[i+1]+"\n"+arr[i+2]+"\n"+arr[i+3]+"\n"+arr[i+5]);
+                    tText.setText(arr[i+5]+"       "); //날짜
                     tText.setTextSize(20);
-                    tText.setGravity(Gravity.CENTER);
+                    tText.setGravity(Gravity.LEFT);
                     tText.setPadding(0,60,0,0);
 
-                    tr[cnt].addView(tImg);
-                    tr[cnt].addView(tText);
+                    ImageView weatherImg = new ImageView(DiaryMain.this); //날씨 이모티콘으로 변환
+                    int wImg = 0;
+                    if (arr[i+2].equals("weather1")){
+                        wImg = R.drawable.sunny;
+                    }else if (arr[i+2].equals("weather2")){
+                        wImg = R.drawable.cloudy;
+                    }else if (arr[i+2].equals("weather3")){
+                        wImg = R.drawable.rain;
+                    }else if (arr[i+2].equals("weather4")){
+                        wImg = R.drawable.snow;
+                    }else if (arr[i+2].equals("weather5")){
+                        wImg = R.drawable.lightning;
+                    }
+                    weatherImg.setImageResource(wImg);
+                    weatherImg.setLayoutParams(new TableRow.LayoutParams(80,140));
+                    weatherImg.setPadding(0,60,20,0);
+                    weatherImg.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    ImageView emotionImg = new ImageView(DiaryMain.this); //감정 이모티콘으로 변환
+                    int eImg = 0;
+                    if (arr[i+3].equals("emotion1")){
+                        eImg = R.drawable.emotion1;
+                    }else if (arr[i+3].equals("emotion2")){
+                        eImg = R.drawable.emotion2;
+                    }else if (arr[i+3].equals("emotion3")){
+                        eImg = R.drawable.emotion3;
+                    }else if (arr[i+3].equals("emotion4")){
+                        eImg = R.drawable.emotion4;
+                    }else if (arr[i+3].equals("emotion5")){
+                        eImg = R.drawable.emotion5;
+                    }
+                    emotionImg.setImageResource(eImg);
+                    emotionImg.setLayoutParams(new TableRow.LayoutParams(80,140));
+                    emotionImg.setPadding(0,60,0,0);
+                    emotionImg.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    TextView tText2 = new TextView(DiaryMain.this);
+                    tText2.setText(arr[i]+"\n"+arr[i+1]); //제목, 내용
+                    tText2.setTextSize(20);
+                    tText2.setGravity(Gravity.LEFT);
+                    tText2.setPadding(0,60,0,0);
+
+                    tr[cnt].addView(tText); //날짜
+                    tr[cnt].addView(weatherImg); //날씨
+                    tr[cnt].addView(emotionImg); //감정
+                    tr[cnt+1].addView(tImg);
+                    tr[cnt+2].addView(tText2);
                     tr[cnt].setPadding(0,5,0,20);
                     tr[cnt].setClickable(true);
+                    tr[cnt+1].setPadding(0,5,0,20);
+                    tr[cnt+1].setClickable(true);
+                    tr[cnt+2].setPadding(0,5,0,20);
+                    tr[cnt+2].setClickable(true);
 
-                    no[cnt] = arr[i];
+                    //no[cnt] = arr[i];
                     table.addView(tr[cnt],lp);
+                    table.addView(tr[cnt+1],lp);
+                    table.addView(tr[cnt+2],lp);
                     cnt++;
                 }
 
