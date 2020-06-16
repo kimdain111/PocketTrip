@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PublicMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no, id, selectDate = "A", sort, type;
+    private String no, id, selectDate = "A", sort;
     ImageButton addCashBtn;
 
     @Override
@@ -61,7 +61,6 @@ public class PublicMoneyMain extends Activity {
 
         addCashBtn = (ImageButton)findViewById(R.id.addCash);
         addCashBtn.setVisibility(View.GONE);
-
     }
 
     @Override
@@ -234,7 +233,6 @@ public class PublicMoneyMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            final String[] no = new String[arr.length/5]; //3컬럼이 한묶음
 
             TableLayout table = findViewById(R.id.cashTable); //가계부 테이블
             table.removeAllViews();
