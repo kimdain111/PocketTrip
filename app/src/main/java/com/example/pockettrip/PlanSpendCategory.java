@@ -37,7 +37,7 @@ public class PlanSpendCategory extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("result", "교통");
+                intent.putExtra("result", "교통계획");
                 setResult(RESULT_OK, intent);
 
                 finish();
