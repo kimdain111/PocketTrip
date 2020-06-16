@@ -234,12 +234,12 @@ public class PublicMoneyMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            final String[] no = new String[arr.length/4]; //3컬럼이 한묶음
+            final String[] no = new String[arr.length/5]; //3컬럼이 한묶음
 
             TableLayout table = findViewById(R.id.cashTable); //가계부 테이블
             table.removeAllViews();
             TextView text = findViewById(R.id.noCash); //가계부 없음 텍스트
-            final TableRow tr[] = new TableRow[arr.length/4];
+            final TableRow tr[] = new TableRow[(arr.length/5)*3];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -251,11 +251,15 @@ public class PublicMoneyMain extends Activity {
 
                 int cnt = 0;
 
-                for(int i=0; i<arr.length; i+=4)
+                for(int i=0; i<arr.length; i+=5)
                 {
                     tr[cnt] = new TableRow(PublicMoneyMain.this);
+                    tr[cnt+1] = new TableRow(PublicMoneyMain.this);
+                    tr[cnt+2] = new TableRow(PublicMoneyMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
+                    tr[cnt+1].setLayoutParams(lp);
+                    tr[cnt+2].setLayoutParams(lp);
 
                     ImageView tImg = new ImageView(PublicMoneyMain.this);
                     if(arr[i].equals("식비")){
@@ -264,45 +268,59 @@ public class PublicMoneyMain extends Activity {
                         tImg.setImageResource(R.drawable.bus);
                     } else if(arr[i].equals("생활")){
                         tImg.setImageResource(R.drawable.sofa);
+                    } else if(arr[i].equals("교통계획")){
+                        tImg.setImageResource(R.drawable.airplane);
+                    } else if(arr[i].equals("숙소")){
+                        tImg.setImageResource(R.drawable.hotel);
+                    } else if(arr[i].equals("투어")){
+                        tImg.setImageResource(R.drawable.tour);
                     }
 
                     tImg.setLayoutParams(new TableRow.LayoutParams(200,200));
                     tImg.setPadding(0,0,50,0);
 
                     TextView tText = new TextView(PublicMoneyMain.this);
-                    tText.setText(arr[i+1]+"\n"+arr[i+2]);
+                    tText.setText(arr[i+1]+"원");
                     tText.setTextSize(20);
-                    tText.setPadding(0,0,0,0);
 
                     if(arr[i+3].equals("spend")){
                         tText.setTextColor(Color.parseColor("#ff0000"));
                     } else tText.setTextColor(Color.parseColor("#0000ff"));
 
-                    tr[cnt].addView(tImg);
-                    tr[cnt].addView(tText);
-                    tr[cnt].setPadding(0,5,0,20);
-                    tr[cnt].setClickable(true);
+                    TextView tText2 = new TextView(PublicMoneyMain.this);
+                    tText2.setText(arr[i+2]);
+                    tText2.setTextSize(18);
 
-                    no[cnt] = arr[i];
-                    table.addView(tr[cnt],lp);
+                    TextView dateText = new TextView(PublicMoneyMain.this);
+
+                    if(selectDate.equals("A")){
+                        if(arr[i+4].equals("0000-00-00")){
+                            dateText.setText("Plan");
+                            dateText.setTextSize(15);
+                            tr[cnt].addView(dateText);
+                            tr[cnt].setPadding(0,5,0,20);
+                            table.addView(tr[cnt],lp);
+                        } else {
+                            dateText.setText(arr[i+4]);
+                            dateText.setTextSize(15);
+                            tr[cnt].addView(dateText);
+                            tr[cnt].setPadding(0,5,0,20);
+                            table.addView(tr[cnt],lp);
+                        }
+                    }
+
+                    tr[cnt+1].setClickable(true);
+                    tr[cnt+1].addView(tImg);
+                    tr[cnt+1].addView(tText);
+                    tr[cnt+1].setPadding(0,15,0,0);
+                    tr[cnt+1].setClickable(true);
+                    tr[cnt+2].addView(tText2);
+                    tr[cnt+2].setPadding(0,0,0,20);
+                    tr[cnt+2].setClickable(true);
+                    table.addView(tr[cnt+1],lp);
+                    table.addView(tr[cnt+2],lp);
                     cnt++;
                 }
-
-                //다이어리 클릭했을 때
-                /*for(int j=0; j<tr.length; j++)
-                {
-                    final int finalJ = j;
-                    tr[j].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent3 = new Intent(DiaryMain.this,TravelDetail.class);
-                            //intent3.putExtra("id", id);
-                            intent3.putExtra("no", no[finalJ]);
-                            startActivity(intent3);
-                            finish();
-                        }
-                    });
-                }*/
             }
         }
 
