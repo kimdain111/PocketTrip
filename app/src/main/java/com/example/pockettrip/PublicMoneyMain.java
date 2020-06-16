@@ -103,8 +103,6 @@ public class PublicMoneyMain extends Activity {
 
            PublicMoneyData task3 = new PublicMoneyData();
            task3.execute(no, selectDate);
-
-            Toast.makeText(PublicMoneyMain.this, selectDate, Toast.LENGTH_SHORT).show();
         }
     };
 

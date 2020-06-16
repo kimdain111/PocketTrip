@@ -176,6 +176,8 @@ public class PublicMoneyPlus extends Activity {
 
         if(cash.equals(""))
             Toast.makeText(PublicMoneyPlus.this, "금액을 입력하세요", Toast.LENGTH_SHORT).show();
+        else if(cateBtn.getText().toString().equals(""))
+            Toast.makeText(this, "카테고리를 선택해주세요", Toast.LENGTH_SHORT).show();
         else{
             //1.execute메소드를 통해 AsyncTask실행
             PublicMoneyPlus.InsertData task = new PublicMoneyPlus.InsertData();

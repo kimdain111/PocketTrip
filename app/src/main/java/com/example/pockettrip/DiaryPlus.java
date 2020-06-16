@@ -273,6 +273,8 @@ public class DiaryPlus extends Activity {
             Toast.makeText(DiaryPlus.this, "제목을 입력해 주세요", Toast.LENGTH_SHORT).show();
         else if(content.equals(""))
             Toast.makeText(DiaryPlus.this, "내용을 입력해 주세요", Toast.LENGTH_SHORT).show();
+        else if(selectFlag == false)
+            Toast.makeText(DiaryPlus.this, "사진을 선택해 주세요", Toast.LENGTH_SHORT).show();
         else{
             final String finalUrl = imgUrl;
             UploadFile task2 = new UploadFile();
@@ -359,15 +361,6 @@ public class DiaryPlus extends Activity {
 
                     Log.d("myTag", "HTTP Response is : "
                             + serverResponseMessage + ": " + serverResponseCode);
-
-                    if(serverResponseCode == 200){
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                String msg = "File Upload Completed.\n\n See uploaded file here : \n\n" +imgName;
-                                Toast.makeText(DiaryPlus.this, "File Upload Complete.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
 
                     //close the streams //
                     fileInputStream.close();

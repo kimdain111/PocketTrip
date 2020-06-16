@@ -174,16 +174,26 @@
                 </RadioGroup>
 
             </LinearLayout>
-            <TextView
+            <!--<TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10pt"
                 android:text="사진은 3개까지 선택 가능합니다."
-                android:fontFamily="@font/fontstyle"></TextView>
+                android:fontFamily="@font/fontstyle"></TextView>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10pt"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/fontstyle"
+                    android:text="사진"
+                    android:textSize="20sp"></TextView>
                 <!--<ImageButton
                     android:id="@+id/galleryBtn"
                     style="?android:attr/borderlessButtonStyle"
