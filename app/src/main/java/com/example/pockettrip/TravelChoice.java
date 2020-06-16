@@ -322,15 +322,6 @@ public class TravelChoice extends AppCompatActivity {
                     Log.d("myTag", "HTTP Response is : "
                             + serverResponseMessage + ": " + serverResponseCode);
 
-                    if(serverResponseCode == 200){
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                String msg = "File Upload Completed.\n\n See uploaded file here : \n\n" +imgName;
-                                Toast.makeText(TravelChoice.this, "File Upload Complete.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-
                     //close the streams //
                     fileInputStream.close();
                     dos.flush();
