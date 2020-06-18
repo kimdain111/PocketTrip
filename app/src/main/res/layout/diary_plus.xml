@@ -208,7 +208,7 @@
                     android:layout_marginLeft="20dp"
                     android:id="@+id/imgList1"
                     android:scaleType="fitXY"
-                    android:src="@drawable/camera"></ImageView>
+                    android:src="@drawable/default_gallery"></ImageView>
                 <!--<ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"

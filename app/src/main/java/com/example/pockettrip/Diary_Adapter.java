@@ -21,6 +21,10 @@ public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder
     private View.OnClickListener onClickItem;
     private int selectedPosition = -1;
 
+    public Diary_Adapter(){
+        super();
+    }
+
     public Diary_Adapter(Context context, ArrayList<String> itemList,ArrayList<String> itemPrintList, View.OnClickListener onClickItem) {
         this.context = context;
         this.itemList = itemList;
