@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
             startActivity(intent);
             finish();
         }
+
         idCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
