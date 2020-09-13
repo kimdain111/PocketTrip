@@ -35,28 +35,32 @@
         android:id="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
+        android:paddingBottom="30dp"
         >
-        <TableRow
-            android:background="#000000">
+        <TableRow>
+            /*android:background="#000000"*/
             <ImageView
                 android:id="@+id/travelimg"
                 android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_height="100dp"
                 android:layout_weight="1"
                 android:src="@drawable/default_gallery"
                 android:background="#FFFFFF"
-                android:layout_margin="1dp"/>
+                android:layout_margin="1dp" />
             <TextView
                 android:id="@+id/traveltext"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="100dp"
                 android:layout_weight="2"
-                android:text="나라\n출발날짜 ~ 도착날짜"
-                android:gravity="center"
+                android:text="나라\n\n출발날짜 ~ 도착날짜"
+                android:gravity="left"
                 android:textColor="#000000"
+                android:textSize="20dp"
                 android:background="#FFFFFF"
-                android:layout_margin="1dp"/>
+                android:layout_margin="1dp"
+                android:paddingTop="20dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/fontstyle"/>
         </TableRow>
     </TableLayout>
     <TableLayout
@@ -189,5 +193,112 @@
             android:scaleType="fitCenter"
             android:layout_gravity="center"
             />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height = "wrap_content"
+        android:text=">떠나시는 나라의 현재 정보를 확인해보세요!"
+        android:textColor="#009688"
+        android:textSize="17dp"
+        android:fontFamily="@font/fontstyle"
+        android:paddingTop="40dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:background="@drawable/layout_background">
+            <ImageView
+                android:id="@+id/weatherIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"/>
+            <TextView
+                android:id="@+id/temperature"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="기온"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:fontFamily="@font/fontstyle"/>
+        </LinearLayout>
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/layout_background">
+            <TextView
+                android:id="@+id/rateText"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:gravity="center"
+                android:text="나라 단위\t\t\t\t\t\t원"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:fontFamily="@font/fontstyle"/>
+            <TextView
+                android:id="@+id/nationTime"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:gravity="center"
+                android:text="시간"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:fontFamily="@font/fontstyle"/>
+        </LinearLayout>-->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TableRow
+                android:background="@drawable/layout_background">
+                <TextView
+                    android:id="@+id/nationText"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:text="나라"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:fontFamily="@font/fontstyle"/>
+                <TextView
+                    android:id="@+id/rateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_weight="1"
+                    android:text="환율"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:paddingTop="30dp"
+                    android:fontFamily="@font/fontstyle"/>
+            </TableRow>
+            <TableRow
+                android:background="@drawable/layout_background">
+                <TextView
+                    android:id="@+id/nationTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_weight="2"
+                    android:layout_span="2"
+                    android:text="시간"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/fontstyle"/>
+            </TableRow>
+        </TableLayout>
     </LinearLayout>
 </LinearLayout>
