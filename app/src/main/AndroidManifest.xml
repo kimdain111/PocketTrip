@@ -38,7 +38,9 @@
         <activity android:name=".Cash_Date_Decoration"></activity>
         <activity android:name=".SpendCategory" android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".PlanSpendCategory" android:theme="@android:style/Theme.Dialog"></activity>
-
+        <activity android:name=".CheckAdapter"></activity>
+        <activity android:name=".CheckDTO"></activity>
+        <activity android:name=".CheckList"></activity>
     </application>
 
 </manifest>

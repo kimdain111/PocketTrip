@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/fontstyle"
                 android:textSize="20dp"
-                android:text="수입"
+                android:text="예산"
                 android:checked="true"
                 android:id="@+id/importBtn"
                 android:gravity="center"

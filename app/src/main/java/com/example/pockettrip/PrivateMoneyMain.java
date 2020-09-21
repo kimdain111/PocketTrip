@@ -139,4 +139,74 @@ public class PrivateMoneyMain extends Activity {
         System.out.println("###init끝남###");
     }
 
+    class BalanceData extends AsyncTask<String, Void, String>{
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(PrivateMoneyMain.this, "Please Wait", null, true, true);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            loading.dismiss();
+
+            final String[] arr = s.split(",");
+
+            TextView importText = findViewById(R.id.importText);
+            TextView spendText = findViewById(R.id.spendText);
+            TextView subText = findViewById(R.id.subText);
+
+            int importTv = 0, spendTv = 0;
+
+            if(s.equals("no data")){
+                importText.setText("0");
+                spendText.setText("0");
+                subText.setText("0");
+            } else{
+                for(int i=0; i<arr.length; i+=2){
+                    if(arr[i+1].equals("import")) importTv = importTv + Integer.parseInt(arr[i]);
+                    else spendTv =spendTv + Integer.parseInt(arr[i]);
+                }
+                importText.setText(Integer.toString(importTv)+"원");
+                spendText.setText(Integer.toString(spendTv)+"원");
+                subText.setText(Integer.toString(importTv-spendTv)+"원");
+            }
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                String no = (String) params[0];
+
+                String link = "http://cs2020tv.dongyangmirae.kr/pr_balance.php";
+                String data = "no=" + no;
+
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = reader.readLine())!= null){
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch(Exception e){
+                return new String("Exception:"+e.getMessage());
+            }
+        }
+    }
+
 }
