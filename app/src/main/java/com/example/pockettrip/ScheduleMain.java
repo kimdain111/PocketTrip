@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,26 +28,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.sql.Date;
 import java.util.GregorianCalendar;
 
-public class DiaryMain extends Activity {
+public class ScheduleMain extends Activity {
+    private String no, id, selectDate = "A";
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no, id;
-    private String selectDate = "A";
-    ImageButton addDiaryBtn;
-
+    ImageButton addScheduleBtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.diary_main);
+        setContentView(R.layout.schedule_main);
 
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
@@ -61,26 +54,27 @@ public class DiaryMain extends Activity {
         task.execute(no);
 
         //다이어리 조회
-        DiaryMainData task2 = new DiaryMainData();
+        ScheduleMainData task2 = new ScheduleMainData();
         task2.execute(no, selectDate);
 
-        addDiaryBtn = (ImageButton)findViewById(R.id.addDiary); //다이어리 추가 버튼
-        addDiaryBtn.setVisibility(View.GONE);
+        addScheduleBtn = (ImageButton)findViewById(R.id.addSchedule); //다이어리 추가 버튼
+        addScheduleBtn.setVisibility(View.GONE);
+
     }
 
     @Override
     public void onBackPressed() { //뒤로가기
-        Intent intent = new Intent(DiaryMain.this,TravelDetail.class);
+        Intent intent = new Intent(ScheduleMain.this,TravelDetail.class);
         intent.putExtra("id", id);
         intent.putExtra("no", no);
         startActivity(intent);
         finish();
     }
 
-    //다이어리 추가 버튼
-    public void diaryPlus(View view)
+    //일정 추가 버튼
+    public void schedulePlus(View view)
     {
-        Intent myIntent = new Intent(DiaryMain.this, DiaryPlus.class);
+        Intent myIntent = new Intent(ScheduleMain.this, SchedulePlus.class);
         myIntent.putExtra("id", id);
         myIntent.putExtra("no", no);
         myIntent.putExtra("selectDate", selectDate);
@@ -93,13 +87,14 @@ public class DiaryMain extends Activity {
         @Override
         public void onClick(View v) {
             selectDate = (String) v.getTag();
-            if(selectDate.equals("A")) addDiaryBtn.setVisibility(View.GONE);
-            else addDiaryBtn.setVisibility(View.VISIBLE);
+            if(selectDate.equals("A")) addScheduleBtn.setVisibility(View.GONE);
+            else addScheduleBtn.setVisibility(View.VISIBLE);
 
-            DiaryMainData task3 = new DiaryMainData();
+            ScheduleMainData task3 = new ScheduleMainData();
             task3.execute(no, selectDate);
         }
     };
+
 
     //여행기간 날짜 조회
     class selectDate extends AsyncTask<String, Void, String> {
@@ -109,7 +104,7 @@ public class DiaryMain extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(DiaryMain.this, "Please Wait", null, true, true);
+            loading = ProgressDialog.show(ScheduleMain.this, "Please Wait", null, true, true);
         }
         //4. 결과파라미터 리턴받아서 리턴값을 통해 스레드작업 끝났을 때의 동작 구현
         @Override
@@ -212,27 +207,28 @@ public class DiaryMain extends Activity {
         listview.addItemDecoration(decoration);
     }
 
-    //해당 날짜의 다이어리 조회
-    class DiaryMainData extends AsyncTask<String, Void, String> {
+    //해당 날짜의 일정 조회
+    class ScheduleMainData extends AsyncTask<String, Void, String>{
         ProgressDialog loading;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(DiaryMain.this, "Please Wait", null, true, true);
+            loading = ProgressDialog.show(ScheduleMain.this, "Please Wait", null, true, true);
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            final String[] no = new String[arr.length/6]; //6컬럼이 한묶음
+            final String[] no = new String[arr.length/2]; //2컬럼이 한묶음
 
-            TableLayout table = findViewById(R.id.table); //다이어리 테이블
+            TableLayout table = findViewById(R.id.table); //일정 테이블
             table.removeAllViews();
-            TextView text = findViewById(R.id.noDiary); //다이어리 없음 텍스트
-            final TableRow tr[] = new TableRow[(arr.length/6)*3];
+            TextView text = findViewById(R.id.noSchedule); //다이어리 없음 텍스트
+            final TableRow tr[] = new TableRow[arr.length/2];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -244,128 +240,28 @@ public class DiaryMain extends Activity {
 
                 int cnt = 0;
 
-                for(int i=0; i<arr.length; i+=6)
+                for(int i=0; i<arr.length; i+=2)
                 {
-                    tr[cnt] = new TableRow(DiaryMain.this);
-                    tr[cnt+1] = new TableRow(DiaryMain.this);
-                    tr[cnt+2] = new TableRow(DiaryMain.this);
+                    tr[cnt] = new TableRow(ScheduleMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
-                    tr[cnt+1].setLayoutParams(lp);
-                    tr[cnt+2].setLayoutParams(lp);
 
-                    ImageView tImg = new ImageView(DiaryMain.this);
-                    final Bitmap[] bitmap = new Bitmap[1];
-                    final int finalI = i;
-                    Thread uThread = new Thread() {
-                        @Override
-                        public void run() {
-                            super.run();
-                            try {
-                                URL url = new URL(arr[finalI +4]);
-                                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-                                conn.setDoInput(true);
-                                conn.connect();
-                                InputStream is = conn.getInputStream();
-                                bitmap[0] = BitmapFactory.decodeStream(is);
-                            } catch (MalformedURLException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    uThread.start();
-                    try{
-                        uThread.join();
-                        tImg.setImageBitmap(bitmap[0]);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-                    tImg.setLayoutParams(new TableRow.LayoutParams(300,400));
 
-                    TextView tText = new TextView(DiaryMain.this);
-                    tText.setText(arr[i+5]+"       "); //날짜
+
+                    TextView tText = new TextView(ScheduleMain.this);
+                    tText.setText(arr[i].substring(0,5)+"       "+arr[i+1]); //시간, 내용
                     tText.setTextSize(20);
                     tText.setGravity(Gravity.LEFT);
                     tText.setPadding(0,60,0,0);
 
-                    ImageView weatherImg = new ImageView(DiaryMain.this); //날씨 이모티콘으로 변환
-                    int wImg = 0;
-                    if (arr[i+2].equals("weather1")){
-                        wImg = R.drawable.sunny;
-                    }else if (arr[i+2].equals("weather2")){
-                        wImg = R.drawable.cloudy;
-                    }else if (arr[i+2].equals("weather3")){
-                        wImg = R.drawable.rain;
-                    }else if (arr[i+2].equals("weather4")){
-                        wImg = R.drawable.snow;
-                    }else if (arr[i+2].equals("weather5")){
-                        wImg = R.drawable.lightning;
-                    }
-                    weatherImg.setImageResource(wImg);
-                    weatherImg.setLayoutParams(new TableRow.LayoutParams(80,140));
-                    weatherImg.setPadding(0,60,20,0);
-                    weatherImg.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                    ImageView emotionImg = new ImageView(DiaryMain.this); //감정 이모티콘으로 변환
-                    int eImg = 0;
-                    if (arr[i+3].equals("emotion1")){
-                        eImg = R.drawable.emotion1;
-                    }else if (arr[i+3].equals("emotion2")){
-                        eImg = R.drawable.emotion2;
-                    }else if (arr[i+3].equals("emotion3")){
-                        eImg = R.drawable.emotion3;
-                    }else if (arr[i+3].equals("emotion4")){
-                        eImg = R.drawable.emotion4;
-                    }else if (arr[i+3].equals("emotion5")){
-                        eImg = R.drawable.emotion5;
-                    }
-                    emotionImg.setImageResource(eImg);
-                    emotionImg.setLayoutParams(new TableRow.LayoutParams(80,140));
-                    emotionImg.setPadding(0,60,0,0);
-                    emotionImg.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                    TextView tText2 = new TextView(DiaryMain.this);
-                    tText2.setText(arr[i]+"\n"+arr[i+1]); //제목, 내용
-                    tText2.setTextSize(20);
-                    tText2.setGravity(Gravity.LEFT);
-                    tText2.setPadding(0,60,0,0);
-
-                    tr[cnt].addView(tText); //날짜
-                    tr[cnt].addView(weatherImg); //날씨
-                    tr[cnt].addView(emotionImg); //감정
-                    tr[cnt+1].addView(tImg);
-                    tr[cnt+2].addView(tText2);
+                    tr[cnt].addView(tText); //시간, 내용 행에 삽입
                     tr[cnt].setPadding(0,5,0,20);
                     tr[cnt].setClickable(true);
-                    tr[cnt+1].setPadding(0,5,0,20);
-                    tr[cnt+1].setClickable(true);
-                    tr[cnt+2].setPadding(0,5,0,20);
-                    tr[cnt+2].setClickable(true);
 
                     //no[cnt] = arr[i];
                     table.addView(tr[cnt],lp);
-                    table.addView(tr[cnt+1],lp);
-                    table.addView(tr[cnt+2],lp);
                     cnt++;
                 }
-
-                //다이어리 클릭했을 때
-                /*for(int j=0; j<tr.length; j++)
-                {
-                    final int finalJ = j;
-                    tr[j].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent3 = new Intent(DiaryMain.this,TravelDetail.class);
-                            //intent3.putExtra("id", id);
-                            intent3.putExtra("no", no[finalJ]);
-                            startActivity(intent3);
-                            finish();
-                        }
-                    });
-                }*/
             }
         }
 
@@ -375,7 +271,7 @@ public class DiaryMain extends Activity {
                 String no = (String) params[0];
                 String date = (String) params[1];
 
-                String link = "http://cs2020tv.dongyangmirae.kr/diary_main.php";
+                String link = "http://cs2020tv.dongyangmirae.kr/schedule_main.php";
                 String data = "no=" + no + "&date=" + date;
 
                 URL url = new URL(link);

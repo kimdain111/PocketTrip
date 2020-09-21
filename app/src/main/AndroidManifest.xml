@@ -13,15 +13,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TravelMain"></activity>
+        <activity android:name=".TravelMain">
+        </activity>
         <activity android:name=".Join"></activity>
+        <activity android:name=".ScheduleMain"></activity>
+        <activity android:name=".SchedulePlus"></activity>
         <activity android:name=".TravelChoice"></activity>
         <activity android:name=".TravelDetail"></activity>
         <activity android:name=".DiaryMain"></activity>

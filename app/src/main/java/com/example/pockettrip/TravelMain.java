@@ -46,8 +46,6 @@ public class TravelMain extends Activity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
 
-        Intent intent2 = getIntent();
-
         TravelMainData task = new TravelMainData();
         task.execute(id);
     }

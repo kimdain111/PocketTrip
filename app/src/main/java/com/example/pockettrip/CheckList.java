@@ -51,13 +51,12 @@ public class CheckList extends AppCompatActivity {
         firstTv.setText(first);
         lastTv.setText(last);
 
-       /* recyclerView = (RecyclerView) findViewById(R.id.checklist);
+        recyclerView = (RecyclerView) findViewById(R.id.checklist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         checkArrayList = new ArrayList<>();
         checkAdapter = new CheckAdapter(checkArrayList);
         recyclerView.setAdapter(checkAdapter);
-*/
         checkEdit = (EditText) findViewById(R.id.editcheck);
 
     }
@@ -106,7 +105,7 @@ public class CheckList extends AppCompatActivity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            init(arr[0], arr[1]);
+            //init(arr[0], arr[1]);
         }
         //3. 백그라운드작업 수행(execute메소드 호출할 때 사용된 파라미터 전달받음)
         @Override
@@ -143,7 +142,7 @@ public class CheckList extends AppCompatActivity {
         }
     }
 
-    private void init(String l, String c){
+    /*private void init(String l, String c){
         recyclerView = (RecyclerView) findViewById(R.id.checklist);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -151,5 +150,5 @@ public class CheckList extends AppCompatActivity {
         checkArrayList = new ArrayList<>();
         checkAdapter = new CheckAdapter(checkArrayList);
         recyclerView.setAdapter(checkAdapter);
-    }
+    }*/
 }

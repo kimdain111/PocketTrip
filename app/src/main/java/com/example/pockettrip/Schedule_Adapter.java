@@ -1,19 +1,16 @@
 package com.example.pockettrip;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
 
-public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder> {
+public class Schedule_Adapter extends RecyclerView.Adapter<Schedule_Adapter.ViewHolder> {
 
     private ArrayList<String> itemList;
     private ArrayList<String> itemPrintList;
@@ -21,12 +18,11 @@ public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder
     private View.OnClickListener onClickItem;
     private int selectedPosition = -1;
 
-    public Diary_Adapter(){
+    public Schedule_Adapter(){
         super();
     }
 
-    public Diary_Adapter(Context context, ArrayList<String> itemList,ArrayList<String> itemPrintList, View.OnClickListener onClickItem) {
-        super();
+    public Schedule_Adapter(Context context, ArrayList<String> itemList,ArrayList<String> itemPrintList, View.OnClickListener onClickItem) {
         this.context = context;
         this.itemList = itemList;
         this.itemPrintList = itemPrintList;

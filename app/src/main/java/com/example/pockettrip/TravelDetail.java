@@ -70,7 +70,11 @@ public class TravelDetail extends Activity {
 
     public void goSchedule(View view)
     {
-
+        Intent myIntent = new Intent(TravelDetail.this, ScheduleMain.class);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
     }
     public void goDiary(View view)
     {
