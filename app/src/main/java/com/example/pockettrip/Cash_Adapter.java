@@ -18,6 +18,7 @@ public class Cash_Adapter extends RecyclerView.Adapter<Cash_Adapter.ViewHolder> 
     private View.OnClickListener onClickItem;
 
     public Cash_Adapter(Context context, ArrayList<String> itemList,ArrayList<String> itemPrintList, View.OnClickListener onClickItem) {
+        super();
         this.context = context;
         this.itemList = itemList;
         this.itemPrintList = itemPrintList;
