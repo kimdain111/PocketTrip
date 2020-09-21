@@ -25,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:fontFamily="@font/fontstyle"
                 android:hint="제목을 입력하세요."
                 android:background="@null"/>
             <LinearLayout
@@ -229,6 +230,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10pt"
                 android:hint="내용을 입력하세요."
+                android:fontFamily="@font/fontstyle"
                 android:background="@null"/>
         </LinearLayout>
     </ScrollView>
