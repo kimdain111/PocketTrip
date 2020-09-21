@@ -130,7 +130,14 @@ public class TravelDetail extends Activity {
     }
     public void goCheckList(View view)
     {
-
+        Intent intent = new Intent(TravelDetail.this, CheckList.class);
+        intent.putExtra("no", no);
+        intent.putExtra("id", id);
+        intent.putExtra("nation", nation);
+        intent.putExtra("first", first);
+        intent.putExtra("last", last);
+        startActivity(intent);
+        finish();
     }
 
     class TravelDetailData extends AsyncTask<String, Void, String> {

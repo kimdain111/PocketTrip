@@ -103,23 +103,21 @@ public class PublicMoneyPlus extends Activity {
             cateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        Intent intent = new Intent(PublicMoneyPlus.this, PlanSpendCategory.class);
-                        intent.putExtra("data", "Plan Spend Category");
-                        startActivityForResult(intent, 1);
+                    Intent intent = new Intent(PublicMoneyPlus.this, PlanSpendCategory.class);
+                    intent.putExtra("data", "Plan Spend Category");
+                    startActivityForResult(intent, 1);
                 }
             });
         } else {
             cateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        Intent intent = new Intent(PublicMoneyPlus.this, SpendCategory.class);
-                        intent.putExtra("data", "Spend Category");
-                        startActivityForResult(intent, 1);
+                    Intent intent = new Intent(PublicMoneyPlus.this, SpendCategory.class);
+                    intent.putExtra("data", "Spend Category");
+                    startActivityForResult(intent, 1);
                 }
             });
         }
-
-
     }
 
     @Override
