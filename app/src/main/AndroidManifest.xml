@@ -21,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TravelMain">
-        </activity>
+        <activity android:name=".TravelMain"></activity>
         <activity android:name=".Join"></activity>
+        <activity android:name=".MyPage"></activity>
         <activity android:name=".ScheduleMain"></activity>
         <activity android:name=".SchedulePlus"></activity>
         <activity android:name=".TravelChoice"></activity>

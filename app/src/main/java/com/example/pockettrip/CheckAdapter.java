@@ -40,7 +40,11 @@ public class CheckAdapter extends RecyclerView.Adapter<CheckAdapter.ViewHolder> 
         }
     }
 
-    CheckAdapter(ArrayList<CheckDTO> list){
+    public CheckAdapter(){
+
+    }
+
+    public CheckAdapter(ArrayList<CheckDTO> list){
         mData = list;
     }
 

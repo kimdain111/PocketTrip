@@ -77,6 +77,15 @@ public class DiaryMain extends Activity {
         finish();
     }
 
+    //마이페이지
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(DiaryMain.this, MyPage.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
+    }
+
     //다이어리 추가 버튼
     public void diaryPlus(View view)
     {

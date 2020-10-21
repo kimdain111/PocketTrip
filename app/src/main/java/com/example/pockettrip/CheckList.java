@@ -70,6 +70,15 @@ public class CheckList extends AppCompatActivity {
         finish();
     }
 
+    //마이페이지
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(CheckList.this, MyPage.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
+    }
+
     public void checkInsert(View view){
 
         String clist = checkEdit.getText().toString();

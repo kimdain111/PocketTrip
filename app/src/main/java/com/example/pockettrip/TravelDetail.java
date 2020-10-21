@@ -68,6 +68,15 @@ public class TravelDetail extends Activity {
         finish();
     }
 
+    //마이페이지
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(TravelDetail.this, MyPage.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
+    }
+
     public void goSchedule(View view)
     {
         Intent myIntent = new Intent(TravelDetail.this, ScheduleMain.class);

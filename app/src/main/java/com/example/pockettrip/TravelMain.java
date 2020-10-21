@@ -66,9 +66,19 @@ public class TravelMain extends Activity {
         }
     }
 
+    //여행추가
     public void addTravel(View view)
     {
         Intent myIntent = new Intent(TravelMain.this, TravelChoice.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
+    }
+
+    //마이페이지
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(TravelMain.this, MyPage.class);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
         finish();

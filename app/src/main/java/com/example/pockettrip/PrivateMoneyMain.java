@@ -58,6 +58,16 @@ public class PrivateMoneyMain extends Activity {
         startActivity(intent2);
         finish();
     }
+
+    //마이페이지
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(PrivateMoneyMain.this, MyPage.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
+    }
+
     private View.OnClickListener onClickItem = new View.OnClickListener() { //날짜 선택
         @Override
         public void onClick(View v) {
