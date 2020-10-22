@@ -53,11 +53,11 @@ public class ScheduleMain extends Activity {
         selectDate task = new selectDate();
         task.execute(no);
 
-        //다이어리 조회
+        //일정 조회
         ScheduleMainData task2 = new ScheduleMainData();
         task2.execute(no, selectDate);
 
-        addScheduleBtn = (ImageButton)findViewById(R.id.addSchedule); //다이어리 추가 버튼
+        addScheduleBtn = (ImageButton)findViewById(R.id.addSchedule); //일정 추가 버튼
         addScheduleBtn.setVisibility(View.GONE);
 
     }
@@ -68,6 +68,15 @@ public class ScheduleMain extends Activity {
         intent.putExtra("id", id);
         intent.putExtra("no", no);
         startActivity(intent);
+        finish();
+    }
+
+    //마이페이지
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(ScheduleMain.this, MyPage.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
         finish();
     }
 
