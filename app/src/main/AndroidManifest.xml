@@ -43,6 +43,7 @@
         <activity android:name=".CheckAdapter"></activity>
         <activity android:name=".CheckDTO"></activity>
         <activity android:name=".CheckList"></activity>
+        <activity android:name=".ExchangeMoney" android:theme="@android:style/Theme.Dialog"></activity>
     </application>
 
 </manifest>

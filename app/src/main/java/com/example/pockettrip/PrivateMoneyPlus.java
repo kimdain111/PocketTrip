@@ -7,11 +7,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -24,13 +28,18 @@ import java.net.URLConnection;
 import java.util.Calendar;
 
 public class PrivateMoneyPlus extends Activity {
+
     EditText etcash, etcategory, etmemo;
-    private int mYear, mMonth, mDay;
+    private int mYear, mMonth, mDay , mYear2, mMonth2, mDay2;
     private RadioGroup typeGroup;
     private RadioGroup payGroup;
-    private String payment="cash", no, id, type="import", category="eat";
-    private Button chDate;
+    private TextView dateText, sortText;
+    private String payment="cash", no, id, category="식비", type="import", chDate, sort, rate, country;
+    private Button cateBtn, exchangeBtn;
     private DatePickerDialog.OnDateSetListener callbackMethod;
+
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +49,10 @@ public class PrivateMoneyPlus extends Activity {
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
         id = intent.getExtras().getString("id");
+        chDate = intent.getExtras().getString("selectDate");
+        sort = intent.getExtras().getString("sort");
+        rate = intent.getExtras().getString("rate");
+        country = intent.getExtras().getString("country");
 
         etcash = (EditText)findViewById(R.id.numInput);
         etmemo = (EditText)findViewById(R.id.memoInput);
@@ -47,8 +60,18 @@ public class PrivateMoneyPlus extends Activity {
         typeGroup = (RadioGroup)findViewById(R.id.typeGroup);
         payGroup = (RadioGroup)findViewById(R.id.payGroup);
 
-        this.InitializeView();
-        this.InitializeListener();
+        dateText = (TextView)findViewById(R.id.chDate2);
+        sortText = (TextView)findViewById(R.id.sortText);
+
+        if(sort.equals("plan")){
+            sortText.setVisibility(View.GONE);
+            dateText.setVisibility(View.GONE);
+            chDate="0000-00-00";
+        } else {
+            sortText.setVisibility(View.VISIBLE);
+            dateText.setVisibility(View.VISIBLE);
+            dateText.setText(chDate);
+        }
 
         typeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -76,19 +99,80 @@ public class PrivateMoneyPlus extends Activity {
                 }
             }
         });
-    }
-    public void InitializeView(){
-        chDate = (Button)findViewById(R.id.cashDateBtn);
+
+        exchangeBtn = (Button) findViewById(R.id.exchangeBtn);
+        exchangeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PrivateMoneyPlus.this, ExchangeMoney.class);
+                intent.putExtra("data", "Exchange Money");
+                intent.putExtra("rate", rate);
+                intent.putExtra("country", country);
+                Toast.makeText(getApplicationContext(), rate, Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, 2);
+            }
+        });
+
+        cateBtn = (Button) findViewById(R.id.categoryBtn);
+        if(sort.equals("plan")){
+            cateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(PrivateMoneyPlus.this, PlanSpendCategory.class);
+                    intent.putExtra("data", "Plan Spend Category");
+                    startActivityForResult(intent, 1);
+                }
+            });
+        } else {
+            cateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(PrivateMoneyPlus.this, SpendCategory.class);
+                    intent.putExtra("data", "Spend Category");
+                    startActivityForResult(intent, 1);
+                }
+            });
+        }
     }
 
-    public void InitializeListener(){
-        callbackMethod = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int datOfMonth) {
-                chDate.setText(year + "-"+(monthOfYear+1)+"-"+datOfMonth);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==1){
+            if(resultCode==RESULT_OK){
+                String result = data.getStringExtra("result");
+                cateBtn.setText(result);
+                category = result;
             }
-        };
+        }
+        else if (requestCode==2){
+            if(resultCode==RESULT_OK){
+                String result = data.getStringExtra("result");
+                etcash.setText(result);
+            }
+        }
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inf = getMenuInflater();
+        inf.inflate(R.menu.mymenu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_settings:
+            case R.id.traffic:
+                cateBtn.setText(item.getTitle());
+                return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -99,7 +183,7 @@ public class PrivateMoneyPlus extends Activity {
         finish();
     }
 
-    public void cancel(View view){
+    public void cancel2(View view){
         Intent myintent = new Intent(PrivateMoneyPlus.this,PrivateMoneyMain.class);
         myintent.putExtra("no",no);
         myintent.putExtra("id",id);
@@ -107,26 +191,19 @@ public class PrivateMoneyPlus extends Activity {
         finish();
     }
 
-    public void OnClickHandler(View view) {
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth , mDay);
-        dialog.show();
-    }
-
-    public void insert(View view){
+    public void insert2(View view){
         String cash = etcash.getText().toString();
         String memo = etmemo.getText().toString();
+
         if(cash.equals(""))
             Toast.makeText(PrivateMoneyPlus.this, "금액을 입력하세요", Toast.LENGTH_SHORT).show();
-        else if(chDate.getText().toString().equals(""))
-            Toast.makeText(PrivateMoneyPlus.this, "날짜를 선택해 주세요", Toast.LENGTH_SHORT).show();
+        else if(cateBtn.getText().toString().equals(""))
+            Toast.makeText(this, "카테고리를 선택해주세요", Toast.LENGTH_SHORT).show();
         else{
+            //1.execute메소드를 통해 AsyncTask실행
             PrivateMoneyPlus.InsertData task = new PrivateMoneyPlus.InsertData();
-            task.execute(no, cash, category, payment, memo, chDate.getText().toString(), type);
+            task.execute(no, sort, cash, category, payment, memo, chDate, type);
         }
     }
 
@@ -144,7 +221,7 @@ public class PrivateMoneyPlus extends Activity {
             loading.dismiss();
             if(s.equals("cash plus success")){
                 Toast.makeText(getApplicationContext(),"금액이 추가되었습니다.", Toast.LENGTH_SHORT).show();
-                Intent myintent = new Intent(PrivateMoneyPlus.this,PublicMoneyMain.class);
+                Intent myintent = new Intent(PrivateMoneyPlus.this,PrivateMoneyMain.class);
                 myintent.putExtra("no",no);
                 myintent.putExtra("id",id);
                 startActivity(myintent);
@@ -158,15 +235,16 @@ public class PrivateMoneyPlus extends Activity {
         protected String doInBackground(String... params) {
             try{
                 String no = (String) params[0];
-                String cash = (String) params[1];
-                String category = (String) params[2];
-                String payment = (String) params[3];
-                String memo = (String) params[4];
-                String date = (String) params[5];
-                String type = (String) params[6];
+                String sort = (String) params[1];
+                String cash = (String) params[2];
+                String category = (String) params[3];
+                String payment = (String) params[4];
+                String memo = (String) params[5];
+                String date = (String) params[6];
+                String type = (String) params[7];
 
                 String link = "http://cs2020tv.dongyangmirae.kr/pr_Spend.php";
-                String data = "no=" + no + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date + "&type=" + type;
+                String data = "no=" + no + "&sort=" + sort + "&cash=" + cash + "&category=" + category + "&payment=" + payment + "&memo=" + memo + "&date=" +date+ "&type=" + type;
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();

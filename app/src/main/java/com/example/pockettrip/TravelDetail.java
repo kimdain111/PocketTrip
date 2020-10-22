@@ -46,6 +46,7 @@ public class TravelDetail extends Activity {
     String id;
 
     String nation, engNation, first, last, nationName;
+    String rate, cName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,6 +117,8 @@ public class TravelDetail extends Activity {
                 myIntent.putExtra("id", id);
                 myIntent.putExtra("first", first);
                 myIntent.putExtra("last", last);
+                myIntent.putExtra("rate", rate);
+                myIntent.putExtra("country", cName);
                 startActivity(myIntent);
                 finish();
             }
@@ -126,6 +129,10 @@ public class TravelDetail extends Activity {
                 Intent myIntent = new Intent(TravelDetail.this, PrivateMoneyMain.class);
                 myIntent.putExtra("no", no);
                 myIntent.putExtra("id", id);
+                myIntent.putExtra("first", first);
+                myIntent.putExtra("last", last);
+                myIntent.putExtra("rate", rate);
+                myIntent.putExtra("country", cName);
                 startActivity(myIntent);
                 finish();
             }
@@ -413,11 +420,15 @@ public class TravelDetail extends Activity {
                {
                    nationText.setText(countryName);
                    rateText.setText(rateArr.get(i+1).toString());
+                   rate = rateArr.get(i+1).toString();
+                   cName = countryName;
                }
                else if(countryName.equals("유럽연합 EUR"))
                {
                    nationText.setText(countryName);
                    rateText.setText(rateArr.get(i+1).toString());
+                   rate = rateArr.get(i+1).toString();
+                   cName = countryName;
                }
            }
         }
