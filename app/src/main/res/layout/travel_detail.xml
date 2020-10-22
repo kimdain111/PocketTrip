@@ -5,35 +5,31 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="20dp">
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingBottom="40dp"
         >
-
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/menu"
+            android:src="@drawable/menu"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="top"
+            android:background="#FFFFFF"></ImageButton>
         <ImageView
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:src="@drawable/mainicon"
             android:scaleType="fitCenter"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="85dp"
-            android:layout_marginRight="10dp"></ImageView>
-
-        <ImageButton
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/menu"
-            android:src="@drawable/user"
-            android:scaleType="fitCenter"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="top"
-            android:background="#FFFFFF"
-            android:onClick="goMypage"></ImageButton>
-
+            android:layout_marginRight="50dp"></ImageView>
     </LinearLayout>
     <TableLayout
         android:id="@+id/layout2"
@@ -71,7 +67,7 @@
         android:id="@+id/layout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="170dp"
+        android:paddingBottom="20dp"
         >
         <TableRow>
             <ImageButton
@@ -166,6 +162,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="80dp"
         android:visibility="gone"
         >
         <ImageButton
@@ -186,12 +183,12 @@
             android:src="@drawable/privatebtn"
             android:scaleType="fitCenter"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="15dp"
             />
         <ImageButton
             android:id="@+id/xbtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="#00FFFFFF"
             android:src="@drawable/xbtn"
             android:scaleType="fitCenter"

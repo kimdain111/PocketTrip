@@ -46,6 +46,8 @@ public class TravelMain extends Activity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
 
+        Intent intent2 = getIntent();
+
         TravelMainData task = new TravelMainData();
         task.execute(id);
     }
@@ -66,19 +68,9 @@ public class TravelMain extends Activity {
         }
     }
 
-    //여행추가
     public void addTravel(View view)
     {
         Intent myIntent = new Intent(TravelMain.this, TravelChoice.class);
-        myIntent.putExtra("id", id);
-        startActivity(myIntent);
-        finish();
-    }
-
-    //마이페이지
-    public void goMypage(View view)
-    {
-        Intent myIntent = new Intent(TravelMain.this, MyPage.class);
         myIntent.putExtra("id", id);
         startActivity(myIntent);
         finish();

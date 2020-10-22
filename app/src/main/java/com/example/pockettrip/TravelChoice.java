@@ -1,7 +1,10 @@
 package com.example.pockettrip;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -24,6 +27,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -36,13 +40,13 @@ import java.util.Calendar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TravelChoice extends AppCompatActivity {
+public class TravelChoice extends Activity {
 
     private Button firstDate;
     private Button lastDate;
     private static final int REQUEST_CODE = 0;
     ImageView travelImg;
-    String id;
+    String id, no;
     String imgUrl;
     String nation;
     Uri photoUri;
@@ -66,6 +70,10 @@ public class TravelChoice extends AppCompatActivity {
     public int lastMonth;
     public int lastDay;
 
+    String selectedFirst, selectedLast;
+    String first[]; //수정을 통해 들어올 때 변경 전 날짜
+    String last[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +88,30 @@ public class TravelChoice extends AppCompatActivity {
         Intent myIntent = getIntent();
         id = myIntent.getExtras().getString("id");
 
+        Intent myIntent2 = getIntent();
+        id = myIntent2.getExtras().getString("id");
+        no = myIntent2.getExtras().getString("no");
+        nation = myIntent2.getExtras().getString("nation");
+        selectedFirst = myIntent2.getExtras().getString("first");
+        selectedLast = myIntent2.getExtras().getString("last");
+
         //선택한 여행지
         Spinner spinner = (Spinner)findViewById(R.id.nationSpinner);
+        if(no != null){
+            spinner.setSelection(getIndex(spinner, nation)); //수정할 나라로 기본값 해줌
+            Button okbtn = findViewById(R.id.ok);
+            Button deleteBtn = findViewById(R.id.delete);
+            okbtn.setText("수정");                //수정버튼으로 바꿔주기
+            deleteBtn.setVisibility(View.VISIBLE);
+
+            //출발, 도착날짜 버튼 setText
+            first = selectedFirst.split("-");
+            last = selectedLast.split("-");
+            firstDate.setText(first[0]+"-"+first[1]+"-"+first[2]);
+            lastDate.setText(last[0]+"-"+last[1]+"-"+last[2]);
+
+        }
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -102,14 +132,33 @@ public class TravelChoice extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent,REQUEST_CODE);
-                /*Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(intent, REQUEST_CODE);*/
             }
         });
+        //수정을 통해 들어온 경우 기본 이미지
+        if(no != null){
+            SelectImg selectTask = new SelectImg();
+            selectTask.execute(no);
+        }
     }
-
+    private int getIndex(Spinner spinner, String name)
+    {
+        for(int i=0; i<spinner.getCount();i++){
+            if(spinner.getItemAtPosition(i).toString().equalsIgnoreCase(name)){
+                return i;
+            }
+        }
+        return 0;
+    }
+    public void cancel(View view){
+        Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
+        intent2.putExtra("id", id);
+        startActivity(intent2);
+        finish();
+    }
+    public void travelDelete(View view){
+        DeleteData task = new DeleteData();
+        task.execute(no);
+    }
     @Override
     public void onBackPressed() {
         Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
@@ -124,7 +173,6 @@ public class TravelChoice extends AppCompatActivity {
         {
             if(resultCode == RESULT_OK){
                 photoUri = data.getData();
-                //travelImg.setImageURI(photoUri);
                 try{
                     InputStream in = getContentResolver().openInputStream(photoUri);
                     Bitmap img = BitmapFactory.decodeStream(in);
@@ -210,19 +258,53 @@ public class TravelChoice extends AppCompatActivity {
     }
 
     public void OnClickHandler(View view) {
+        DatePickerDialog dialog;
         final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth , mDay);
-        dialog.show();
+        //수정을 통해 들어왔을 때
+        if(selectedFirst != null){
+            mYear = Integer.parseInt(first[0]);
+            mMonth = Integer.parseInt(first[1])-1;
+            mDay = Integer.parseInt(first[2]);
+            dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth , mDay);
+            if(lastYear == 0){ //출발시간만 바꿀 때
+                c.set(Integer.parseInt(last[0]), Integer.parseInt(last[1])-1, Integer.parseInt(last[2]));
+            }
+            else{
+                c.set(lastYear, lastMonth-1, lastDay);
+            }
+            dialog.getDatePicker().setMaxDate(c.getTime().getTime());
+            dialog.show();
+        }
+        //등록하는 경우
+        else{
+            mYear = c.get(Calendar.YEAR);
+            mMonth = c.get(Calendar.MONTH);
+            mDay = c.get(Calendar.DAY_OF_MONTH);
+            dialog = new DatePickerDialog(this, callbackMethod, mYear, mMonth , mDay);
+            dialog.show();
+        }
     }
 
     public void OnClickHandler2(View view) {
         Calendar minDate = Calendar.getInstance();
-        DatePickerDialog dialog = new DatePickerDialog(this, callbackMethod2, firstYear, firstMonth-1, firstDay+1);
-        minDate.set(firstYear, firstMonth-1, firstDay+1);
+        DatePickerDialog dialog;
+        if(selectedLast != null)
+        {
+            if(firstYear == 0){ //도착날짜만 수정할 때
+                dialog = new DatePickerDialog(this, callbackMethod2, Integer.parseInt(first[0]), Integer.parseInt(first[1])-1, Integer.parseInt(first[2])+1);
+                minDate.set(Integer.parseInt(first[0]), Integer.parseInt(first[1])-1, Integer.parseInt(first[2])+1);
+            }
+            else{
+                dialog = new DatePickerDialog(this, callbackMethod2, firstYear, firstMonth-1, firstDay+1);
+                minDate.set(firstYear, firstMonth-1, firstDay+1);
+            }
+        }
+        else{
+            dialog = new DatePickerDialog(this, callbackMethod2, firstYear, firstMonth-1, firstDay+1);
+            minDate.set(firstYear, firstMonth-1, firstDay+1);
+        }
+
         dialog.getDatePicker().setMinDate(minDate.getTime().getTime());
         dialog.show();
     }
@@ -233,17 +315,34 @@ public class TravelChoice extends AppCompatActivity {
             Toast.makeText(this, "출발날짜를 선택해주세요", Toast.LENGTH_SHORT).show();
         else if(lastDate.getText().toString().equals(""))
             Toast.makeText(this,"도착날짜를 선택해주세요", Toast.LENGTH_SHORT).show();
-        else if(selectFlag == false)
+        else if(selectFlag == false && no == null)
             Toast.makeText(this,"사진을 선택해주세요", Toast.LENGTH_SHORT).show();
         else{
-            final String finalUrl = imgUrl;
-            //서버에 이미지 저장
-            UploadFile task2 = new UploadFile();
-            task2.execute(finalUrl);
-            //DB에 저장
-            String imgPath = "http://cs2020tv.dongyangmirae.kr/img/"+imgName;
-            TravelData task = new TravelData();
-            task.execute(id, nation, firstDate.getText().toString(), lastDate.getText().toString(), imgPath);
+            if(no != null) //수정화면일떄
+            {
+                UpdateData task = new UpdateData();
+                if(selectFlag)  //이미지 바꿨을때
+                {
+                    final String finalUrl = imgUrl;
+                    UploadFile task2 = new UploadFile();
+                    task2.execute(finalUrl);
+                    String imgPath = "http://cs2020tv.dongyangmirae.kr/img/"+imgName;
+                    task.execute(no, id, nation, firstDate.getText().toString(), lastDate.getText().toString(), imgPath);
+                }
+                else{
+                    task.execute(no, id, nation, firstDate.getText().toString(), lastDate.getText().toString(), "notChangeImg");
+                }
+            }
+            else{
+                final String finalUrl = imgUrl;
+                //서버에 이미지 저장
+                UploadFile task2 = new UploadFile();
+                task2.execute(finalUrl);
+                //DB에 저장
+                String imgPath = "http://cs2020tv.dongyangmirae.kr/img/"+imgName;
+                TravelData task = new TravelData();
+                task.execute(id, nation, firstDate.getText().toString(), lastDate.getText().toString(), imgPath);
+            }
         }
     }
     //서버에 이미지 저장하는 클래스
@@ -348,7 +447,7 @@ public class TravelChoice extends AppCompatActivity {
             } // End else block
         }
     }
-
+    //여행지추가
     class TravelData extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -410,7 +509,198 @@ public class TravelChoice extends AppCompatActivity {
             }
         }
     }
+    //수정을 통해 들어온 경우 기본 이미지 설정
+    class SelectImg extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
+        @Override
+        protected void onPostExecute(final String s) {
+            super.onPostExecute(s);
+            final Bitmap[] bitmap = new Bitmap[1];
+            Thread uThread = new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        URL url = new URL(s);
+                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+                        InputStream is = conn.getInputStream();
+                        bitmap[0] = BitmapFactory.decodeStream(is);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            uThread.start();
+            try{
+                uThread.join();
+                travelImg.setImageBitmap(bitmap[0]);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... datas) {
+            try{
+                String no = datas[0];
+                String link = "http://cs2020tv.dongyangmirae.kr/travelImgSelect.php";
+                String data = "no="+no;
+
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = reader.readLine())!= null){
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch(Exception e){
+                return new String("Exception:"+e.getMessage());
+            }
+        }
+    }
+
+    //여행지 정보 수정 DB 반영
+    class UpdateData extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("update")){
+                Toast.makeText(getApplicationContext(),"여행지가 수정되었습니다.", Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
+                intent2.putExtra("id", id);
+                startActivity(intent2);
+                finish();
+            }
+            else
+                Toast.makeText(getApplicationContext(),s, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                String no = (String) params[0];
+                String id = (String) params[1];
+                String nation = (String) params[2];
+                String firstDate = (String) params[3];
+                String lastDate = (String) params[4];
+                String imgUrl = (String) params[5];
+
+                String link = "http://cs2020tv.dongyangmirae.kr/travelUpdate.php";
+                String data = "no=" + no + "&id=" + id + "&nation=" + nation + "&firstDate=" + firstDate + "&lastDate=" + lastDate + "&imgUrl=" + imgUrl;
+
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = reader.readLine())!= null){
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            }catch(Exception e){
+                return new String("Exception:"+e.getMessage());
+            }
+        }
+    }
+
+    //여행지 정보 삭제
+    class DeleteData extends AsyncTask<String, Void, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.equals("delete")){
+                AlertDialog.Builder alert = new AlertDialog.Builder(TravelChoice.this);
+                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
+                        intent2.putExtra("id", id);
+                        startActivity(intent2);
+                        finish();
+                    }
+                });
+                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();     //닫기
+                    }
+                });
+                alert.setMessage("여행지를 삭제하면 해당 다이어리, 가계부, 일정, 체크리스가 삭제됩니다.\n" +
+                        "삭제하시겠습니까?");
+                alert.show();
+            }
+            else
+                Toast.makeText(getApplicationContext(),s, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+                String no = (String) params[0];
+
+                String link = "http://cs2020tv.dongyangmirae.kr/travelDelete.php";
+                String data = "no=" + no;
+
+                URL url = new URL(link);
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                while((line = reader.readLine())!= null){
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            }catch(Exception e){
+                return new String("Exception:"+e.getMessage());
+            }
+        }
+    }
 }
 
 
