@@ -290,21 +290,31 @@ public class PublicMoneyMain extends Activity {
                         tImg.setImageResource(R.drawable.hotel);
                     } else if(arr[i].equals("투어")){
                         tImg.setImageResource(R.drawable.tour);
+                    } else if(arr[i].equals("환전")){
+                        tImg.setImageResource(R.drawable.money);
+                    } else if(arr[i].equals("기타")){
+                        tImg.setImageResource(R.drawable.coin);
                     }
 
                     tImg.setLayoutParams(new TableRow.LayoutParams(200,200));
                     tImg.setPadding(0,0,50,0);
 
                     TextView tText = new TextView(PublicMoneyMain.this);
-                    tText.setText(arr[i+1]+"원\n"+arr[i+2]);
-                    tText.setTextSize(20);
 
-                    if(arr[i+3].equals("spend")){
+                    if(arr[i+4].equals("0000-00-00")){
+                        tText.setText((arr[i+1]+"원\n"+arr[i+2]));
+                        tText.setTextSize(20);
+                    } else{
+                        tText.setText(arr[i+1]+"\n(" + Float.parseFloat(arr[i+1])*Float.parseFloat(rate) +"원)\n"+arr[i+2]);
+                        tText.setTextSize(20);
+                    }
+
+                    /*if(arr[i+3].equals("spend")){
                         tText.setTextColor(Color.parseColor("#ff0000"));
 
                     } else {
                         tText.setTextColor(Color.parseColor("#0000ff"));
-                    }
+                    }*/
 
                     TextView tText2 = new TextView(PublicMoneyMain.this);
                     tText2.setText(arr[i+2]);
@@ -400,13 +410,13 @@ public class PublicMoneyMain extends Activity {
                 spendText.setText("0");
                 subText.setText("0");
             } else{
-                for(int i=0; i<arr.length; i+=2){
-                    if(arr[i+1].equals("import")) importTv = importTv + Integer.parseInt(arr[i]);
-                    else spendTv =spendTv + Integer.parseInt(arr[i]);
+                for(int i=0; i<arr.length; i+=4){
+                    if(arr[i+1].equals("import")&&arr[i+2].equals("환전")) importTv = importTv + (Integer.parseInt(arr[i])/(int)(Float.parseFloat(rate)));
+                    else if(arr[i+3].equals("all")) spendTv =spendTv + Integer.parseInt(arr[i]);
                 }
-                importText.setText(Integer.toString(importTv)+"원");
-                spendText.setText(Integer.toString(spendTv)+"원");
-                subText.setText(Integer.toString(importTv-spendTv)+"원");
+                importText.setText(Integer.toString(importTv));
+                spendText.setText(Integer.toString(spendTv));
+                subText.setText(Integer.toString(importTv-spendTv));
             }
 
         }
