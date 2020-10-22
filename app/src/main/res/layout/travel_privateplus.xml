@@ -33,6 +33,7 @@
                 android:text="수입"
                 android:id="@+id/importBtn"
                 android:gravity="center"
+                android:checked="true"
                 android:textColor="#7D7DDA"></RadioButton>
             <RadioButton
                 android:layout_width="match_parent"
@@ -64,14 +65,15 @@
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:layout_marginRight="20dp"
+            android:id="@+id/sortText"
             android:gravity="center"/>
-        <Button
-            android:id="@+id/cashDateBtn"
+        <TextView
+            android:id="@+id/chDate2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="OnClickHandler"
-            android:hint="날짜를 선택하세요" />
+            android:text="yyyy-mm-dd"
+            android:textSize="20dp"
+            android:fontFamily="@font/fontstyle" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,6 +96,13 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="number" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="환율"
+            android:textSize="20dp"
+            android:fontFamily="@font/fontstyle"
+            android:id="@+id/exchangeBtn"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,7 +123,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="아이콘" />
+            android:hint="카테고리를 선택하세요"
+            android:textSize="15dp"
+            android:fontFamily="@font/fontstyle"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,6 +153,7 @@
                 android:fontFamily="@font/fontstyle"
                 android:textSize="20dp"
                 android:text="현금"
+                android:checked="true"
                 android:id="@+id/cashBtn"></RadioButton>
             <RadioButton
                 android:layout_width="match_parent"
@@ -188,7 +200,7 @@
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:text="등록"
-            android:onClick="insert"/>
+            android:onClick="insert2"/>
         <Button
             android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
@@ -197,6 +209,6 @@
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:text="취소"
-            android:onClick="cancel"/>
+            android:onClick="cancel2"/>
     </LinearLayout>
 </LinearLayout>

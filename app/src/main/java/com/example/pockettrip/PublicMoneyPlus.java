@@ -34,8 +34,8 @@ public class PublicMoneyPlus extends Activity {
     private RadioGroup typeGroup;
     private RadioGroup payGroup;
     private TextView dateText, sortText;
-    private String payment="cash", no, id, category="식비", type="import", chDate, sort;
-    private Button cateBtn;
+    private String payment="cash", no, id, category="식비", type="import", chDate, sort, rate, country;
+    private Button cateBtn, exchangeBtn;
     private DatePickerDialog.OnDateSetListener callbackMethod;
 
     private final long FINISH_INTERVAL_TIME = 2000;
@@ -51,6 +51,8 @@ public class PublicMoneyPlus extends Activity {
         id = intent.getExtras().getString("id");
         chDate = intent.getExtras().getString("selectDate");
         sort = intent.getExtras().getString("sort");
+        rate = intent.getExtras().getString("rate");
+        country = intent.getExtras().getString("country");
 
         etcash = (EditText)findViewById(R.id.numInput);
         etmemo = (EditText)findViewById(R.id.memoInput);
@@ -98,6 +100,19 @@ public class PublicMoneyPlus extends Activity {
             }
         });
 
+        exchangeBtn = (Button) findViewById(R.id.exchangeBtn);
+        exchangeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PublicMoneyPlus.this, ExchangeMoney.class);
+                intent.putExtra("data", "Exchange Money");
+                intent.putExtra("rate", rate);
+                intent.putExtra("country", country);
+                Toast.makeText(getApplicationContext(), rate, Toast.LENGTH_SHORT).show();
+                startActivityForResult(intent, 2);
+            }
+        });
+
         cateBtn = (Button) findViewById(R.id.categoryBtn);
         if(sort.equals("plan")){
             cateBtn.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +142,12 @@ public class PublicMoneyPlus extends Activity {
                 String result = data.getStringExtra("result");
                 cateBtn.setText(result);
                 category = result;
+            }
+        }
+        else if (requestCode==2){
+            if(resultCode==RESULT_OK){
+                String result = data.getStringExtra("result");
+                etcash.setText(result);
             }
         }
     }

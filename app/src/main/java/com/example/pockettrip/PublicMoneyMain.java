@@ -38,7 +38,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PublicMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no, id, selectDate = "A", sort;
+    private String no, id, selectDate = "A", sort, rate, country;
     ImageButton addCashBtn;
 
     @Override
@@ -49,6 +49,8 @@ public class PublicMoneyMain extends Activity {
         Intent intent = getIntent();
         no = intent.getExtras().getString("no");
         id= intent.getExtras().getString("id");
+        rate = intent.getExtras().getString("rate");
+        country = intent.getExtras().getString("country");
 
         //1.execute메소드를 통해 AsyncTask실행
         //상단 날짜 리스트뷰 띄우기
@@ -90,6 +92,8 @@ public class PublicMoneyMain extends Activity {
         myintent.putExtra("id", id);
         myintent.putExtra("selectDate", selectDate);
         myintent.putExtra("sort", sort);
+        myintent.putExtra("rate", rate);
+        myintent.putExtra("country", country);
         startActivity(myintent);
         finish();
     }

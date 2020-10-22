@@ -71,7 +71,7 @@
         android:id="@+id/layout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="170dp"
+        android:paddingBottom="10dp"
         >
         <TableRow>
             <ImageButton

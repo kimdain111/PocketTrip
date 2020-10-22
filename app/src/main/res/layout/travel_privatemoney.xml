@@ -35,7 +35,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
         <View
@@ -43,7 +43,7 @@
             android:layout_height="2dp"
             android:background="#000000"></View>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/date_listview"
+            android:id="@+id/date_listview2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:scrollbars="horizontal"/>
@@ -51,46 +51,118 @@
             android:layout_width="wrap_content"
             android:layout_height="2dp"
             android:background="#000000"></View>
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp">
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="2dp"></View>
-            <ScrollView
+            android:scrollbars="none">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10pt"
+                android:orientation="vertical">
+                <TableLayout
+                    android:id="@+id/cashTable"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="yyyy-mm-dd"
-                        android:textSize="15dp"
-                        android:fontFamily="@font/fontstyle"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="아직 작성된 가계부가 없어요"
-                        android:textSize="20dp"
-                        android:fontFamily="@font/fontstyle"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="100dp"/>
-                    <TableLayout
-                        android:id="@+id/table"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    </TableLayout>
-                </LinearLayout>
-            </ScrollView>
+                    android:layout_height="wrap_content"
+                    ></TableLayout>
+                <TextView
+                    android:id="@+id/noCash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="아직 작성된 가계부가 없어요"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/fontstyle"
+                    />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예산"
+            android:textSize="20sp"
+            android:fontFamily="@font/fontstyle"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_marginRight="20dp"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textColor="#0000ff"
+                android:fontFamily="@font/fontstyle"
+                android:id="@+id/importText"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지출"
+            android:textSize="20sp"
+            android:fontFamily="@font/fontstyle"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_marginRight="20dp"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textColor="#ff0000"
+                android:fontFamily="@font/fontstyle"
+                android:id="@+id/spendText"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="잔액"
+            android:textSize="20sp"
+            android:fontFamily="@font/fontstyle"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_marginRight="20dp"
+            android:gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20sp"
+                android:textColor="#000000"
+                android:fontFamily="@font/fontstyle"
+                android:id="@+id/subText"/>
         </LinearLayout>
     </LinearLayout>
     <ImageButton
@@ -101,5 +173,6 @@
         android:scaleType="fitCenter"
         android:layout_gravity="center"
         android:background="#00ff0000"
+        android:onClick="cashPlus"
         style="?android:attr/borderlessButtonStyle"/>
 </LinearLayout>
