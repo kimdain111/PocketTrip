@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,6 @@ import java.util.Calendar;
 public class PrivateMoneyPlus extends Activity {
 
     EditText etcash, etcategory, etmemo;
-    private int mYear, mMonth, mDay , mYear2, mMonth2, mDay2;
     private RadioGroup typeGroup;
     private RadioGroup payGroup;
     private TextView dateText, sortText;
@@ -100,7 +100,7 @@ public class PrivateMoneyPlus extends Activity {
             }
         });
 
-        exchangeBtn = (Button) findViewById(R.id.exchangeBtn);
+        /*exchangeBtn = (Button) findViewById(R.id.exchangeBtn);
         exchangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,16 +111,22 @@ public class PrivateMoneyPlus extends Activity {
                 Toast.makeText(getApplicationContext(), rate, Toast.LENGTH_SHORT).show();
                 startActivityForResult(intent, 2);
             }
-        });
+        });*/
 
         cateBtn = (Button) findViewById(R.id.categoryBtn);
         if(sort.equals("plan")){
             cateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(PrivateMoneyPlus.this, PlanSpendCategory.class);
-                    intent.putExtra("data", "Plan Spend Category");
-                    startActivityForResult(intent, 1);
+                    if(type=="import") {
+                        Intent intent = new Intent(PrivateMoneyPlus.this, PlanImportCategory.class);
+                        intent.putExtra("data", "Plan Import Category");
+                        startActivityForResult(intent, 1);
+                    } else {
+                        Intent intent = new Intent(PrivateMoneyPlus.this, PlanSpendCategory.class);
+                        intent.putExtra("data", "Plan Spend Category");
+                        startActivityForResult(intent, 1);
+                    }
                 }
             });
         } else {

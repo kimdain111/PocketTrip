@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 
 public class ExchangeMoney extends Activity {
 
-    Button exchangeBtn, submitBtn;
+    Button exchangeBtn, submitBtn, cancelBtn;
     EditText otherMoney;
     TextView koreaMoney, otherCountry;
     String rate, country;
@@ -30,6 +30,7 @@ public class ExchangeMoney extends Activity {
 
         exchangeBtn = (Button) findViewById(R.id.exchange);
         submitBtn = (Button) findViewById(R.id.ex_submit);
+        cancelBtn = (Button) findViewById(R.id.cancel);
         otherMoney = (EditText) findViewById(R.id.otherMoney);
         koreaMoney = (TextView) findViewById(R.id.koreaMoney);
         otherCountry = (TextView) findViewById(R.id.otherCountry);
@@ -51,6 +52,13 @@ public class ExchangeMoney extends Activity {
                 intent.putExtra("result", koreaMoney.getText().toString());
                 setResult(RESULT_OK, intent);
 
+                finish();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 finish();
             }
         });

@@ -44,13 +44,13 @@ public class MainActivity extends Activity {
         pref = getSharedPreferences("autologin", MODE_PRIVATE);
         editor = pref.edit();
 
-        /*if(pref.getBoolean("autoLoginOn", false)) //껐다켰도 자동로그인 유지
+        if(pref.getBoolean("autoLoginOn", false)) //껐다켰도 자동로그인 유지
         {
             Intent intent = new Intent(MainActivity.this,TravelMain.class);
             intent.putExtra("id", pref.getString("id",null));
             startActivity(intent);
             finish();
-        }*/
+        }
 
         idCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center|top"
+        android:layout_height="300dp"
+        android:background="@android:color/background_light">
+        <Button
+            android:id="@+id/plan_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/money"
+            android:background="@android:color/transparent"
+            android:layout_margin="20dp"
+            android:text="환전"/>
+        <Button
+            android:id="@+id/plan_etc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/coin"
+            android:background="@android:color/transparent"
+            android:layout_margin="20dp"
+            android:text="기타"/>
+    </LinearLayout>
+</LinearLayout>
