@@ -1,7 +1,9 @@
 package com.example.pockettrip;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -67,7 +69,13 @@ public class TravelMain extends Activity {
             Toast.makeText(getApplicationContext(), "한번 더 뒤로가기를 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
         }
     }
-
+    public void goMypage(View view)
+    {
+        Intent myIntent = new Intent(TravelMain.this, MyPage.class);
+        myIntent.putExtra("id", id);
+        startActivity(myIntent);
+        finish();
+    }
     public void addTravel(View view)
     {
         Intent myIntent = new Intent(TravelMain.this, TravelChoice.class);
@@ -185,6 +193,34 @@ public class TravelMain extends Activity {
                             intent3.putExtra("no", no[finalJ]);
                             startActivity(intent3);
                             finish();
+                        }
+                    });
+                    tr[j].setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            AlertDialog.Builder alert = new AlertDialog.Builder(TravelMain.this);
+                            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent2 = new Intent(TravelMain.this,TravelChoice.class);
+                                    intent2.putExtra("id", id);
+                                    intent2.putExtra("no", no[finalJ]);
+                                    intent2.putExtra("nation", arr[finalJ*5+1]);
+                                    intent2.putExtra("first", arr[finalJ*5+2]);
+                                    intent2.putExtra("last", arr[finalJ*5+3]);
+                                    startActivity(intent2);
+                                    finish();
+                                }
+                            });
+                            alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();     //닫기
+                                }
+                            });
+                            alert.setMessage("여행지를 수정/삭제하시겠습니까?");
+                            alert.show();
+                            return true;
                         }
                     });
                 }
