@@ -156,8 +156,25 @@ public class TravelChoice extends Activity {
         finish();
     }
     public void travelDelete(View view){
-        DeleteData task = new DeleteData();
-        task.execute(no);
+        AlertDialog.Builder alert = new AlertDialog.Builder(TravelChoice.this);
+        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DeleteData task = new DeleteData();
+                task.execute(no);
+
+            }
+        });
+        alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();     //닫기
+            }
+        });
+        alert.setMessage("여행지를 삭제하면 해당 다이어리, 가계부, 일정, 체크리스가 삭제됩니다.\n" +
+                "삭제하시겠습니까?");
+        alert.show();
+
     }
     @Override
     public void onBackPressed() {
@@ -646,25 +663,10 @@ public class TravelChoice extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s.equals("delete")){
-                AlertDialog.Builder alert = new AlertDialog.Builder(TravelChoice.this);
-                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
-                        intent2.putExtra("id", id);
-                        startActivity(intent2);
-                        finish();
-                    }
-                });
-                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();     //닫기
-                    }
-                });
-                alert.setMessage("여행지를 삭제하면 해당 다이어리, 가계부, 일정, 체크리스가 삭제됩니다.\n" +
-                        "삭제하시겠습니까?");
-                alert.show();
+                Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
+                intent2.putExtra("id", id);
+                startActivity(intent2);
+                finish();
             }
             else
                 Toast.makeText(getApplicationContext(),s, Toast.LENGTH_SHORT).show();
