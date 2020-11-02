@@ -1,5 +1,6 @@
 package com.example.pockettrip;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -22,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CheckList extends AppCompatActivity {
+public class CheckList extends Activity {
 
     String no, id, nation, first, last;
     Button insertButton;
@@ -85,7 +86,7 @@ public class CheckList extends AppCompatActivity {
         String check = "uncheck";
 
         if(clist.equals(""))
-            Toast.makeText(CheckList.this, "체크리스트를 입력하세요", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CheckList.this, "항목을 입력하세요", Toast.LENGTH_SHORT).show();
         else{
             //1.execute메소드를 통해 AsyncTask실행
             CheckDTO newCheck = new CheckDTO(clist);
@@ -94,20 +95,17 @@ public class CheckList extends AppCompatActivity {
             checkEdit.setText(null);
             CheckList.InsertData task = new CheckList.InsertData();
             task.execute(no, clist, check);
-            Toast.makeText(CheckList.this, clist, Toast.LENGTH_SHORT).show();
         }
     }
 
     class InsertData extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
-        //2. 스레드 작업 이전에 수행할 동작구현 (ex.이미지로딩중에 이미지 띄워놓기)
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             loading = ProgressDialog.show(CheckList.this, "Please Wait", null, true, true);
         }
-        //4. 결과파라미터 리턴받아서 리턴값을 통해 스레드작업 끝났을 때의 동작 구현
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -116,7 +114,6 @@ public class CheckList extends AppCompatActivity {
             final String[] arr = s.split(",");
             //init(arr[0], arr[1]);
         }
-        //3. 백그라운드작업 수행(execute메소드 호출할 때 사용된 파라미터 전달받음)
         @Override
         protected String doInBackground(String... params) {
             try{
