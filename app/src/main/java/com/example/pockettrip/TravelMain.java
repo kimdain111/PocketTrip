@@ -149,20 +149,6 @@ public class TravelMain extends Activity {
                         e.printStackTrace();
                     }
 
-                    //Uri uri = Uri.parse(arr[i+4]);
-                    /*Uri uri = Uri.parse("http://cs2020tv.dongyangmirae.kr/img/IMG_20200609_144444.jpg");
-                    Log.d("myTag", String.valueOf(uri));*/
-                    //tImg.setImageURI(url);
-                    /*try{
-                        InputStream in = getContentResolver().openInputStream(uri);
-
-                        Bitmap img = BitmapFactory.decodeStream(in);
-                        in.close();
-
-                        tImg.setImageBitmap(img);
-                    } catch(Exception e){
-                    }*/
-                    //tImg.setImageResource(R.drawable.default_gallery);
                     tImg.setLayoutParams(new LayoutParams(300,300));
                     tImg.setPadding(0,0,50,0);
 
