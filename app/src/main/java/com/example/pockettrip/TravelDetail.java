@@ -430,6 +430,10 @@ public class TravelDetail extends Activity {
                    rate = rateArr.get(i+1).toString();
                    cName = countryName;
                }
+               else{
+                   nationText.setText("-");
+                   rateText.setText("-");
+               }
            }
         }
 
