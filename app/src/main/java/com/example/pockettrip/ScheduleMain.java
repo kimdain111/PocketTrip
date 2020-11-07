@@ -232,12 +232,12 @@ public class ScheduleMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            final String[] no = new String[arr.length/2]; //2컬럼이 한묶음
+            final String[] no = new String[arr.length/3]; //3컬럼이 한묶음
 
             TableLayout table = findViewById(R.id.table); //일정 테이블
             table.removeAllViews();
             TextView text = findViewById(R.id.noSchedule); //다이어리 없음 텍스트
-            final TableRow tr[] = new TableRow[arr.length/2];
+            final TableRow tr[] = new TableRow[(arr.length/3)*2];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -249,26 +249,32 @@ public class ScheduleMain extends Activity {
 
                 int cnt = 0;
 
-                for(int i=0; i<arr.length; i+=2)
+                for(int i=0; i<arr.length; i+=3)
                 {
                     tr[cnt] = new TableRow(ScheduleMain.this);
+                    tr[cnt+1] = new TableRow(ScheduleMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
-
-
+                    tr[cnt+1].setLayoutParams(lp);
 
                     TextView tText = new TextView(ScheduleMain.this);
+                    TextView dateText = new TextView(ScheduleMain.this);
+
+                    dateText.setText(arr[i+2]); //날짜
+                    dateText.setTextSize(15);
+                    tr[cnt].addView(dateText);
+                    tr[cnt].setPadding(0,5,0,5);
+                    table.addView(tr[cnt],lp);
+
                     tText.setText(arr[i].substring(0,5)+"       "+arr[i+1]); //시간, 내용
                     tText.setTextSize(20);
                     tText.setGravity(Gravity.LEFT);
                     tText.setPadding(0,60,0,0);
 
-                    tr[cnt].addView(tText); //시간, 내용 행에 삽입
-                    tr[cnt].setPadding(0,5,0,20);
-                    tr[cnt].setClickable(true);
-
-                    //no[cnt] = arr[i];
-                    table.addView(tr[cnt],lp);
+                    tr[cnt+1].addView(tText); //시간, 내용 행에 삽입
+                    tr[cnt+1].setPadding(0,5,0,20);
+                    tr[cnt+1].setClickable(true);
+                    table.addView(tr[cnt+1],lp);
                     cnt++;
                 }
             }

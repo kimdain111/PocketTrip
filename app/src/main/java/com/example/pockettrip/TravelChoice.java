@@ -335,7 +335,7 @@ public class TravelChoice extends Activity {
         else if(selectFlag == false && no == null)
             Toast.makeText(this,"사진을 선택해주세요", Toast.LENGTH_SHORT).show();
         else{
-            if(no != null) //수정화면일떄
+            if(no != null) //수정화면일때떄
             {
                 UpdateData task = new UpdateData();
                 if(selectFlag)  //이미지 바꿨을때
@@ -663,6 +663,7 @@ public class TravelChoice extends Activity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s.equals("delete")){
+                Toast.makeText(getApplicationContext(),"여행지가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 Intent intent2 = new Intent(TravelChoice.this,TravelMain.class);
                 intent2.putExtra("id", id);
                 startActivity(intent2);
