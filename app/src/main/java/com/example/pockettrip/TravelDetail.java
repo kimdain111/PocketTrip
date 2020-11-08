@@ -103,6 +103,10 @@ public class TravelDetail extends Activity {
         final TableLayout layout2 = findViewById(R.id.layout2);
         final TableLayout layout3 = findViewById(R.id.layout3);
         final LinearLayout layout4 = findViewById(R.id.layout4);
+        final TextView txt = findViewById(R.id.txt);
+        final LinearLayout layout5 = findViewById(R.id.layout5);
+        final TableLayout layout6 = findViewById(R.id.layout6);
+
         ImageButton publicbtn = findViewById(R.id.publicbtn);
         ImageButton privatebtn = findViewById(R.id.privatebtn);
         ImageButton xbtn = findViewById(R.id.xbtn);
@@ -111,6 +115,9 @@ public class TravelDetail extends Activity {
         layout2.setVisibility(View.INVISIBLE);
         layout3.setVisibility(View.INVISIBLE);
         layout4.setVisibility(View.VISIBLE);
+        txt.setVisibility(View.INVISIBLE);
+        layout5.setVisibility(View.INVISIBLE);
+        layout6. setVisibility(View.INVISIBLE);
 
         publicbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +154,9 @@ public class TravelDetail extends Activity {
                 layout2.setVisibility(View.VISIBLE);
                 layout3.setVisibility(View.VISIBLE);
                 layout4.setVisibility(View.GONE);
+                txt.setVisibility(View.VISIBLE);
+                layout5.setVisibility(View.VISIBLE);
+                layout6. setVisibility(View.VISIBLE);
             }
         });
 
