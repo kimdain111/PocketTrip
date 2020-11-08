@@ -32,6 +32,7 @@ public class PrivateMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
     private String no, id, selectDate = "A", sort, rate, country;
+    private float rateValue;
     ImageButton addCashBtn;
 
      @Override
@@ -44,6 +45,8 @@ public class PrivateMoneyMain extends Activity {
         id= intent.getExtras().getString("id");
         rate = intent.getExtras().getString("rate");
         country = intent.getExtras().getString("country");
+
+        rateValue = Float.parseFloat(rate.replaceAll(",",""));
 
         selectDate task = new selectDate();
         task.execute(no);
@@ -267,12 +270,26 @@ public class PrivateMoneyMain extends Activity {
                         tImg.setImageResource(R.drawable.bus);
                     } else if(arr[i].equals("생활")){
                         tImg.setImageResource(R.drawable.sofa);
+                    } else if(arr[i].equals("문화")){
+                        tImg.setImageResource(R.drawable.culture);
+                    } else if(arr[i].equals("기념품")){
+                        tImg.setImageResource(R.drawable.souvenir);
+                    } else if(arr[i].equals("패션")){
+                        tImg.setImageResource(R.drawable.clothes);
+                    } else if(arr[i].equals("지출기타")){
+                        tImg.setImageResource(R.drawable.coin);
                     } else if(arr[i].equals("교통계획")){
                         tImg.setImageResource(R.drawable.airplane);
                     } else if(arr[i].equals("숙소")){
                         tImg.setImageResource(R.drawable.hotel);
                     } else if(arr[i].equals("투어")){
                         tImg.setImageResource(R.drawable.tour);
+                    } else if(arr[i].equals("식사")){
+                        tImg.setImageResource(R.drawable.eat);
+                    } else if(arr[i].equals("오락")){
+                        tImg.setImageResource(R.drawable.play);
+                    } else if(arr[i].equals("계획소비기타")){
+                        tImg.setImageResource(R.drawable.coin);
                     } else if(arr[i].equals("환전")){
                         tImg.setImageResource(R.drawable.money);
                     } else if(arr[i].equals("기타")){
@@ -288,16 +305,16 @@ public class PrivateMoneyMain extends Activity {
                         tText.setText((arr[i+1]+"원\n"+arr[i+2]));
                         tText.setTextSize(20);
                     } else{
-                        tText.setText(arr[i+1]+"\n(" + Float.parseFloat(arr[i+1])*Float.parseFloat(rate) +"원)\n"+arr[i+2]);
+                        tText.setText(arr[i+1]+"\n(" + Integer.parseInt(arr[i+1])*rateValue +"원)\n"+arr[i+2]);
                         tText.setTextSize(20);
                     }
 
-                    /*if(arr[i+3].equals("spend")){
+                    if(arr[i+3].equals("spend")){
                         tText.setTextColor(Color.parseColor("#ff0000"));
 
                     } else {
                         tText.setTextColor(Color.parseColor("#0000ff"));
-                    }*/
+                    }
 
                     TextView tText2 = new TextView(PrivateMoneyMain.this);
                     tText2.setText(arr[i+2]);
@@ -385,7 +402,7 @@ public class PrivateMoneyMain extends Activity {
             TextView spendText = findViewById(R.id.spendText);
             TextView subText = findViewById(R.id.subText);
 
-            int importTv = 0, spendTv = 0;
+            float importTv = 0, spendTv = 0;
 
             if(s.equals("no data")){
                 importText.setText("0");
@@ -393,12 +410,18 @@ public class PrivateMoneyMain extends Activity {
                 subText.setText("0");
             } else{
                 for(int i=0; i<arr.length; i+=4){
-                    if(arr[i+1].equals("import")&&arr[i+2].equals("환전")) importTv = importTv + (Integer.parseInt(arr[i])/(int)(Float.parseFloat(rate)));
+                    if(arr[i+1].equals("import")){
+                        if(arr[i+2].equals("환전")){
+                            importTv = importTv + Integer.parseInt(arr[i])/rateValue;
+                        }else {
+                            importTv = importTv + Integer.parseInt(arr[i]);
+                        }
+                    }
                     else if(arr[i+3].equals("all")) spendTv =spendTv + Integer.parseInt(arr[i]);
                 }
-                importText.setText(Integer.toString(importTv)+"원");
-                spendText.setText(Integer.toString(spendTv)+"원");
-                subText.setText(Integer.toString(importTv-spendTv)+"원");
+                importText.setText(Float.toString(importTv)+"원");
+                spendText.setText(Float.toString(spendTv)+"원");
+                subText.setText(Float.toString(importTv-spendTv)+"원");
             }
 
         }
