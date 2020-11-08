@@ -88,6 +88,7 @@ public class PublicMoneyMain extends Activity {
         Intent myIntent = new Intent(PublicMoneyMain.this, MyPage.class);
         myIntent.putExtra("id", id);
         myIntent.putExtra("no", no);
+        myIntent.putExtra("rate", rate);
         myIntent.putExtra("mypageFlag", "5");
         startActivity(myIntent);
         finish();
@@ -473,9 +474,9 @@ public class PublicMoneyMain extends Activity {
                     }
                     else if(arr[i+3].equals("all")) spendTv =spendTv + Integer.parseInt(arr[i]);
                 }
-                importText.setText(Float.toString(importTv));
-                spendText.setText(Float.toString(spendTv));
-                subText.setText(Float.toString(importTv-spendTv));
+                importText.setText(String.format("%.1f",importTv));
+                spendText.setText(String.format("%.1f",spendTv));
+                subText.setText(String.format("%.1f", importTv-spendTv));
             }
 
         }
