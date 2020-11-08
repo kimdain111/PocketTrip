@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -120,7 +121,6 @@ public class MyPage extends Activity {
         finish();
     }
 
-
     //회원정보(이름,비밀번호 조회)
     class selectInfo extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
@@ -179,8 +179,14 @@ public class MyPage extends Activity {
     //로그아웃
     public void logout(View view)
     {
+        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = auto.edit();
+        editor.clear();
+        editor.commit();
+
         Intent myIntent = new Intent(MyPage.this, MainActivity.class);
         startActivity(myIntent);
+
         finish();
     }
 

@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
     CheckBox idCheckbox;
     SharedPreferences pref;
     SharedPreferences.Editor editor;
-    Boolean loginCheck;
+    Boolean loginCheck=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,28 +41,24 @@ public class MainActivity extends Activity {
         pwText = (EditText)findViewById(R.id.pwText);
         idCheckbox = (CheckBox)findViewById(R.id.idCheckbox);
 
-        pref = getSharedPreferences("autologin", MODE_PRIVATE);
+        pref = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         editor = pref.edit();
 
-        /*if(pref.getBoolean("autoLoginOn", false)) //껐다켰도 자동로그인 유지
+        if(pref.getBoolean("autoLoginOn", false)) //껐다켰도 자동로그인 유지
         {
             Intent intent = new Intent(MainActivity.this,TravelMain.class);
             intent.putExtra("id", pref.getString("id",null));
             startActivity(intent);
             finish();
-        }*/
+        }
 
         idCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                {
+                if(isChecked){
                     loginCheck = true;
-                }
-                else{
+                }else{
                     loginCheck = false;
-                    editor.clear();
-                    editor.commit();
                 }
             }
         });
@@ -108,12 +104,12 @@ public class MainActivity extends Activity {
             else if(s.equals("PW is wrong"))
                 Toast.makeText(getApplicationContext(),"비밀번호가 틀립니다.", Toast.LENGTH_SHORT).show();
             else if(s.equals("login success")){
-               /* if(loginCheck){//자동로그인
+                if(loginCheck){//자동로그인
                     editor.putString("id", idText.getText().toString());
                     editor.putString("pw", pwText.getText().toString());
                     editor.putBoolean("autoLoginOn", true);
                     editor.commit();
-                }*/
+                }
                 Toast.makeText(getApplicationContext(),"로그인 성공", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this,TravelMain.class);
                 intent.putExtra("id", idText.getText().toString()); //id값 넘겨주기
