@@ -79,6 +79,19 @@ public class PublicMoneyPlus extends Activity {
         dateText = (TextView)findViewById(R.id.chDate2);
         sortText = (TextView)findViewById(R.id.sortText);
 
+
+        if(type.equals("import")){
+            typeGroup.check(R.id.importBtn);
+        } else {
+            typeGroup.check(R.id.spendBtn);
+        }
+
+        if(payment.equals("cash")){
+            payGroup.check(R.id.cashBtn);
+        } else{
+            payGroup.check(R.id.cardBtn);
+        }
+
         if(sort.equals("plan")){
             sortText.setVisibility(View.GONE);
             dateText.setVisibility(View.GONE);
@@ -169,7 +182,7 @@ public class PublicMoneyPlus extends Activity {
             deleteBtn.setVisibility(View.VISIBLE);
 
             etcash.setText(cash);
-            //etcategory.setText(category);
+            cateBtn.setText(category);
             etmemo.setText(memo);
         }
 
