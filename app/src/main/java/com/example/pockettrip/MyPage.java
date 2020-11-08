@@ -1,7 +1,9 @@
 package com.example.pockettrip;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -105,13 +107,28 @@ public class MyPage extends Activity {
     //탈퇴
     public void leaveGroup(View view)
     {
-        //DB에서 회원 삭제
-        deleteUser task = new deleteUser();
-        task.execute(id);
+        AlertDialog.Builder alert = new AlertDialog.Builder(MyPage.this);
+        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //DB에서 회원 삭제
+                deleteUser task = new deleteUser();
+                task.execute(id);
 
-        Intent myIntent = new Intent(MyPage.this, MainActivity.class);
-        startActivity(myIntent);
-        finish();
+                Intent myIntent = new Intent(MyPage.this, MainActivity.class);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+        alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();     //닫기
+            }
+        });
+        alert.setMessage("탈퇴하시겠습니까?");
+        alert.show();
+
     }
 
     //회원정보(이름,비밀번호 조회)
