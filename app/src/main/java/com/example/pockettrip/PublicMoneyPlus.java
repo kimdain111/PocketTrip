@@ -217,6 +217,7 @@ public class PublicMoneyPlus extends Activity {
         Intent myintent = new Intent(PublicMoneyPlus.this,PublicMoneyMain.class);
         myintent.putExtra("no",no);
         myintent.putExtra("id",id);
+        myintent.putExtra("rate", rate);
         startActivity(myintent);
         finish();
     }
@@ -225,6 +226,7 @@ public class PublicMoneyPlus extends Activity {
         Intent myintent = new Intent(PublicMoneyPlus.this,PublicMoneyMain.class);
         myintent.putExtra("no",no);
         myintent.putExtra("id",id);
+        myintent.putExtra("rate", rate);
         startActivity(myintent);
         finish();
     }

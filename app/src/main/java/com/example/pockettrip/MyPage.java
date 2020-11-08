@@ -20,7 +20,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class MyPage extends Activity {
-    private String id, no, mypageFlag;
+    private String id, no, rate, mypageFlag;
     private EditText idText, nameText;
 
     @Override
@@ -31,6 +31,7 @@ public class MyPage extends Activity {
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
         no = intent.getExtras().getString("no");
+        rate = intent.getExtras().getString("rate");
         mypageFlag = intent.getExtras().getString("mypageFlag");
 
         idText = (EditText)findViewById(R.id.idText);
@@ -61,6 +62,7 @@ public class MyPage extends Activity {
                 break;
             case 5:
                 myintent = new Intent(MyPage.this,PublicMoneyMain.class);
+                myintent.putExtra("rate", rate);
                 break;
             case 6:
                 myintent = new Intent(MyPage.this,PrivateMoneyMain.class);
@@ -74,6 +76,7 @@ public class MyPage extends Activity {
         }
 
         myintent.putExtra("id", id);
+
         if(Integer.parseInt(mypageFlag) > 1){ //TravelMain페이지 빼고 no값 받기
             myintent.putExtra("no", no);
         }
@@ -100,6 +103,7 @@ public class MyPage extends Activity {
                 break;
             case 5:
                 myintent = new Intent(MyPage.this,PublicMoneyMain.class);
+                myintent.putExtra("rate", rate);
                 break;
             case 6:
                 myintent = new Intent(MyPage.this,PrivateMoneyMain.class);
