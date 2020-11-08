@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -239,7 +240,7 @@ public class TravelDetail extends Activity {
             last = arr[2];
 
             switch(nation){
-                case "한국":
+                case "대한민국":
                     engNation="Asia/Seoul";
                     break;
                 case "일본":
@@ -416,12 +417,19 @@ public class TravelDetail extends Activity {
             TextView rateText = findViewById(R.id.rateText);
            for(int i=0; i<rateArr.size(); i++){
                String countryName = (String) rateArr.get(i);
+
                if(countryName.contains(nationName)) //미국, 일본, 중국, 홍콩, 영국, 스위스, 호주, 싱가포르
                {
                    nationText.setText(countryName);
                    rateText.setText(rateArr.get(i+1).toString());
                    rate = rateArr.get(i+1).toString();
                    cName = countryName;
+                   break;
+               }
+               else if(nationName.equals("대한민국")){
+                   nationText.setText("-");
+                   rateText.setText("-");
+                   break;
                }
                else if(countryName.equals("유럽연합 EUR"))
                {
@@ -429,11 +437,9 @@ public class TravelDetail extends Activity {
                    rateText.setText(rateArr.get(i+1).toString());
                    rate = rateArr.get(i+1).toString();
                    cName = countryName;
+                   break;
                }
-               else{
-                   nationText.setText("-");
-                   rateText.setText("-");
-               }
+
            }
         }
 
