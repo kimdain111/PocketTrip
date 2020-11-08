@@ -73,6 +73,7 @@ public class TravelMain extends Activity {
     {
         Intent myIntent = new Intent(TravelMain.this, MyPage.class);
         myIntent.putExtra("id", id);
+        myIntent.putExtra("mypageFlag", "1");
         startActivity(myIntent);
         finish();
     }

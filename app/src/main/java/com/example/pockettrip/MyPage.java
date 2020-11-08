@@ -20,7 +20,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class MyPage extends Activity {
-    private String id;
+    private String id, no, mypageFlag;
     private EditText idText, nameText;
 
     @Override
@@ -30,6 +30,8 @@ public class MyPage extends Activity {
 
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
+        no = intent.getExtras().getString("no");
+        mypageFlag = intent.getExtras().getString("mypageFlag");
 
         idText = (EditText)findViewById(R.id.idText);
         idText.setText(id);
@@ -40,6 +42,84 @@ public class MyPage extends Activity {
         task.execute(id);
 
     }
+
+    //취소버튼 눌렀을 때
+    public void cancel(View view){
+        Intent myintent;
+        switch(Integer.parseInt(mypageFlag)){
+            case 1:
+                myintent = new Intent(MyPage.this,TravelMain.class);
+                break;
+            case 2:
+                myintent = new Intent(MyPage.this,TravelDetail.class);
+                break;
+            case 3:
+                myintent = new Intent(MyPage.this,ScheduleMain.class);
+                break;
+            case 4:
+                myintent = new Intent(MyPage.this,DiaryMain.class);
+                break;
+            case 5:
+                myintent = new Intent(MyPage.this,PublicMoneyMain.class);
+                break;
+            case 6:
+                myintent = new Intent(MyPage.this,PrivateMoneyMain.class);
+                break;
+            case 7:
+                myintent = new Intent(MyPage.this,CheckList.class);
+                break;
+            default:
+                myintent = new Intent(MyPage.this,TravelMain.class);
+                break;
+        }
+
+        myintent.putExtra("id", id);
+        if(Integer.parseInt(mypageFlag) > 1){ //TravelMain페이지 빼고 no값 받기
+            myintent.putExtra("no", no);
+        }
+        startActivity(myintent);
+        finish();
+    }
+
+    //뒤로가기
+    @Override
+    public void onBackPressed() {
+        Intent myintent;
+        switch(Integer.parseInt(mypageFlag)){
+            case 1:
+                myintent = new Intent(MyPage.this,TravelMain.class);
+                break;
+            case 2:
+                myintent = new Intent(MyPage.this,TravelDetail.class);
+                break;
+            case 3:
+                myintent = new Intent(MyPage.this,ScheduleMain.class);
+                break;
+            case 4:
+                myintent = new Intent(MyPage.this,DiaryMain.class);
+                break;
+            case 5:
+                myintent = new Intent(MyPage.this,PublicMoneyMain.class);
+                break;
+            case 6:
+                myintent = new Intent(MyPage.this,PrivateMoneyMain.class);
+                break;
+            case 7:
+                myintent = new Intent(MyPage.this,CheckList.class);
+                break;
+            default:
+                myintent = new Intent(MyPage.this,TravelMain.class);
+                break;
+        }
+
+        myintent.putExtra("id", id);
+        if(Integer.parseInt(mypageFlag) > 1){ //TravelMain 페이지 빼고 no값 받기
+            myintent.putExtra("no", no);
+        }
+        startActivity(myintent);
+        finish();
+    }
+
 
     //회원정보(이름,비밀번호 조회)
     class selectInfo extends AsyncTask<String, Void, String> {
@@ -131,7 +211,7 @@ public class MyPage extends Activity {
 
     }
 
-    //회원정보(이름,비밀번호 조회)
+    //회원탈퇴 DB반영
     class deleteUser extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -185,7 +265,4 @@ public class MyPage extends Activity {
             }
         }
     }
-
-
-
 }
