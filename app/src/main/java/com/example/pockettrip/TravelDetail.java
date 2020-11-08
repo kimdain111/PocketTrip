@@ -75,6 +75,8 @@ public class TravelDetail extends Activity {
     {
         Intent myIntent = new Intent(TravelDetail.this, MyPage.class);
         myIntent.putExtra("id", id);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("mypageFlag", "2");
         startActivity(myIntent);
         finish();
     }

@@ -1,7 +1,9 @@
 package com.example.pockettrip;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -76,6 +78,8 @@ public class ScheduleMain extends Activity {
     {
         Intent myIntent = new Intent(ScheduleMain.this, MyPage.class);
         myIntent.putExtra("id", id);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("mypageFlag", "3");
         startActivity(myIntent);
         finish();
     }
@@ -87,6 +91,7 @@ public class ScheduleMain extends Activity {
         myIntent.putExtra("id", id);
         myIntent.putExtra("no", no);
         myIntent.putExtra("selectDate", selectDate);
+        myIntent.putExtra("flag", "false");
         startActivity(myIntent);
         finish();
     }
@@ -232,7 +237,6 @@ public class ScheduleMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            final String[] no = new String[arr.length/3]; //3컬럼이 한묶음
 
             TableLayout table = findViewById(R.id.table); //일정 테이블
             table.removeAllViews();
@@ -275,7 +279,45 @@ public class ScheduleMain extends Activity {
                     tr[cnt+1].setPadding(0,5,0,20);
                     tr[cnt+1].setClickable(true);
                     table.addView(tr[cnt+1],lp);
-                    cnt++;
+                    cnt+=2;
+                }
+
+                //롱클릭 - 수정/삭제
+                for(int j=0; j<tr.length; j+=2)
+                {
+                    final int finalJ = j/2;
+                    for(int k=0;k<2;k++){
+                        tr[j+k].setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(ScheduleMain.this);
+                                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent2 = new Intent(ScheduleMain.this,SchedulePlus.class);
+                                        intent2.putExtra("no", no);
+                                        intent2.putExtra("id", id);
+                                        intent2.putExtra("selectDate", arr[finalJ*3+2]);
+                                        intent2.putExtra("time", arr[finalJ*3]);
+                                        intent2.putExtra("content", arr[finalJ*3+1]);
+                                        intent2.putExtra("flag", "true");
+                                        startActivity(intent2);
+                                        finish();
+                                    }
+                                });
+                                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();     //닫기
+                                    }
+                                });
+                                alert.setMessage("일정을 수정/삭제하시겠습니까?");
+                                alert.show();
+                                return true;
+                            }
+                        });
+                    }
+
                 }
             }
         }

@@ -85,6 +85,8 @@ public class PrivateMoneyMain extends Activity {
     {
         Intent myIntent = new Intent(PrivateMoneyMain.this, MyPage.class);
         myIntent.putExtra("id", id);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("mypageFlag", "6");
         startActivity(myIntent);
         finish();
     }

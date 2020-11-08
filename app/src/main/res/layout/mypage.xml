@@ -6,6 +6,12 @@
     android:padding="20dp">
 
     <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/xbtn"
+        android:layout_gravity="right"
+        android:onClick="cancel"/>
+    <ImageView
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:src="@drawable/mainicon"

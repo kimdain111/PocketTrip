@@ -164,9 +164,8 @@ public class DiaryPlus extends Activity {
             okbtn.setText("수정");                //수정버튼으로 바꿔주기
             deleteBtn.setVisibility(View.VISIBLE);
 
-            //제목, 날짜, 날씨, 감정, 내용 setText
+            //제목, 날씨, 감정, 내용 setText
             titleText.setText(title);
-            dateText.setText(chDate);
             switch(weather){
                 case "weather1":
                     weatherGroup.check(R.id.weather1);
@@ -381,9 +380,8 @@ public class DiaryPlus extends Activity {
                 dialog.dismiss();     //닫기
             }
         });
-        alert.setMessage("다이어리를 삭제하겠습니까?");
+        alert.setMessage("다이어리를 삭제하시겠습니까?");
         alert.show();
-
     }
 
     //서버에 이미지 저장하는 클래스

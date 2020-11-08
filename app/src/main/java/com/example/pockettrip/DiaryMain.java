@@ -83,6 +83,8 @@ public class DiaryMain extends Activity {
     {
         Intent myIntent = new Intent(DiaryMain.this, MyPage.class);
         myIntent.putExtra("id", id);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("mypageFlag", "4");
         startActivity(myIntent);
         finish();
     }

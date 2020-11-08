@@ -81,6 +81,7 @@ public class CheckList extends Activity {
         Intent intent2 = new Intent(CheckList.this,TravelDetail.class);
         intent2.putExtra("id", id);
         intent2.putExtra("no", no);
+
         startActivity(intent2);
         finish();
     }
@@ -103,6 +104,8 @@ public class CheckList extends Activity {
 
         Intent myIntent = new Intent(CheckList.this, MyPage.class);
         myIntent.putExtra("id", id);
+        myIntent.putExtra("no", no);
+        myIntent.putExtra("mypageFlag", "7");
         startActivity(myIntent);
         finish();
     }
