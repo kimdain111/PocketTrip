@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="nation_array">
-        <item>한국</item>
+        <item>대한민국</item>
         <item>일본</item>
         <item>중국</item>
         <item>싱가포르</item>
