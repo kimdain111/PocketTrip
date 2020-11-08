@@ -133,9 +133,15 @@ public class PrivateMoneyPlus extends Activity {
             cateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(PrivateMoneyPlus.this, SpendCategory.class);
-                    intent.putExtra("data", "Spend Category");
-                    startActivityForResult(intent, 1);
+                    if(type=="import") {
+                        Intent intent = new Intent(PrivateMoneyPlus.this, PlanImportCategory.class);
+                        intent.putExtra("data", "Plan Import Category");
+                        startActivityForResult(intent, 1);
+                    } else {
+                        Intent intent = new Intent(PrivateMoneyPlus.this, SpendCategory.class);
+                        intent.putExtra("data", "Spend Category");
+                        startActivityForResult(intent, 1);
+                    }
                 }
             });
         }

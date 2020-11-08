@@ -1,7 +1,9 @@
 package com.example.pockettrip;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,7 +40,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PublicMoneyMain extends Activity {
     private RecyclerView listview;
     private Diary_Adapter adapter;
-    private String no, id, selectDate = "A", sort, rate, country;
+    private String no, id, selectDate = "A", sort, country, rate;
+    private float rateValue;
     ImageButton addCashBtn;
 
     @Override
@@ -51,6 +54,8 @@ public class PublicMoneyMain extends Activity {
         id= intent.getExtras().getString("id");
         rate = intent.getExtras().getString("rate");
         country = intent.getExtras().getString("country");
+
+        rateValue = Float.parseFloat(rate.replaceAll(",",""));
 
         //1.execute메소드를 통해 AsyncTask실행
         //상단 날짜 리스트뷰 띄우기
@@ -96,6 +101,7 @@ public class PublicMoneyMain extends Activity {
         myintent.putExtra("sort", sort);
         myintent.putExtra("rate", rate);
         myintent.putExtra("country", country);
+        myintent.putExtra("flag", "false");
         startActivity(myintent);
         finish();
     }
@@ -123,6 +129,7 @@ public class PublicMoneyMain extends Activity {
 
             BalanceData task5 = new BalanceData();
             task5.execute(no);
+
         }
     };
 
@@ -254,11 +261,12 @@ public class PublicMoneyMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
+            //final String[] no = new String[arr.length/7];
 
             TableLayout table = findViewById(R.id.cashTable); //가계부 테이블
             table.removeAllViews();
             TextView text = findViewById(R.id.noCash); //가계부 없음 텍스트
-            final TableRow tr[] = new TableRow[(arr.length/5)*3];
+            final TableRow tr[] = new TableRow[(arr.length/7)*2];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -269,15 +277,13 @@ public class PublicMoneyMain extends Activity {
                 table.setVisibility(View.VISIBLE);
 
                 int cnt = 0;
-                for(int i=0; i<arr.length; i+=5)
+                for(int i=0; i<arr.length; i+=7)
                 {
                     tr[cnt] = new TableRow(PublicMoneyMain.this);
                     tr[cnt+1] = new TableRow(PublicMoneyMain.this);
-                    tr[cnt+2] = new TableRow(PublicMoneyMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
                     tr[cnt+1].setLayoutParams(lp);
-                    tr[cnt+2].setLayoutParams(lp);
 
                     ImageView tImg = new ImageView(PublicMoneyMain.this);
                     if(arr[i].equals("식비")){
@@ -286,15 +292,31 @@ public class PublicMoneyMain extends Activity {
                         tImg.setImageResource(R.drawable.bus);
                     } else if(arr[i].equals("생활")){
                         tImg.setImageResource(R.drawable.sofa);
+                    } else if(arr[i].equals("문화")){
+                        tImg.setImageResource(R.drawable.culture);
+                    } else if(arr[i].equals("기념품")){
+                        tImg.setImageResource(R.drawable.souvenir);
+                    } else if(arr[i].equals("패션")){
+                        tImg.setImageResource(R.drawable.clothes);
+                    } else if(arr[i].equals("지출기타")){
+                        tImg.setImageResource(R.drawable.coin);
                     } else if(arr[i].equals("교통계획")){
                         tImg.setImageResource(R.drawable.airplane);
                     } else if(arr[i].equals("숙소")){
                         tImg.setImageResource(R.drawable.hotel);
                     } else if(arr[i].equals("투어")){
                         tImg.setImageResource(R.drawable.tour);
+                    } else if(arr[i].equals("식사")){
+                        tImg.setImageResource(R.drawable.eat);
+                    } else if(arr[i].equals("오락")){
+                        tImg.setImageResource(R.drawable.play);
+                    } else if(arr[i].equals("계획소비기타")){
+                        tImg.setImageResource(R.drawable.coin);
                     } else if(arr[i].equals("환전")){
                         tImg.setImageResource(R.drawable.money);
                     } else if(arr[i].equals("기타")){
+                        tImg.setImageResource(R.drawable.coin);
+                    } else {
                         tImg.setImageResource(R.drawable.coin);
                     }
 
@@ -307,48 +329,77 @@ public class PublicMoneyMain extends Activity {
                         tText.setText((arr[i+1]+"원\n"+arr[i+2]));
                         tText.setTextSize(20);
                     } else{
-                        tText.setText(arr[i+1]+"\n(" + Float.parseFloat(arr[i+1])*Float.parseFloat(rate) +"원)\n"+arr[i+2]);
+                        tText.setText(arr[i+1]+"\n(" + String.format("%.1f",Integer.parseInt(arr[i+1])*rateValue) +"원)\n"+arr[i+2]);
                         tText.setTextSize(20);
                     }
 
-                    /*if(arr[i+3].equals("spend")){
+                    if(arr[i+3].equals("spend")){
                         tText.setTextColor(Color.parseColor("#ff0000"));
 
                     } else {
                         tText.setTextColor(Color.parseColor("#0000ff"));
-                    }*/
-
-                    TextView tText2 = new TextView(PublicMoneyMain.this);
-                    tText2.setText(arr[i+2]);
-                    tText2.setTextSize(18);
+                    }
 
                     TextView dateText = new TextView(PublicMoneyMain.this);
 
-                    if(selectDate.equals("A")){
-                        if(arr[i+4].equals("0000-00-00")){
-                            dateText.setText("Plan");
-                            dateText.setTextSize(15);
-                            tr[cnt].addView(dateText);
-                            tr[cnt].setPadding(0,5,0,20);
-                            table.addView(tr[cnt],lp);
-                        } else {
-                            dateText.setText(arr[i+4]);
-                            dateText.setTextSize(15);
-                            tr[cnt].addView(dateText);
-                            tr[cnt].setPadding(0,5,0,20);
-                            table.addView(tr[cnt],lp);
-                        }
-                    }
+                    dateText.setText(arr[i+4]);
+                    dateText.setTextSize(15);
+                    tr[cnt].addView(dateText);
+                    tr[cnt].setPadding(0,5,0,20);
+                    table.addView(tr[cnt],lp);
 
-                    tr[cnt+1].setClickable(true);
                     tr[cnt+1].addView(tImg);
                     tr[cnt+1].addView(tText);
                     tr[cnt+1].setPadding(0,15,0,0);
                     tr[cnt+1].setClickable(true);
                     table.addView(tr[cnt+1],lp);
-                    cnt++;
+                    cnt+=2;
 
                 }
+
+                //롱클릭 - 수정/삭제
+                for(int j=0; j<tr.length; j+=2)
+                {
+                    final int finalJ = j/2;
+                    for(int k=0;k<2;k++) {
+                        tr[j+k].setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(PublicMoneyMain.this);
+                                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent2 = new Intent(PublicMoneyMain.this, PublicMoneyPlus.class);
+                                        intent2.putExtra("no", no);
+                                        intent2.putExtra("id", id);
+                                        intent2.putExtra("rate", rate);
+                                        intent2.putExtra("sort", arr[finalJ * 7 + 5]);
+                                        intent2.putExtra("cash", arr[finalJ * 7 + 1]);
+                                        intent2.putExtra("category", arr[finalJ * 7]);
+                                        intent2.putExtra("payment", arr[finalJ * 7 + 6]);
+                                        intent2.putExtra("memo", arr[finalJ * 7 + 2]);
+                                        intent2.putExtra("date", arr[finalJ * 7 + 4]);
+                                        intent2.putExtra("type", arr[finalJ * 7 + 3]);
+                                        intent2.putExtra("flag", "true");
+                                        startActivity(intent2);
+                                        finish();
+                                    }
+                                });
+                                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();     //닫기
+                                    }
+                                });
+                                alert.setMessage("가계부를 수정/삭제하시겠습니까?");
+                                alert.show();
+                                return true;
+                            }
+                        });
+                    }
+
+                }
+
             }
         }
 
@@ -405,7 +456,7 @@ public class PublicMoneyMain extends Activity {
             TextView spendText = findViewById(R.id.spendText);
             TextView subText = findViewById(R.id.subText);
 
-            int importTv = 0, spendTv = 0;
+            float importTv = 0, spendTv = 0;
 
             if(s.equals("no data")){
                 importText.setText("0");
@@ -413,12 +464,18 @@ public class PublicMoneyMain extends Activity {
                 subText.setText("0");
             } else{
                 for(int i=0; i<arr.length; i+=4){
-                    if(arr[i+1].equals("import")&&arr[i+2].equals("환전")) importTv = importTv + (Integer.parseInt(arr[i])/(int)(Float.parseFloat(rate)));
+                    if(arr[i+1].equals("import")){
+                        if(arr[i+2].equals("환전")){
+                            importTv = importTv + Integer.parseInt(arr[i])/rateValue;
+                        }else {
+                            importTv = importTv + Integer.parseInt(arr[i]);
+                        }
+                    }
                     else if(arr[i+3].equals("all")) spendTv =spendTv + Integer.parseInt(arr[i]);
                 }
-                importText.setText(Integer.toString(importTv));
-                spendText.setText(Integer.toString(spendTv));
-                subText.setText(Integer.toString(importTv-spendTv));
+                importText.setText(Float.toString(importTv));
+                spendText.setText(Float.toString(spendTv));
+                subText.setText(Float.toString(importTv-spendTv));
             }
 
         }
