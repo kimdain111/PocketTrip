@@ -171,6 +171,7 @@ public class TravelMain extends Activity {
                 for(int j=0; j<tr.length; j++)
                 {
                     final int finalJ = j;
+                    //클릭
                     tr[j].setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -181,6 +182,7 @@ public class TravelMain extends Activity {
                             finish();
                         }
                     });
+                    //롱클릭
                     tr[j].setOnLongClickListener(new View.OnLongClickListener() {
                         @Override
                         public boolean onLongClick(View v) {

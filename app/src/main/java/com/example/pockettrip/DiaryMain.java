@@ -1,7 +1,9 @@
 package com.example.pockettrip;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,7 +46,6 @@ public class DiaryMain extends Activity {
     private String no, id;
     private String selectDate = "A";
     ImageButton addDiaryBtn;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +94,7 @@ public class DiaryMain extends Activity {
         myIntent.putExtra("id", id);
         myIntent.putExtra("no", no);
         myIntent.putExtra("selectDate", selectDate);
+        myIntent.putExtra("flag", "false");
         startActivity(myIntent);
         finish();
     }
@@ -236,7 +238,6 @@ public class DiaryMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            final String[] no = new String[arr.length/6]; //6컬럼이 한묶음
 
             TableLayout table = findViewById(R.id.table); //다이어리 테이블
             table.removeAllViews();
@@ -353,11 +354,50 @@ public class DiaryMain extends Activity {
                     tr[cnt+2].setPadding(0,5,0,20);
                     tr[cnt+2].setClickable(true);
 
-                    //no[cnt] = arr[i];
                     table.addView(tr[cnt],lp);
                     table.addView(tr[cnt+1],lp);
                     table.addView(tr[cnt+2],lp);
-                    cnt++;
+                    cnt+=3;
+                }
+
+                //롱클릭 - 수정/삭제
+                for(int j=0; j<tr.length; j+=3)
+                {
+                    final int finalJ = j/3;
+                    for(int k=0;k<3;k++){
+                        tr[j+k].setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(DiaryMain.this);
+                                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent2 = new Intent(DiaryMain.this,DiaryPlus.class);
+                                        intent2.putExtra("no", no);
+                                        intent2.putExtra("id", id);
+                                        intent2.putExtra("title", arr[finalJ*6]);
+                                        intent2.putExtra("selectDate", arr[finalJ*6+5]);
+                                        intent2.putExtra("weather", arr[finalJ*6+2]);
+                                        intent2.putExtra("emotion", arr[finalJ*6+3]);
+                                        intent2.putExtra("content", arr[finalJ*6+1]);
+                                        intent2.putExtra("flag", "true");
+                                        startActivity(intent2);
+                                        finish();
+                                    }
+                                });
+                                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();     //닫기
+                                    }
+                                });
+                                alert.setMessage("다이어리를 수정/삭제하시겠습니까?");
+                                alert.show();
+                                return true;
+                            }
+                        });
+                    }
+
                 }
 
                 //다이어리 클릭했을 때

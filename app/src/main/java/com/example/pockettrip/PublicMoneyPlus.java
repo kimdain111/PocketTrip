@@ -217,7 +217,7 @@ public class PublicMoneyPlus extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(PublicMoneyPlus.this, "Please Wait", null, true, true);
+            loading = ProgressDialog.show(PublicMoneyPlus.this, "Please Wait",null, true, true);
         }
         //4. 결과파라미터 리턴받아서 리턴값을 통해 스레드작업 끝났을 때의 동작 구현
         @Override
