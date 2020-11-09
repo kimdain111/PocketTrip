@@ -262,7 +262,6 @@ public class PublicMoneyMain extends Activity {
             loading.dismiss();
 
             final String[] arr = s.split(",");
-            //final String[] no = new String[arr.length/7];
 
             TableLayout table = findViewById(R.id.cashTable); //가계부 테이블
             table.removeAllViews();
