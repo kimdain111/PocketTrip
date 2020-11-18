@@ -2,16 +2,21 @@ package com.example.pockettrip;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,14 +32,20 @@ import java.util.HashMap;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class CheckList extends Activity {
 
-    String no, id, nation, first, last;
+    String no, id, nation, first, last, flag, tf1, tf2;
     EditText checkEdit;
-    TableLayout table;
+    View view1, view2;
+    ScrollView scroll1, scroll2;
+    TableLayout table1, table2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +59,19 @@ public class CheckList extends Activity {
         first = myIntent.getExtras().getString("first");
         last= myIntent.getExtras().getString("last");
 
+        //새로고침시 받아오는 intent
+        Intent intent = getIntent();
+        flag = intent.getExtras().getString("flag");
+        no = intent.getExtras().getString("no");
+        id= intent.getExtras().getString("id");
+        nation = intent.getExtras().getString("nation");
+        first = intent.getExtras().getString("first");
+        last= intent.getExtras().getString("last");
+        tf1= intent.getExtras().getString("tf1");
+        tf2= intent.getExtras().getString("tf2");
+        /*tabC1= intent.getExtras().getString("tabC1");
+        tabC2= intent.getExtras().getString("tabC2");*/
+
         TextView nationTv = (TextView) findViewById(R.id.travel);
         TextView firstTv = (TextView) findViewById(R.id.travelFirst);
         TextView lastTv = (TextView) findViewById(R.id.travelLast);
@@ -57,24 +81,57 @@ public class CheckList extends Activity {
         lastTv.setText(last);
 
         checkEdit = (EditText) findViewById(R.id.editcheck);
-        table = (TableLayout) findViewById(R.id.table);
+        table1 = (TableLayout) findViewById(R.id.table1);
+        table2 = (TableLayout) findViewById(R.id.table2);
+        scroll1 = (ScrollView) findViewById(R.id.scroll1);
+        scroll2 = (ScrollView) findViewById(R.id.scroll2);
+        view1 = (View) findViewById(R.id.view1);
+        view2 = (View) findViewById(R.id.view2);
 
+        if(flag == null)
+            flag = "check1";
+        if(flag.equals("check2"))
+        {
+            scroll1.setVisibility(View.GONE);
+            scroll2.setVisibility(View.VISIBLE);
+            view1.setVisibility(View.INVISIBLE);
+            view2.setVisibility(View.VISIBLE);
+        }
+        else if(flag.equals("check1"))
+        {
+            scroll1.setVisibility(View.VISIBLE);
+            scroll2.setVisibility(View.GONE);
+            view1.setVisibility(View.VISIBLE);
+            view2.setVisibility(View.INVISIBLE);
+        }
         SelectList task = new SelectList();
-        task.execute(no);
+        task.execute(no, flag);
     }
 
     @Override
     public void onBackPressed() {
         final ArrayList<String> checkArr = new ArrayList<String>();
         checkArr.add(no);
-        for(int i=0; i<table.getChildCount(); i++){
-            TableRow row = (TableRow)table.getChildAt(i);
-            final CheckBox box = (CheckBox)row.getChildAt(0);
-            if(box.isChecked()){
-                checkArr.add(box.getText().toString());
+        if(flag.equals("check1")){
+            for(int i=0; i<table1.getChildCount(); i++){
+                TableRow row = (TableRow)table1.getChildAt(i);
+                final CheckBox box = (CheckBox)row.getChildAt(0);
+                if(box.isChecked()){
+                    checkArr.add(box.getText().toString());
+                }
+            }
+        }
+        else if(flag.equals("check2")){
+            for(int i=0; i<table2.getChildCount(); i++){
+                TableRow row = (TableRow)table2.getChildAt(i);
+                final CheckBox box = (CheckBox)row.getChildAt(0);
+                if(box.isChecked()){
+                    checkArr.add(box.getText().toString());
+                }
             }
         }
         checkArr.add(Integer.toString(checkArr.size()-1));
+        checkArr.add(flag);
         CheckUpdate task2 = new CheckUpdate();
         task2.execute(checkArr);
 
@@ -91,11 +148,22 @@ public class CheckList extends Activity {
     {
         final ArrayList<String> checkArr = new ArrayList<String>();
         checkArr.add(no);
-        for(int i=0; i<table.getChildCount(); i++){
-            TableRow row = (TableRow)table.getChildAt(i);
-            final CheckBox box = (CheckBox)row.getChildAt(0);
-            if(box.isChecked()){
-                checkArr.add(box.getText().toString());
+        if(flag.equals("check1")){
+            for(int i=0; i<table1.getChildCount(); i++){
+                TableRow row = (TableRow)table1.getChildAt(i);
+                final CheckBox box = (CheckBox)row.getChildAt(0);
+                if(box.isChecked()){
+                    checkArr.add(box.getText().toString());
+                }
+            }
+        }
+        else if(flag.equals("check2")){
+            for(int i=0; i<table2.getChildCount(); i++){
+                TableRow row = (TableRow)table2.getChildAt(i);
+                final CheckBox box = (CheckBox)row.getChildAt(0);
+                if(box.isChecked()){
+                    checkArr.add(box.getText().toString());
+                }
             }
         }
         checkArr.add(Integer.toString(checkArr.size()-1));
@@ -132,6 +200,11 @@ public class CheckList extends Activity {
 
                     final CheckBox box = new CheckBox(CheckList.this);
                     box.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 2f));
+                    Typeface face = null; //폰트설정
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        face = getResources().getFont(R.font.like);
+                    }
+                    box.setTypeface(face);
                     box.setText(arr[i]);
                     box.setTextSize(20);
 
@@ -143,26 +216,45 @@ public class CheckList extends Activity {
                     Button deleteBtn = new Button(CheckList.this);
                     deleteBtn.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT, 1f));
                     deleteBtn.setText("삭제");
-
+                    deleteBtn.setTypeface(face);
                     tr[cnt].addView(box);
                     tr[cnt].addView(deleteBtn);
                     tr[cnt].setPadding(0,5,0,20);
 
-                    table.addView(tr[cnt],lp);
+                    if(flag.equals("check1"))
+                        table1.addView(tr[cnt],lp);
+                    else if(flag.equals("check2"))
+                        table2.addView(tr[cnt],lp);
                     cnt++;
                 }
                 //삭제버튼 클릭시
-                for(int i=0; i<table.getChildCount(); i++){
-                    TableRow row = (TableRow)table.getChildAt(i);
-                    final CheckBox box = (CheckBox)row.getChildAt(0);
-                    final Button deleteBtn = (Button)row.getChildAt(1);
-                    deleteBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            CheckDelete task = new CheckDelete();
-                            task.execute(no, box.getText().toString());
-                        }
-                    });
+                if(flag.equals("check1")){
+                    for(int i=0; i<table1.getChildCount(); i++){
+                        TableRow row = (TableRow)table1.getChildAt(i);
+                        final CheckBox box = (CheckBox)row.getChildAt(0);
+                        final Button deleteBtn = (Button)row.getChildAt(1);
+                        deleteBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CheckDelete task = new CheckDelete();
+                                task.execute(no, box.getText().toString(), flag);
+                            }
+                        });
+                    }
+                }
+                else if(flag.equals("check2")){
+                    for(int i=0; i<table2.getChildCount(); i++){
+                        TableRow row = (TableRow)table2.getChildAt(i);
+                        final CheckBox box = (CheckBox)row.getChildAt(0);
+                        final Button deleteBtn = (Button)row.getChildAt(1);
+                        deleteBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CheckDelete task = new CheckDelete();
+                                task.execute(no, box.getText().toString(), flag);
+                            }
+                        });
+                    }
                 }
             }
         }
@@ -170,8 +262,9 @@ public class CheckList extends Activity {
         protected String doInBackground(String... strings) {
             try{
                 String no = strings[0];
+                String flag = strings[1];
                 String link = "http://cs2020tv.dongyangmirae.kr/checkSelect.php";
-                String data = "no=" + no;
+                String data = "no=" + no + "&flag=" + flag;
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
@@ -196,18 +289,115 @@ public class CheckList extends Activity {
             }
         }
     }
+    //기념품탭클릭
+    public void check1Click(View view){
+        final ArrayList<String> checkArr = new ArrayList<String>();
+        checkArr.add(no);
+        for(int i=0; i<table2.getChildCount(); i++){
+            TableRow row = (TableRow)table2.getChildAt(i);
+            final CheckBox box = (CheckBox)row.getChildAt(0);
+            if(box.isChecked()){
+                checkArr.add(box.getText().toString());
+            }
+        }
+        checkArr.add(Integer.toString(checkArr.size()-1));
+        checkArr.add("check2");
+        CheckUpdate task2 = new CheckUpdate();
+        task2.execute(checkArr);
+
+        view1.setVisibility(View.VISIBLE);
+        view2.setVisibility(View.INVISIBLE);
+        scroll1.setVisibility(View.VISIBLE);
+        scroll2.setVisibility(View.GONE);
+        flag = "check1";
+        if(tf1 == null && tf2 == null){
+            SelectList task = new SelectList();
+            task.execute(no, flag);
+        }
+        tf1 = "tf";
+    }
+    //준비물탭클릭
+    public void check2Click(View view){
+        final ArrayList<String> checkArr = new ArrayList<String>();
+        checkArr.add(no);
+        for(int i=0; i<table1.getChildCount(); i++){
+            TableRow row = (TableRow)table1.getChildAt(i);
+            final CheckBox box = (CheckBox)row.getChildAt(0);
+            if(box.isChecked()){
+                checkArr.add(box.getText().toString());
+            }
+        }
+        checkArr.add(Integer.toString(checkArr.size()-1));
+        checkArr.add("check1");
+
+
+        view1.setVisibility(View.INVISIBLE);
+        view2.setVisibility(View.VISIBLE);
+        scroll1.setVisibility(View.GONE);
+        scroll2.setVisibility(View.VISIBLE);
+        flag = "check2";
+        if(tf2 == null && tf1 == null){
+            Log.d("myTag", "들어옴");
+            SelectList task = new SelectList();
+            task.execute(no, flag);
+        }
+        Log.d("myTag", "못들어옴: " + tf1 + tf2);
+        tf2 = "tf";
+        CheckUpdate task2 = new CheckUpdate();
+        task2.execute(checkArr);
+    }
     //체크리스트 항목 삽입
     public void checkInsert(View view){
         String clist = checkEdit.getText().toString();
         String check = "uncheck";
 
+        Intent intent = new Intent(CheckList.this, CheckList.class);
+        intent.putExtra("flag", flag);
+        intent.putExtra("no", no);
+        intent.putExtra("id", id);
+        intent.putExtra("nation", nation);
+        intent.putExtra("first", first);
+        intent.putExtra("last", last);
+
         if(clist.equals(""))
             Toast.makeText(CheckList.this, "항목을 입력하세요", Toast.LENGTH_SHORT).show();
         else{
-            InsertData task = new InsertData();
-            task.execute(no, clist, check);
+            final ArrayList<String> checkArr = new ArrayList<String>();
+            checkArr.add(no);
+            if(flag.equals("check1")) {
+                for(int i=0; i<table1.getChildCount(); i++){
+                    TableRow row = (TableRow)table1.getChildAt(i);
+                    final CheckBox box = (CheckBox)row.getChildAt(0);
+                    if(box.isChecked()){
+                        checkArr.add(box.getText().toString());
+                    }
+                }
+
+                InsertData task = new InsertData();
+                task.execute(no, clist, check, flag);
+                /*intent.putExtra("tf1", 0);
+                intent.putExtra("tf2", 0);*/
+            }
+            else if(flag.equals("check2")) {
+                for(int i=0; i<table2.getChildCount(); i++){
+                    TableRow row = (TableRow)table2.getChildAt(i);
+                    final CheckBox box = (CheckBox)row.getChildAt(0);
+                    if(box.isChecked()){
+                        checkArr.add(box.getText().toString());
+                    }
+                }
+                InsertData task = new InsertData();
+                task.execute(no, clist, check, flag);
+                /*intent.putExtra("tf1", 0);
+                intent.putExtra("tf2", 0);*/
+            }
+            checkArr.add(Integer.toString(checkArr.size()-1));
+            checkArr.add(flag);
+            CheckUpdate task2 = new CheckUpdate();
+            task2.execute(checkArr);
+
+            startActivity(intent);
             finish();
-            startActivity(getIntent());
         }
     }
 
@@ -232,7 +422,7 @@ public class CheckList extends Activity {
                 String check = (String) params[2];
 
                 String link = "http://cs2020tv.dongyangmirae.kr/checklist.php";
-                String data = "no=" + no + "&clist=" + clist + "&check=" + check;
+                String data = "no=" + no + "&clist=" + clist + "&check=" + check + "&flag=" + flag;
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
@@ -280,7 +470,7 @@ public class CheckList extends Activity {
                 for(int i=1; i<params[0].size()-1; i++){
                     data = data + "&clist" + i + "=" + params[0].get(i).toString();
                 }
-                data = data + "&c=" + params[0].get(params[0].size()-1);
+                data = data + "&c=" + params[0].get(params[0].size()-2) + "&flag=" + params[0].get(params[0].size()-1);
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
@@ -315,8 +505,23 @@ public class CheckList extends Activity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Intent intent = new Intent(CheckList.this, CheckList.class);
+            intent.putExtra("flag", flag);
+            intent.putExtra("no", no);
+            intent.putExtra("id", id);
+            intent.putExtra("nation", nation);
+            intent.putExtra("first", first);
+            intent.putExtra("last", last);
+            if(flag.equals("check1")){
+                /*intent.putExtra("tf1", tf1);
+                intent.putExtra("tf2", 0);*/
+            }
+            else if(flag.equals("check2")){
+                /*intent.putExtra("tf1", 0);
+                intent.putExtra("tf2", tf2);*/
+            }
+            startActivity(intent);
             finish();
-            startActivity(getIntent());
         }
 
         @Override
@@ -324,9 +529,10 @@ public class CheckList extends Activity {
             try{
                 String no = (String) params[0];
                 String clist = (String) params[1];
+                String flag = (String) params[2];
 
                 String link = "http://cs2020tv.dongyangmirae.kr/checkDelete.php";
-                String data = "no=" + no + "&clist=" + clist;
+                String data = "no=" + no + "&clist=" + clist + "&flag=" + flag;
 
                 URL url = new URL(link);
                 URLConnection conn = url.openConnection();
