@@ -21,30 +21,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TravelMain"></activity>
-        <activity android:name=".Join"></activity>
-        <activity android:name=".MyPage"></activity>
-        <activity android:name=".ScheduleMain"></activity>
-        <activity android:name=".SchedulePlus"></activity>
-        <activity android:name=".TravelChoice"></activity>
-        <activity android:name=".TravelDetail"></activity>
-        <activity android:name=".DiaryMain"></activity>
-        <activity android:name=".DiaryPlus"></activity>
-        <activity android:name=".Diary_Adapter"></activity>
-        <activity android:name=".Diary_Date_Decoration"></activity>
-        <activity android:name=".PublicMoneyMain"></activity>
-        <activity android:name=".PublicMoneyPlus"></activity>
-        <activity android:name=".PrivateMoneyMain"></activity>
-        <activity android:name=".PrivateMoneyPlus"></activity>
-        <activity android:name=".Cash_Adapter"></activity>
-        <activity android:name=".Cash_Date_Decoration"></activity>
-        <activity android:name=".SpendCategory" android:theme="@android:style/Theme.Dialog"></activity>
-        <activity android:name=".PlanSpendCategory" android:theme="@android:style/Theme.Dialog"></activity>
-        <activity android:name=".PlanImportCategory" android:theme="@android:style/Theme.Dialog"></activity>
-        <activity android:name=".CheckAdapter"></activity>
-        <activity android:name=".CheckDTO"></activity>
-        <activity android:name=".CheckList"></activity>
-        <activity android:name=".ExchangeMoney" android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".TravelMain"/>
+        <activity android:name=".Join"/>
+        <activity android:name=".MyPage"/>
+        <activity android:name=".ScheduleMain"/>
+        <activity android:name=".SchedulePlus"/>
+        <activity android:name=".TravelChoice"/>
+        <activity android:name=".TravelDetail"/>
+        <activity android:name=".DiaryMain"/>
+        <activity android:name=".DiaryPlus"/>
+        <activity android:name=".Diary_Adapter"/>
+        <activity android:name=".Diary_Date_Decoration"/>
+        <activity android:name=".PublicMoneyMain"/>
+        <activity android:name=".PublicMoneyPlus"/>
+        <activity android:name=".PrivateMoneyMain"/>
+        <activity android:name=".PrivateMoneyPlus"/>
+        <activity android:name=".Cash_Adapter"/>
+        <activity android:name=".Cash_Date_Decoration"/>
+        <activity android:name=".SpendCategory" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".PlanSpendCategory" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".PlanImportCategory" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".CheckList"/>
+        <activity android:name=".ExchangeMoney" android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>

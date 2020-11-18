@@ -153,11 +153,16 @@ public class TravelMain extends Activity {
                     tImg.setLayoutParams(new LayoutParams(300,300));
                     tImg.setPadding(0,0,50,0);
 
+                    Typeface face = null; //폰트설정
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        face = getResources().getFont(R.font.like);
+                    }
                     TextView tText = new TextView(TravelMain.this);
                     tText.setText(arr[i+1]+"\n"+arr[i+2]+"~"+arr[i+3]);
                     tText.setTextSize(20);
                     tText.setGravity(Gravity.CENTER);
                     tText.setPadding(0,60,0,0);
+                    tText.setTypeface(face);
 
                     tr[cnt].addView(tImg);
                     tr[cnt].addView(tText);
