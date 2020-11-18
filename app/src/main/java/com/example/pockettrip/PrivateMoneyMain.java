@@ -1,7 +1,9 @@
 package com.example.pockettrip;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -78,6 +80,7 @@ public class PrivateMoneyMain extends Activity {
         myintent.putExtra("sort", sort);
         myintent.putExtra("rate", rate);
         myintent.putExtra("country", country);
+        myintent.putExtra("flag", "false");
         startActivity(myintent);
         finish();
     }
@@ -89,6 +92,7 @@ public class PrivateMoneyMain extends Activity {
         Intent myIntent = new Intent(PrivateMoneyMain.this, MyPage.class);
         myIntent.putExtra("id", id);
         myIntent.putExtra("no", no);
+        myIntent.putExtra("rate", rate);
         myIntent.putExtra("mypageFlag", "6");
         startActivity(myIntent);
         finish();
@@ -242,7 +246,7 @@ public class PrivateMoneyMain extends Activity {
             TableLayout table = findViewById(R.id.cashTable); //가계부 테이블
             table.removeAllViews();
             TextView text = findViewById(R.id.noCash); //가계부 없음 텍스트
-            final TableRow tr[] = new TableRow[(arr.length/5)*3];
+            final TableRow tr[] = new TableRow[(arr.length/7)*2];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -253,15 +257,13 @@ public class PrivateMoneyMain extends Activity {
                 table.setVisibility(View.VISIBLE);
 
                 int cnt = 0;
-                for(int i=0; i<arr.length; i+=5)
+                for(int i=0; i<arr.length; i+=7)
                 {
                     tr[cnt] = new TableRow(PrivateMoneyMain.this);
                     tr[cnt+1] = new TableRow(PrivateMoneyMain.this);
-                    tr[cnt+2] = new TableRow(PrivateMoneyMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
                     tr[cnt+1].setLayoutParams(lp);
-                    tr[cnt+2].setLayoutParams(lp);
 
                     ImageView tImg = new ImageView(PrivateMoneyMain.this);
                     if(arr[i].equals("식비")){
@@ -294,6 +296,8 @@ public class PrivateMoneyMain extends Activity {
                         tImg.setImageResource(R.drawable.money);
                     } else if(arr[i].equals("기타")){
                         tImg.setImageResource(R.drawable.coin);
+                    } else {
+                        tImg.setImageResource(R.drawable.coin);
                     }
 
                     tImg.setLayoutParams(new TableRow.LayoutParams(200,200));
@@ -305,7 +309,7 @@ public class PrivateMoneyMain extends Activity {
                         tText.setText((arr[i+1]+"원\n"+arr[i+2]));
                         tText.setTextSize(20);
                     } else{
-                        tText.setText(arr[i+1]+"\n(" + Integer.parseInt(arr[i+1])*rateValue +"원)\n"+arr[i+2]);
+                        tText.setText(arr[i+1]+"\n(" + String.format("%.1f",Integer.parseInt(arr[i+1])*rateValue) +"원)\n"+arr[i+2]);
                         tText.setTextSize(20);
                     }
 
@@ -316,27 +320,13 @@ public class PrivateMoneyMain extends Activity {
                         tText.setTextColor(Color.parseColor("#0000ff"));
                     }
 
-                    TextView tText2 = new TextView(PrivateMoneyMain.this);
-                    tText2.setText(arr[i+2]);
-                    tText2.setTextSize(18);
-
                     TextView dateText = new TextView(PrivateMoneyMain.this);
 
-                    if(selectDate.equals("A")){
-                        if(arr[i+4].equals("0000-00-00")){
-                            dateText.setText("Plan");
-                            dateText.setTextSize(15);
-                            tr[cnt].addView(dateText);
-                            tr[cnt].setPadding(0,5,0,20);
-                            table.addView(tr[cnt],lp);
-                        } else {
-                            dateText.setText(arr[i+4]);
-                            dateText.setTextSize(15);
-                            tr[cnt].addView(dateText);
-                            tr[cnt].setPadding(0,5,0,20);
-                            table.addView(tr[cnt],lp);
-                        }
-                    }
+                    dateText.setText(arr[i+4]);
+                    dateText.setTextSize(15);
+                    tr[cnt].addView(dateText);
+                    tr[cnt].setPadding(0,5,0,20);
+                    table.addView(tr[cnt],lp);
 
                     tr[cnt+1].setClickable(true);
                     tr[cnt+1].addView(tImg);
@@ -345,6 +335,49 @@ public class PrivateMoneyMain extends Activity {
                     tr[cnt+1].setClickable(true);
                     table.addView(tr[cnt+1],lp);
                     cnt++;
+
+                }
+
+                //롱클릭 - 수정/삭제
+                for(int j=0; j<tr.length; j+=2)
+                {
+                    final int finalJ = j/2;
+                    for(int k=0;k<2;k++) {
+                        tr[j+k].setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View v) {
+                                AlertDialog.Builder alert = new AlertDialog.Builder(PrivateMoneyMain.this);
+                                alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent2 = new Intent(PrivateMoneyMain.this, PrivateMoneyPlus.class);
+                                        intent2.putExtra("no", no);
+                                        intent2.putExtra("id", id);
+                                        intent2.putExtra("rate", rate);
+                                        intent2.putExtra("sort", arr[finalJ * 7 + 5]);
+                                        intent2.putExtra("cash", arr[finalJ * 7 + 1]);
+                                        intent2.putExtra("category", arr[finalJ * 7]);
+                                        intent2.putExtra("payment", arr[finalJ * 7 + 6]);
+                                        intent2.putExtra("memo", arr[finalJ * 7 + 2]);
+                                        intent2.putExtra("date", arr[finalJ * 7 + 4]);
+                                        intent2.putExtra("type", arr[finalJ * 7 + 3]);
+                                        intent2.putExtra("flag", "true");
+                                        startActivity(intent2);
+                                        finish();
+                                    }
+                                });
+                                alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();     //닫기
+                                    }
+                                });
+                                alert.setMessage("가계부를 수정/삭제하시겠습니까?");
+                                alert.show();
+                                return true;
+                            }
+                        });
+                    }
 
                 }
             }
@@ -419,9 +452,9 @@ public class PrivateMoneyMain extends Activity {
                     }
                     else if(arr[i+3].equals("all")) spendTv =spendTv + Integer.parseInt(arr[i]);
                 }
-                importText.setText(Float.toString(importTv)+"원");
-                spendText.setText(Float.toString(spendTv)+"원");
-                subText.setText(Float.toString(importTv-spendTv)+"원");
+                importText.setText(String.format("%.1f",importTv));
+                spendText.setText(String.format("%.1f",spendTv));
+                subText.setText(String.format("%.1f", importTv-spendTv));
             }
 
         }

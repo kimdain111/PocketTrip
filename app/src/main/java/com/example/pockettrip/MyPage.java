@@ -67,6 +67,7 @@ public class MyPage extends Activity {
                 break;
             case 6:
                 myintent = new Intent(MyPage.this,PrivateMoneyMain.class);
+                myintent.putExtra("rate", rate);
                 break;
             case 7:
                 myintent = new Intent(MyPage.this,CheckList.class);
@@ -108,6 +109,7 @@ public class MyPage extends Activity {
                 break;
             case 6:
                 myintent = new Intent(MyPage.this,PrivateMoneyMain.class);
+                myintent.putExtra("rate", rate);
                 break;
             case 7:
                 myintent = new Intent(MyPage.this,CheckList.class);
