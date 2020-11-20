@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +46,7 @@ public class PublicMoneyMain extends Activity {
     private String no, id, selectDate = "A", sort, country, rate;
     private float rateValue;
     ImageButton addCashBtn;
+    private int selectedPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,14 +117,17 @@ public class PublicMoneyMain extends Activity {
         public void onClick(View v) {
             selectDate = (String) v.getTag();
            if(selectDate.equals("A")) {
+               Toast.makeText(getApplicationContext(),selectDate,Toast.LENGTH_SHORT).show();
                addCashBtn.setVisibility(View.GONE);
                sort = "all";
            }
            else if(selectDate.equals("P")) {
+               Toast.makeText(getApplicationContext(),selectDate,Toast.LENGTH_SHORT).show();
                addCashBtn.setVisibility(View.VISIBLE);
                sort = "plan";
            }
            else {
+               Toast.makeText(getApplicationContext(),selectDate,Toast.LENGTH_SHORT).show();
                addCashBtn.setVisibility(View.VISIBLE);
                sort = "all";
            }
@@ -128,8 +135,8 @@ public class PublicMoneyMain extends Activity {
            PublicMoneyData task4 = new PublicMoneyData();
            task4.execute(no, selectDate);
 
-            BalanceData task5 = new BalanceData();
-            task5.execute(no);
+           BalanceData task5 = new BalanceData();
+           task5.execute(no);
 
         }
     };
@@ -256,6 +263,7 @@ public class PublicMoneyMain extends Activity {
             super.onPreExecute();
             loading = ProgressDialog.show(PublicMoneyMain.this, "Please Wait", null, true, true);
         }
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -339,6 +347,9 @@ public class PublicMoneyMain extends Activity {
                     } else {
                         tText.setTextColor(Color.parseColor("#0000ff"));
                     }
+
+                    Typeface face = getResources().getFont(R.font.like);
+                    tText.setTypeface(face);
 
                     TextView dateText = new TextView(PublicMoneyMain.this);
 

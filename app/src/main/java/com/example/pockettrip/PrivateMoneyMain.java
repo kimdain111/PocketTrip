@@ -6,7 +6,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -236,6 +239,7 @@ public class PrivateMoneyMain extends Activity {
             super.onPreExecute();
             loading = ProgressDialog.show(PrivateMoneyMain.this, "Please Wait", null, true, true);
         }
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -319,6 +323,9 @@ public class PrivateMoneyMain extends Activity {
                     } else {
                         tText.setTextColor(Color.parseColor("#0000ff"));
                     }
+
+                    Typeface face = getResources().getFont(R.font.like);
+                    tText.setTypeface(face);
 
                     TextView dateText = new TextView(PrivateMoneyMain.this);
 
