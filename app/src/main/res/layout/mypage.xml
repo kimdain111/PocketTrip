@@ -22,21 +22,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_margin="20dp">
+        android:layout_marginTop="20dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="아이디"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
-            android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="left"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="40dp"/>
         <EditText
             android:id="@+id/idText"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:layout_marginRight="40dp"
             android:entries="@array/nation_array"
             android:enabled="false"/>
@@ -45,45 +44,104 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_margin="20dp">
+        android:layout_marginTop="25dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:textSize="20dp"
+            android:fontFamily="@font/fontstyle"
+            android:gravity="left"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="20dp"/>
+        <EditText
+            android:id="@+id/pwText"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/nation_array"
+            android:enabled="false"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/pwChangeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="변경"
+            android:fontFamily="@font/fontstyle"
+            android:onClick="pwChange"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pwHintTxt"
+        android:textSize="15dp"
+        android:textColor="#990000"
+        android:fontFamily="@font/fontstyle"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름"
             android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
-            android:layout_weight="1"
-            android:layout_marginRight="20dp"
-            android:gravity="center"/>
+            android:gravity="left"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="60dp"/>
         <EditText
             android:id="@+id/nameText"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/nation_array"
+            android:enabled="false"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/nameChangeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:layout_marginRight="40dp"
-            android:entries="@array/nation_array"
-            android:enabled="false"/>
+            android:text="변경"
+            android:fontFamily="@font/fontstyle"
+            android:onClick="nameChange"/>
     </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameHintTxt"
+        android:textSize="15dp"
+        android:textColor="#990000"
+        android:fontFamily="@font/fontstyle"
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/logoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:text="로그아웃"
         android:fontFamily="@font/fontstyle"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:onClick="logout"/>
 
     <Button
         android:id="@+id/leaveBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:text="탈퇴"
         android:fontFamily="@font/fontstyle"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:onClick="leaveGroup"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/earth"
+        android:layout_gravity="right"
+        android:layout_marginTop="60dp"/>
+
+
 
 </LinearLayout>

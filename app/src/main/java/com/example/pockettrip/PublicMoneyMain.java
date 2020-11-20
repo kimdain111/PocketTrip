@@ -98,6 +98,7 @@ public class PublicMoneyMain extends Activity {
         finish();
     }
 
+    //가계부 입력
     public void cashPlus(View view){
         Intent myintent = new Intent(PublicMoneyMain.this, PublicMoneyPlus.class);
         myintent.putExtra("no", no);

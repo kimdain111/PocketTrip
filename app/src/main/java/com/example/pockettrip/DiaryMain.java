@@ -7,7 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -234,6 +238,7 @@ public class DiaryMain extends Activity {
             super.onPreExecute();
             loading = ProgressDialog.show(DiaryMain.this, "Please Wait", null, true, true);
         }
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -244,7 +249,7 @@ public class DiaryMain extends Activity {
             TableLayout table = findViewById(R.id.table); //다이어리 테이블
             table.removeAllViews();
             TextView text = findViewById(R.id.noDiary); //다이어리 없음 텍스트
-            final TableRow tr[] = new TableRow[(arr.length/6)*3];
+            final TableRow tr[] = new TableRow[(arr.length/6)*5];
 
             if(s.equals("no data")){
                 text.setVisibility(View.VISIBLE);
@@ -261,10 +266,14 @@ public class DiaryMain extends Activity {
                     tr[cnt] = new TableRow(DiaryMain.this);
                     tr[cnt+1] = new TableRow(DiaryMain.this);
                     tr[cnt+2] = new TableRow(DiaryMain.this);
+                    tr[cnt+3] = new TableRow(DiaryMain.this);
+                    tr[cnt+4] = new TableRow(DiaryMain.this);
                     TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                     tr[cnt].setLayoutParams(lp);
                     tr[cnt+1].setLayoutParams(lp);
                     tr[cnt+2].setLayoutParams(lp);
+                    tr[cnt+3].setLayoutParams(lp);
+                    tr[cnt+4].setLayoutParams(lp);
 
                     ImageView tImg = new ImageView(DiaryMain.this);
                     final Bitmap[] bitmap = new Bitmap[1];
@@ -294,13 +303,16 @@ public class DiaryMain extends Activity {
                     }catch (InterruptedException e){
                         e.printStackTrace();
                     }
-                    tImg.setLayoutParams(new TableRow.LayoutParams(300,400));
+                    tImg.setLayoutParams(new TableRow.LayoutParams(500,500));
 
                     TextView tText = new TextView(DiaryMain.this);
-                    tText.setText(arr[i+5]+"       "); //날짜
+                    tText.setText(arr[i]); //제목
                     tText.setTextSize(20);
-                    tText.setGravity(Gravity.LEFT);
-                    tText.setPadding(0,60,0,0);
+                    /*tText.setGravity(Gravity.LEFT);*/
+                    tText.setPadding(0,30,0,0);
+                    /*tText.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));*/
+                    Typeface face = getResources().getFont(R.font.like); //폰트설정
+                    tText.setTypeface(face);
 
                     ImageView weatherImg = new ImageView(DiaryMain.this); //날씨 이모티콘으로 변환
                     int wImg = 0;
@@ -316,9 +328,10 @@ public class DiaryMain extends Activity {
                         wImg = R.drawable.lightning;
                     }
                     weatherImg.setImageResource(wImg);
-                    weatherImg.setLayoutParams(new TableRow.LayoutParams(80,140));
-                    weatherImg.setPadding(0,60,20,0);
-                    weatherImg.setScaleType(ImageView.ScaleType.FIT_XY);
+                    weatherImg.setLayoutParams(new TableRow.LayoutParams(100,140));
+                    weatherImg.setPadding(0,0,20,10);
+                    /*weatherImg.setScaleType(ImageView.ScaleType.FIT_XY);*/
+                    /*weatherImg.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));*/
 
                     ImageView emotionImg = new ImageView(DiaryMain.this); //감정 이모티콘으로 변환
                     int eImg = 0;
@@ -334,39 +347,65 @@ public class DiaryMain extends Activity {
                         eImg = R.drawable.emotion5;
                     }
                     emotionImg.setImageResource(eImg);
-                    emotionImg.setLayoutParams(new TableRow.LayoutParams(80,140));
-                    emotionImg.setPadding(0,60,0,0);
-                    emotionImg.setScaleType(ImageView.ScaleType.FIT_XY);
+                    emotionImg.setLayoutParams(new TableRow.LayoutParams(80,100));
+                    emotionImg.setPadding(0,0,0,10);
+                    /*emotionImg.setScaleType(ImageView.ScaleType.FIT_XY);*/
+                    /*emotionImg.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT, 1f));*/
 
                     TextView tText2 = new TextView(DiaryMain.this);
-                    tText2.setText(arr[i]+"\n"+arr[i+1]); //제목, 내용
-                    tText2.setTextSize(20);
-                    tText2.setGravity(Gravity.LEFT);
-                    tText2.setPadding(0,60,0,0);
+                    tText2.setText(arr[i+5]+"               "); //날짜
+                    tText2.setTextSize(15);
+                    tText2.setGravity(Gravity.RIGHT);
+                    tText2.setPadding(0,10,0,0);
+                    tText2.setTypeface(face);
 
-                    tr[cnt].addView(tText); //날짜
+                    TextView tText3 = new TextView(DiaryMain.this);
+                    tText3.setText(arr[i+1]); //내용
+                    tText3.setTextSize(20);
+                    tText3.setGravity(Gravity.LEFT);
+                    tText3.setPadding(0,10,0,0);
+                    tText3.setTypeface(face);
+
+                    View line = new View(DiaryMain.this);
+                    line.setLayoutParams(new TableRow.LayoutParams(850,2));
+                    line.setBackgroundColor(Color.LTGRAY);
+                    line.setPadding(0,60,0,0);
+
+                    tr[cnt].addView(tText); //제목
                     tr[cnt].addView(weatherImg); //날씨
                     tr[cnt].addView(emotionImg); //감정
-                    tr[cnt+1].addView(tImg);
-                    tr[cnt+2].addView(tText2);
+                    tr[cnt+1].addView(tText2); //날짜
+                    tr[cnt+2].addView(tImg); //사진
+                    tr[cnt+3].addView(tText3); //내용
+                    tr[cnt+4].addView(line); //구분선
                     tr[cnt].setPadding(0,5,0,20);
                     tr[cnt].setClickable(true);
-                    tr[cnt+1].setPadding(0,5,0,20);
                     tr[cnt+1].setClickable(true);
                     tr[cnt+2].setPadding(0,5,0,20);
                     tr[cnt+2].setClickable(true);
+                    tr[cnt+3].setPadding(0,5,0,20);
+                    tr[cnt+3].setClickable(true);
+                    tr[cnt+4].setPadding(0,20,0,20);
+                    tr[cnt+4].setClickable(true);
+                    /*tr[cnt].setGravity(Gravity.CENTER);*/
+                    tr[cnt+1].setGravity(Gravity.CENTER);
+                    tr[cnt+2].setGravity(Gravity.CENTER);
+                    tr[cnt+3].setGravity(Gravity.CENTER);
+                    tr[cnt+4].setGravity(Gravity.CENTER);
 
                     table.addView(tr[cnt],lp);
                     table.addView(tr[cnt+1],lp);
                     table.addView(tr[cnt+2],lp);
-                    cnt+=3;
+                    table.addView(tr[cnt+3],lp);
+                    table.addView(tr[cnt+4],lp);
+                    cnt+=5;
                 }
 
                 //롱클릭 - 수정/삭제
-                for(int j=0; j<tr.length; j+=3)
+                for(int j=0; j<tr.length; j+=5)
                 {
-                    final int finalJ = j/3;
-                    for(int k=0;k<3;k++){
+                    final int finalJ = j/5;
+                    for(int k=0;k<5;k++){
                         tr[j+k].setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
                             public boolean onLongClick(View v) {
@@ -399,24 +438,7 @@ public class DiaryMain extends Activity {
                             }
                         });
                     }
-
                 }
-
-                //다이어리 클릭했을 때
-                /*for(int j=0; j<tr.length; j++)
-                {
-                    final int finalJ = j;
-                    tr[j].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent3 = new Intent(DiaryMain.this,TravelDetail.class);
-                            //intent3.putExtra("id", id);
-                            intent3.putExtra("no", no[finalJ]);
-                            startActivity(intent3);
-                            finish();
-                        }
-                    });
-                }*/
             }
         }
 
