@@ -109,7 +109,6 @@ public class ScheduleMain extends Activity {
         }
     };
 
-
     //여행기간 날짜 조회
     class selectDate extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
