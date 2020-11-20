@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="40dp">
-
+        android:paddingBottom="30dp">
         <ImageView
             android:layout_width="200dp"
             android:layout_height="50dp"
@@ -30,13 +29,12 @@
             android:layout_gravity="top"
             android:background="#FFFFFF"
             android:onClick="goMypage"/>
-
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
         <View
             android:layout_width="wrap_content"
             android:layout_height="2dp"
@@ -116,28 +114,94 @@
                     android:id="@+id/travelLast"/>
             </LinearLayout>
         </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="#000000"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_margin="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="준비물"
+                android:layout_weight="1"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:fontFamily="@font/fontstyle"
+                android:clickable="true"
+                android:onClick="check1Click"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="기념품"
+                android:layout_weight="1"
+                android:textSize="15dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:fontFamily="@font/fontstyle"
+                android:clickable="true"
+                android:onClick="check2Click"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="2dp"
-                android:layout_marginTop="5dp"
-                android:background="#000000"/>
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none">
-                <TableLayout
-                    android:id="@+id/table"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </ScrollView>
+                android:layout_margin="3dp"
+                android:background="#8C8CE6"
+                android:layout_weight="1"
+                android:id="@+id/view1"/>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_margin="3dp"
+                android:background="#8C8CE6"
+                android:layout_weight="1"
+                android:id="@+id/view2"
+                android:visibility="invisible"/>
         </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:id="@+id/scroll1">
+            <TableLayout
+                android:id="@+id/table1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:id="@+id/scroll2"
+            android:visibility="gone">
+            <TableLayout
+                android:id="@+id/table2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
     </LinearLayout>
-
+    </LinearLayout>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:layout_marginTop="5dp"
+        android:background="#000000"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
