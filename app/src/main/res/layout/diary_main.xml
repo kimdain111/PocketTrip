@@ -34,8 +34,8 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
         android:orientation="vertical">
         <View
@@ -59,17 +59,18 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:layout_weight="1">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10pt"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/noDiary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="10pt"
                     android:text="아직 작성된 다이어리가 없어요"
                     android:textSize="20sp"
                     android:fontFamily="@font/fontstyle"

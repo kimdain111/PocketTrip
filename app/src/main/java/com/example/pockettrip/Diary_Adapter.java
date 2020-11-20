@@ -44,14 +44,15 @@ public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         String item = itemList.get(position);
-        String printItem = itemPrintList.get(position);
+        final String printItem = itemPrintList.get(position);
 
         holder.textview.setText(printItem);
         holder.textview.setTag(item);
         holder.textview.setOnClickListener(onClickItem);
-        /*holder.textview.setOnClickListener(new View.OnClickListener(){
+
+        holder.textview.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 selectedPosition = position;
@@ -60,12 +61,14 @@ public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder
         });
 
         if(selectedPosition == position){
-            holder.textview.setBackgroundColor(Color.parseColor("#567845"));
-            holder.textview.setTextColor(Color.parseColor("#ffffff"));
+            holder.textview.setBackgroundResource(R.drawable.bg_circle);
+            holder.textview.setTextColor(ContextCompat.getColor(context, R.color.white));
         }else{
-            holder.textview.setBackgroundColor(Color.parseColor("#ffffff"));
-            holder.textview.setTextColor(Color.parseColor("#000000"));
-        }*/
+            holder.textview.setBackgroundResource(R.color.transparent);
+            holder.textview.setTextColor(ContextCompat.getColor(context, R.color.black));
+        }
+
+
     }
 
     @Override
@@ -81,6 +84,7 @@ public class Diary_Adapter extends RecyclerView.Adapter<Diary_Adapter.ViewHolder
             super(itemView);
 
             textview = itemView.findViewById(R.id.date_item_textView);
+
         }
     }
 }
